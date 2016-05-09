@@ -1,0 +1,9 @@
+print()
+{
+	some_name = 17
+}
+
+print("hello" test)
+x = 5
+y = 2
+print(x * (a + b))

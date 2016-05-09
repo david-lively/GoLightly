@@ -1,0 +1,31 @@
+program := statement 
+		| statement program
+
+
+statement := assignment | call
+
+assignment := identifier ASSIGN expression
+
+expression := term
+			| expression operator expression
+			| call
+
+operator := multiply | divide | add | subtract
+
+call := identifier list
+
+
+list := listStart parameters listend
+
+
+parameters := expression 
+			| expression comma expression
+
+
+term := IDENTIFIER
+		| constant
+
+constant := STRING
+		| number
+
+number := INTEGER | FLOAT

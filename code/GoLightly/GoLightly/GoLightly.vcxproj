@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F09BEAC5-063C-4205-935C-0B1269B013C3}</ProjectGuid>
+    <RootNamespace>CudaOpenGL</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 7.5.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(SolutionDir)ThirdParty\include;$(CUDA_INC);$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(SolutionDir)ThirdParty\include;$(CUDA_INC);$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LibraryPath>$(SolutionDir)ThirdParty\$(PlatformName)\lib;$(CUDA_LIB);$(LibraryPath)</LibraryPath>
+    <CustomBuildAfterTargets>
+    </CustomBuildAfterTargets>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LibraryPath>$(SolutionDir)ThirdParty\$(PlatformName)\lib;$(CUDA_LIB);$(LibraryPath)</LibraryPath>
+    <CustomBuildAfterTargets />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;cudart.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <CudaCompile>
+      <CodeGeneration>compute_30,sm_30</CodeGeneration>
+      <TargetMachinePlatform>64</TargetMachinePlatform>
+      <MaxRegCount>
+      </MaxRegCount>
+      <GenerateLineInfo>true</GenerateLineInfo>
+      <PtxAsOptionV>true</PtxAsOptionV>
+      <CInterleavedPTX>true</CInterleavedPTX>
+      <FastMath>true</FastMath>
+      <Optimization>O2</Optimization>
+    </CudaCompile>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Message>
+      </Message>
+    </CustomBuildStep>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Copy resources to output folder</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;cudart.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <CudaCompile>
+      <CodeGeneration>compute_30,sm_30</CodeGeneration>
+      <TargetMachinePlatform>64</TargetMachinePlatform>
+      <MaxRegCount>
+      </MaxRegCount>
+      <GenerateLineInfo>true</GenerateLineInfo>
+      <PtxAsOptionV>true</PtxAsOptionV>
+      <CInterleavedPTX>true</CInterleavedPTX>
+    </CudaCompile>
+    <CustomBuildStep>
+      <Command>robocopy $(ProjectDir)resources $(OutputPath) *.png *.glsl *.jpg *.jpeg *.psd
+set rce=%errorlevel%
+exit 0</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Message>
+      </Message>
+    </CustomBuildStep>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Copy resources to output folder</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Common\Files.cpp" />
+    <ClCompile Include="..\Thirdparty\include\GL\gl_core_4_2.cpp" />
+    <ClCompile Include="..\Thirdparty\soil\etc1_utils.cpp" />
+    <ClCompile Include="..\Thirdparty\soil\image_DXT.cpp" />
+    <ClCompile Include="..\Thirdparty\soil\image_helper.cpp" />
+    <ClCompile Include="..\Thirdparty\soil\SOIL2.cpp" />
+    <ClCompile Include="..\Thirdparty\soil\stb_image.cpp" />
+    <ClCompile Include="..\Thirdparty\soil\stb_image_write.cpp" />
+    <ClCompile Include="App.cpp" />
+    <ClCompile Include="Configuration.cpp" />
+    <ClCompile Include="ConfigurationParser.cpp" />
+    <ClCompile Include="CudaHelpers.cpp" />
+    <ClCompile Include="FDTDApp.cpp" />
+    <ClCompile Include="GLError.cpp" />
+    <ClCompile Include="GridBlock.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="ModelProvider.cpp" />
+    <ClCompile Include="OpenGLHelpers.cpp" />
+    <ClCompile Include="Renderer.cpp" />
+    <CudaCompile Include="FieldDescriptor.cu" />
+    <CudaCompile Include="Monitor.cu" />
+    <CudaCompile Include="Visualizer.cu">
+      <FileType>CppCode</FileType>
+    </CudaCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Common\Files.h" />
+    <ClInclude Include="..\Thirdparty\include\GL\gl_core_4_2.hpp" />
+    <ClInclude Include="..\Thirdparty\soil\etc1_utils.h" />
+    <ClInclude Include="..\Thirdparty\soil\image_DXT.h" />
+    <ClInclude Include="..\Thirdparty\soil\image_helper.h" />
+    <ClInclude Include="..\Thirdparty\soil\pkm_helper.h" />
+    <ClInclude Include="..\Thirdparty\soil\pvr_helper.h" />
+    <ClInclude Include="..\Thirdparty\soil\SOIL2.h" />
+    <ClInclude Include="..\Thirdparty\soil\stbi_DDS.h" />
+    <ClInclude Include="..\Thirdparty\soil\stbi_DDS_c.h" />
+    <ClInclude Include="..\Thirdparty\soil\stbi_ext.h" />
+    <ClInclude Include="..\Thirdparty\soil\stbi_ext_c.h" />
+    <ClInclude Include="..\Thirdparty\soil\stbi_pkm.h" />
+    <ClInclude Include="..\Thirdparty\soil\stbi_pkm_c.h" />
+    <ClInclude Include="..\Thirdparty\soil\stbi_pvr.h" />
+    <ClInclude Include="..\Thirdparty\soil\stbi_pvr_c.h" />
+    <ClInclude Include="..\Thirdparty\soil\stb_image.h" />
+    <ClInclude Include="..\Thirdparty\soil\stb_image_write.h" />
+    <ClInclude Include="Common.h" />
+    <ClInclude Include="Configuration.h" />
+    <ClInclude Include="ConfigurationParser.h" />
+    <ClInclude Include="CudaHelper.cuh" />
+    <ClInclude Include="FDTDApp.h" />
+    <ClInclude Include="GLError.h" />
+    <ClInclude Include="GridBlock.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="App.h" />
+    <ClInclude Include="ModelProvider.h" />
+    <ClInclude Include="Monitor.cuh" />
+    <ClInclude Include="OpenGLHelpers.h" />
+    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Vectors.h" />
+    <None Include="FieldDescriptor.cuh" />
+    <None Include="CudaHelpers.h" />
+    <None Include="resources\Basic.frag.glsl" />
+    <None Include="resources\Basic.vert.glsl" />
+    <None Include="resources\Graph.frag.glsl" />
+    <None Include="resources\Graph.vert.glsl" />
+    <None Include="resources\ScreenPrimitive.frag.glsl" />
+    <None Include="resources\ScreenPrimitive.vert.glsl" />
+    <None Include="resources\Noise.glsl" />
+    <None Include="resources\Text.frag.glsl" />
+    <None Include="resources\Text.geom.glsl" />
+    <None Include="resources\Text.vert.glsl" />
+    <None Include="Visualizer.cuh">
+      <FileType>CppHeader</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Simulator.cuh" />
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="Simulator.cu">
+      <GenerateLineInfo Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateLineInfo>
+      <GenerateLineInfo Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateLineInfo>
+      <FastMath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</FastMath>
+      <FastMath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</FastMath>
+    </CudaCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\balls.png" />
+    <Image Include="resources\courier_sdf.png" />
+    <Image Include="resources\detached-splitter-512x128.png" />
+    <Image Include="resources\font.png" />
+    <Image Include="resources\lucidagrande.jpg" />
+    <Image Include="resources\lucidagrande_sdf.jpg" />
+    <Image Include="resources\point-source-monitor-test.png" />
+    <Image Include="resources\reflection-transmission-test-1023x255.png" />
+    <Image Include="resources\reflection-transmission-test-point-source.png" />
+    <Image Include="resources\reflection-transmission-test.png" />
+    <Image Include="resources\splitter-high-contrast.PNG" />
+    <Image Include="resources\splitter-rectangular-domain.png" />
+    <Image Include="resources\splitter-test-2.png" />
+    <Image Include="resources\splitter-test-3.png" />
+    <Image Include="resources\splitter-test.png" />
+    <Image Include="resources\splitter.PNG" />
+    <Image Include="resources\test-guide-2.png" />
+    <Image Include="resources\test-guide-3.png" />
+    <Image Include="resources\test-guide-4.png" />
+    <Image Include="resources\test-guide-5.png" />
+    <Image Include="resources\test-guide.png" />
+    <Image Include="resources\three-parallel-guides-1024x256.png" />
+    <Image Include="resources\three-parallel-guides.png" />
+    <Image Include="resources\uhhh-high-contrast.PNG" />
+    <Image Include="resources\uhhh.PNG" />
+    <Image Include="resources\Untitled-2.png" />
+    <Image Include="resources\WGM-solid-test-high-contrast.PNG" />
+    <Image Include="resources\WGM-test-high-contrast.PNG" />
+    <Image Include="resources\WGM-test.PNG" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 7.5.targets" />
+  </ImportGroup>
+</Project>

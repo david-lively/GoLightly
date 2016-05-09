@@ -1,0 +1,10 @@
+a.b = 5;
+
+x = "test";
+x += 2;
+1.2;
+12345;
+/* this is a comment */
+"yet another string";
+identifier();
+

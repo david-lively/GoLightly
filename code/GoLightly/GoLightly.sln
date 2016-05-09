@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GoLightly", "GoLightly\GoLightly.vcxproj", "{F09BEAC5-063C-4205-935C-0B1269B013C3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{4B96F68E-F42A-4235-915D-144F977B9757}"
+	ProjectSection(SolutionItems) = preProject
+		Common\Files.cpp = Common\Files.cpp
+		Common\Files.h = Common\Files.h
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F09BEAC5-063C-4205-935C-0B1269B013C3}.Debug|x64.ActiveCfg = Debug|x64
+		{F09BEAC5-063C-4205-935C-0B1269B013C3}.Debug|x64.Build.0 = Debug|x64
+		{F09BEAC5-063C-4205-935C-0B1269B013C3}.Release|x64.ActiveCfg = Release|x64
+		{F09BEAC5-063C-4205-935C-0B1269B013C3}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+EndGlobal

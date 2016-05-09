@@ -1,0 +1,341 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resource Files\Shaders">
+      <UniqueIdentifier>{7fa0b780-45c6-4985-98cf-ac6a976384c1}</UniqueIdentifier>
+      <Extensions>frag;vert;tess;tesse;tessc;geom;</Extensions>
+    </Filter>
+    <Filter Include="Cuda">
+      <UniqueIdentifier>{41a72c81-d9e7-4928-a57e-001b7d7d844e}</UniqueIdentifier>
+      <Extensions>cu;cuh</Extensions>
+    </Filter>
+    <Filter Include="Third Party">
+      <UniqueIdentifier>{d5fd05ed-dbe1-4ba6-a6a0-25069b92ec91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Third Party\soil">
+      <UniqueIdentifier>{49693b6c-2ff6-4462-b287-2242d86159dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models">
+      <UniqueIdentifier>{7c4b905b-6ad2-47b0-8854-e47a03c97504}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Images">
+      <UniqueIdentifier>{df888894-288f-4175-a84c-931181a804b8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="App.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Thirdparty\include\GL\gl_core_4_2.cpp">
+      <Filter>Third Party</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelProvider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GridBlock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Configuration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CudaHelpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FDTDApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLHelpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Thirdparty\soil\etc1_utils.cpp">
+      <Filter>Third Party\soil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Thirdparty\soil\image_DXT.cpp">
+      <Filter>Third Party\soil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Thirdparty\soil\image_helper.cpp">
+      <Filter>Third Party\soil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Thirdparty\soil\SOIL2.cpp">
+      <Filter>Third Party\soil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Thirdparty\soil\stb_image.cpp">
+      <Filter>Third Party\soil</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Thirdparty\soil\stb_image_write.cpp">
+      <Filter>Third Party\soil</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigurationParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\Files.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="App.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GLError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\include\GL\gl_core_4_2.hpp">
+      <Filter>Third Party</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelProvider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GridBlock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Configuration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FDTDApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLHelpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\soil\etc1_utils.h">
+      <Filter>Third Party\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\soil\image_DXT.h">
+      <Filter>Third Party\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\soil\image_helper.h">
+      <Filter>Third Party\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\soil\pkm_helper.h">
+      <Filter>Third Party\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\soil\pvr_helper.h">
+      <Filter>Third Party\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\soil\SOIL2.h">
+      <Filter>Third Party\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\soil\stb_image.h">
+      <Filter>Third Party\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\soil\stb_image_write.h">
+      <Filter>Third Party\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\soil\stbi_DDS.h">
+      <Filter>Third Party\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\soil\stbi_DDS_c.h">
+      <Filter>Third Party\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\soil\stbi_ext.h">
+      <Filter>Third Party\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\soil\stbi_ext_c.h">
+      <Filter>Third Party\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\soil\stbi_pkm.h">
+      <Filter>Third Party\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\soil\stbi_pkm_c.h">
+      <Filter>Third Party\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\soil\stbi_pvr.h">
+      <Filter>Third Party\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Thirdparty\soil\stbi_pvr_c.h">
+      <Filter>Third Party\soil</Filter>
+    </ClInclude>
+    <ClInclude Include="Monitor.cuh">
+      <Filter>Cuda</Filter>
+    </ClInclude>
+    <ClInclude Include="CudaHelper.cuh">
+      <Filter>Cuda</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigurationParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vectors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Files.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FieldDescriptor.cuh">
+      <Filter>Cuda</Filter>
+    </None>
+    <None Include="CudaHelpers.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Visualizer.cuh">
+      <Filter>Cuda</Filter>
+    </None>
+    <None Include="Simulator.cuh">
+      <Filter>Cuda</Filter>
+    </None>
+    <None Include="resources\Basic.frag.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="resources\Basic.vert.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="resources\Noise.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="resources\Text.frag.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="resources\Text.vert.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="resources\Text.geom.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="resources\ScreenPrimitive.frag.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="resources\ScreenPrimitive.vert.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="resources\Graph.frag.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="resources\Graph.vert.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="Visualizer.cu">
+      <Filter>Cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Simulator.cu">
+      <Filter>Cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="Monitor.cu">
+      <Filter>Cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="FieldDescriptor.cu">
+      <Filter>Cuda</Filter>
+    </CudaCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\balls.png">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\detached-splitter-512x128.png">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\point-source-monitor-test.png">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\reflection-transmission-test.png">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\reflection-transmission-test-1023x255.png">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\reflection-transmission-test-point-source.png">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\splitter.PNG">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\splitter-high-contrast.PNG">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\splitter-rectangular-domain.png">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\splitter-test.png">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\splitter-test-2.png">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\splitter-test-3.png">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\test-guide.png">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\test-guide-2.png">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\test-guide-3.png">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\test-guide-4.png">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\test-guide-5.png">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\three-parallel-guides.png">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\three-parallel-guides-1024x256.png">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\uhhh.PNG">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\uhhh-high-contrast.PNG">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\Untitled-2.png">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\WGM-solid-test-high-contrast.PNG">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\WGM-test.PNG">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\WGM-test-high-contrast.PNG">
+      <Filter>Resource Files\Models</Filter>
+    </Image>
+    <Image Include="resources\font.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="resources\lucidagrande.jpg">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="resources\lucidagrande_sdf.jpg">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="resources\courier_sdf.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

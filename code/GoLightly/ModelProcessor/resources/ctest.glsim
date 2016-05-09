@@ -1,0 +1,31 @@
+"str"
+
+/* test */
+
+/* this is also a comment */
+
+class FileMap
+{
+  char const * m_begin;
+  char const * m_end;
+
+  // ...
+};
+
+int main()
+{
+	test_call(a,b,"123");
+  FileMap file("C:\\temp\\Sample.b");
+
+  if (!file)
+  {
+    printf("Error: failed to open file\n");
+    return 1;
+  }
+
+  printf("Source: %.*s\n", file.Size(), file.Begin());
+
+  Scanner scanner(file.Begin(), file.End());
+
+  // ...
+}
