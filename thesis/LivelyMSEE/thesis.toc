@@ -1,0 +1,37 @@
+\noindent CHAPTER \hfill \vskip 0.05in
+\contentsline {chapter}{\numberline {\hfill 1.\hbox {\hskip 0.8em}\ignorespaces }INTRODUCTION}{1}
+\contentsline {section}{\numberline {1.1.}FDTD Overview}{2}
+\contentsline {subsection}{\numberline {1.1.1.}Wave equation}{2}
+\contentsline {subsection}{\numberline {1.1.2.}Yee Cell}{2}
+\contentsline {chapter}{\numberline {\hfill 2.\hbox {\hskip 0.8em}\ignorespaces }DEVICE ARCHITECTURE}{3}
+\contentsline {section}{\numberline {2.1.}CPU}{3}
+\contentsline {section}{\numberline {2.2.}GPU}{3}
+\contentsline {chapter}{\numberline {\hfill 3.\hbox {\hskip 0.8em}\ignorespaces }MEEP}{4}
+\contentsline {section}{\numberline {3.1.}Background}{4}
+\contentsline {section}{\numberline {3.2.}Modeling approach}{4}
+\contentsline {section}{\numberline {3.3.}Performance}{4}
+\contentsline {section}{\numberline {3.4.}Usability}{4}
+\contentsline {chapter}{\numberline {\hfill 4.\hbox {\hskip 0.8em}\ignorespaces }GOLIGHTLY}{5}
+\contentsline {section}{\numberline {4.1.}goals}{5}
+\contentsline {section}{\numberline {4.2.}system architecture}{5}
+\contentsline {subsection}{\numberline {4.2.1.}Host}{5}
+\contentsline {subsection}{\numberline {4.2.2.}GPU}{5}
+\contentsline {section}{\numberline {4.3.}Modeling approach}{5}
+\contentsline {section}{\numberline {4.4.}Implementation}{5}
+\contentsline {section}{\numberline {4.5.}Testing methodology}{5}
+\contentsline {subsection}{\numberline {4.5.1.}Test Model}{5}
+\contentsline {subsection}{\numberline {4.5.2.}Analytical Result}{5}
+\contentsline {subsection}{\numberline {4.5.3.}Numerical Result}{5}
+\contentsline {subsection}{\numberline {4.5.4.}Comparison}{5}
+\contentsline {section}{\numberline {4.6.}Additional Examples}{6}
+\contentsline {subsection}{\numberline {4.6.1.}Coupler}{6}
+\contentsline {subsection}{\numberline {4.6.2.}Splitter}{6}
+\contentsline {chapter}{\numberline {\hfill 5.\hbox {\hskip 0.8em}\ignorespaces }Conclusions}{7}
+\contentsline {section}{\numberline {5.1.}Meep performance}{7}
+\contentsline {section}{\numberline {5.2.}GoLightly performancec}{7}
+\contentsline {section}{\numberline {5.3.}Meep vs GoLightly}{7}
+\contentsline {section}{\numberline {5.4.}Results}{7}
+\contentsline {section}{\numberline {5.5.}Limitations}{7}
+\contentsline {chapter}{\numberline {\hfill 6.\hbox {\hskip 0.8em}\ignorespaces }FUTURE WORK}{8}
+\noindent APPENDIX \hfill \vskip 0.05in
+\contentsline {chapter}{REFERENCES}{9}

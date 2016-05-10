@@ -1,0 +1,22 @@
+\chapter{INTRODUCTION} \label{ch:introduction}
+
+FDTD is a proven algorithm, first published in (...) by (yee, et al). It is the underlying mechanism used by many commercial optics simulation packages, as well as open source software such as MIT's Meep. 
+
+Given the computationally-intensive nature of FDTD, organizations requiring simulation of large domains or complex circuits must provide significant resources. These may take the form of leased server time or utilization of an on-site high-performance cluster, amongst other options.
+
+In this thesis, we explore an implementation of the Finite-Difference, Time-Domain (FDTD) method of electromagnetic waves simulation as implemented on graphics processing units (GPUs). Initially designed to perform image generation tasks such as those required by games, cinema and related fields, modern versions are well-suited for general computation work. GPUs are now enjoying wide adoption in fields such as machine learning and artificial intelligence, medical research, signals analysis and other areas which require rapid analysis of large datasets.
+
+Even modern consumer-grade GPUs offer thousands or tens of thousands of processing units, while high-end CPUs offer 4-8 cores. While the two are not interchangeable (see: chapter on Device Architecture), some algorithms, such as FDTD, require little or data interdependence, no branching logic (a severe performance impediment on GPUs) and consist of short cycles of simple operations. The power of the GPU lies in performing these simple operations at large scale, with thousands of threads running in parallel. 
+
+The following sections detail FDTD. Later sections describe a CPU-based implementation (MIT's  Meep simulator), and our GPU-based GoLightly simulator. We verify the GPU solution numerically, and compare performance between CPU- and GPU-based implementations. Finally, we consider future applications and enhancements. 
+
+
+\section{FDTD Overview}
+
+
+
+\subsection{Wave equation}
+
+\subsection{Yee Cell}
+
+
