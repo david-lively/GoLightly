@@ -18,24 +18,72 @@ At it's heart, FDTD expresses Maxwell's equations as a discretized set of time-d
 
 \subsection{Wave equation}
 
-In time domain, the discretized wave equation for  $ E_z $ is of the form:
+In a $TM_z$ time domain simulation, wave equation for  $ E_z $ is of the form:
 
-$$ 
-\frac{{dE_z}}{dt} = K * (\frac{dH_x}{dy} + \frac{dH_y}{dx})
-$$
+\begin{equation} \label{eq:waveequation} 
+\frac{\partial E_z}{\partial t} = K * (\frac{\partial H_x}{\partial y} + \frac{\partial H_y}{\partial x})
+\end{equation}
 
-%\[ 
-%\frac{{dE_z}__{i,j}}{dt}
-%= K * \frac{}{dH_x}{dy}
-
-%h^2 \left( \frac{\partial^2 u}{\partial x^2}
-%+ \frac{\partial^2 u}{\partial y^2}
-%+ \frac{\partial^2 u}{\partial z^2} \right) \]
-
-These time-domain equations describe how a field at a given point in space evolves over time based on the local spatial derivative if its coupled fields. The algorithm updates E and H fields in a "leap frog" manner:
+Equation \ref{eq:waveequation} states that the temporal derivative (change in amplitude) of $E_z$ is a function of the $Y$-axis spatial derivative of the $H_x$ field and the $X$-axis spatial derivative of the $H_y$ field.
 
 
+In order to apply this equation to a computational domain, FDTD defines a cell-based discretization strategy.
 
 \subsection{Yee Cell}
+
+Yee \cite{Yee} defines a computational unit known as a "cell." The cell describes how each field component within a domain is related to it's coupled fields. For instance, in a 2D $TM_z$ simulation, $E_Z$ depends on adjacent $H_y$ and $H_x$ components. The cell format used in such a simulation is of the form shown in \ref{fig:yeecell}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics{yee-cell-ez.png}
+	\caption{2D $TM_Z$ Yee Cell}
+	\label{fig:yeecell}
+\end{figure}
+
+More formally, we may expand the $E_Z$ wave equation, arriving at:
+
+\begin{equation} \label{ezupdate}
+{E_z}_{i,j}^{t} = C_a * {E_z}_{i,j}^{t-1} 
++ C_b * ({H_x}_{i,j+\frac{1}{2}}^{t-\frac{1}{2}} - {H_x}_{i,j-\frac{1}{2}}^{t-\frac{1}{2}})
++ C_b * ({H_y}_{i+\frac{1}{2},j}^{t-\frac{1}{2}} - {H_xy}_{i-\frac{1}{2},j}^{t-\frac{1}{2}})
+\end{equation}
+
+Similarly, the equations for the coupled fields $H_x$ and $H_y$ may be expressed as:
+\begin{equation} \label{hxupdate}
+{H_x}_{i,j}^t = D_a * {H_x}_{i,j}^{t-1} + D_b * (
+{E_z}_{i,j+\frac{1}{2}}^{t-\frac{1}{2}} 
+-
+{E_z}_{i,j-\frac{1}{2}}^{t-\frac{1}{2}}
+)  
+\end{equation}
+
+\begin{equation} \label{hyupdate}
+{H_y}_{i,j}^t = D_a * {H_y}_{i,j}^{t-1} + D_b * (
+{E_z}_{i+\frac{1}{2},j}^{t-\frac{1}{2}} 
+-
+{E_z}_{i-\frac{1}{2},j}^{t-\frac{1}{2}}
+)  
+\end{equation}
+
+where
+
+\begin{table}
+	content...
+\end{table}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
