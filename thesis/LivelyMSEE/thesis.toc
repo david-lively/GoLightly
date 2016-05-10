@@ -6,6 +6,8 @@
 \contentsline {chapter}{\numberline {\hfill 2.\hbox {\hskip 0.8em}\ignorespaces }DEVICE ARCHITECTURE}{3}
 \contentsline {section}{\numberline {2.1.}CPU}{3}
 \contentsline {section}{\numberline {2.2.}GPU}{3}
+\contentsline {subsection}{\numberline {2.2.1.}SIMD}{3}
+\contentsline {subsection}{\numberline {2.2.2.}FDTD in SIMD}{3}
 \contentsline {chapter}{\numberline {\hfill 3.\hbox {\hskip 0.8em}\ignorespaces }MEEP}{4}
 \contentsline {section}{\numberline {3.1.}Background}{4}
 \contentsline {section}{\numberline {3.2.}Modeling approach}{4}
