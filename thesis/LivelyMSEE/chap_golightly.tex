@@ -276,13 +276,12 @@ t_p = \frac{2 n_1 \cos \theta_I}{n_1 \cos \theta_T + n_2 \cos \theta_I}
 
 gives the coefficients:
 
-\begin{math}
+\begin{equation}
 r_p = \frac{3 * 1- 1 * 1}{1 * 1 + 3 * 1} = \frac{1}{2}
-\end{math}
-and
-\begin{math}
+\end{equation}
+\begin{equation}
 t_p = \frac{2 * 1 * 1}{1 * 1 + 3 * 1} = \frac{1}{2}
-\end{math}
+\end{equation}
 
 In this case, given a dielectric constant $\epsilon_R  = 9$, the reflection and transmission coefficients are equal.
 
@@ -301,8 +300,104 @@ The observed steady-state output of the simulation for the baseline case ($\epsi
 
 The time-averaged (RMS) numerical output for the incident and transmitted monitors is
 
-\subsection{Comparison}
-\section{Additional Examples}
-\subsection{Coupler}
-\subsection{Splitter}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth,
+	keepaspectratio]{pw-time-averaged-output.png}
+	\caption{Time-averaged (RMS) output in free space $\epsilon_R = 1$}
+	\label{fig:planewaveRMSinFreeSpace}
+\end{figure}
+
+As expected, the incident and transmitted magnitudes equal the source magnitude, offset by the time it takes for the wave to propagate from the source to themonitors.
+
+The observed output of the same simulation, executed with dielectric constant $\epsilon_R = 9$,
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth,
+	keepaspectratio]{pw-epsilon-9.png}
+	\caption{Steady state with $\epsilon_R = 9$}
+	\label{fig:pwEpsilon9}
+\end{figure}
+
+Note the difference in $\lambda$ once the wave enters the dielectric (green area). This simulation produces the following raw output:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth,
+	keepaspectratio]{pw-epsilon-9-raw.png}
+	\caption{Raw monitor output with $\epsilon_R = 9$}
+	\label{fig:pwEpsilon9Raw}
+\end{figure}
+
+The time-averaged power for the monitors:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth,
+	keepaspectratio]{pw-epsilon-9-rms.png}
+	\caption{RMS output with $\epsilon_R = 9$}
+	\label{fig:pwEpsilon9RMS}
+\end{figure}
+
+Subtracting the incident magnitude from the simulation with $\epsilon_R = 1$ from the second simulation with $\epsilon_R = 9$ gives the following normalized result:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth,
+	keepaspectratio]{pw-epsilon-9-tir-power.png}
+	\caption{Normalized output with $\epsilon_R = 9$}
+	\label{fig:pwEpsilon9Normalized}
+\end{figure}
+
+In this case, the average of each of the relevant values are determined to be:
+
+\begin{center}
+$I_{avg} = 0.96214...$
+
+$T_{avg} = 0.4882...$
+
+$R_{avg} = 0.484...$
+\end{center}
+
+Conservation of energy requires that the sum of the transmitted (T) and reflected (R) magnitudes equals the incident magnitude (I).
+
+\begin{equation}
+I = T+ R
+\end{equation}
+
+The computed error of the computational result is
+
+\begin{equation}
+I_{error} = |\frac{I_{avg} - (T_{avg} + R_{avg})}{I-{avg}}|
+\end{equation}
+
+Gives
+
+\begin{center}
+	\begin{math}
+	|\frac{0.9621-(0.4882 + 0.4843)}{0.9621}| = 1.011\%
+	\end{math}
+\end{center}
+
+Comparing to the analytically-derived Fresnel coefficients,
+
+\begin{equation}
+T = \frac{T_{avg}}{I_{avg}} = \frac{0.4882219...}{0.962135...} = 0.507
+\end{equation}
+\begin{equation}
+R = \frac{R_{avg}}{I_{avg}} = \frac{0.484332......}{0.962135...} = 0.503
+\end{equation}
+
+The error contribution of each component may be expressed as:
+
+\begin{equation}
+T_{error} = |1 - \frac{T_{computed}}{T_{analytical}}| = |1 - \frac{0.507}{0.5}| = 1.4\%
+\end{equation}
+\begin{equation}
+R_{error} = |1 - \frac{R_{computed}}{R_{analytical}}| = |1 - \frac{0.503}{0.5}| = 0.6\%
+\end{equation}
+
+
+
 
