@@ -66,21 +66,21 @@ Set GPU-resident field pointers
 */
 __global__ void InitDevicePointers(
 	DeviceFieldDescriptor *ez
-	,DeviceFieldDescriptor *hx
-	,DeviceFieldDescriptor *hy
-	,FieldDescriptor::BoundaryDescriptor *ezx
-	,FieldDescriptor::BoundaryDescriptor *ezy
-	,FieldDescriptor::BoundaryDescriptor *hxy
-	,FieldDescriptor::BoundaryDescriptor *hyx
-	,DeviceFieldDescriptor *cb
+	, DeviceFieldDescriptor *hx
+	, DeviceFieldDescriptor *hy
+	, FieldDescriptor::BoundaryDescriptor *ezx
+	, FieldDescriptor::BoundaryDescriptor *ezy
+	, FieldDescriptor::BoundaryDescriptor *hxy
+	, FieldDescriptor::BoundaryDescriptor *hyx
+	, DeviceFieldDescriptor *cb
 #ifdef USE_MAGNETIC_MATERIALS
 	,DeviceFieldDescriptor *db
 #else
-	,float dbDefault
+	, float dbDefault
 #endif	
-	,class Configuration *config
-	,unsigned int *sourceOffsets
-	,unsigned int sourceCount
+	, class Configuration *config
+	, unsigned int *sourceOffsets
+	, unsigned int sourceCount
 	)
 {
 	if (blockIdx.x == 0 && blockIdx.y == 0 && threadIdx.x == 0 && threadIdx.y == 0)
@@ -134,12 +134,12 @@ void Simulator::UpdateSource(float simulationTime)
 	if (m_sourceCount > 1024)
 		throw runtime_error("Implementation does not support more than 1024 source pixels.");
 
-	UpdateSourcesEz<<<
-		dim3(1,1,1)
-		, dim3(m_sourceCount,1,1)
-		,0
-		,m_cuda.GetStream(*this)
-		>>>(sourceDelta,0);
+	UpdateSourcesEz << <
+		dim3(1, 1, 1)
+		, dim3(m_sourceCount, 1, 1)
+		, 0
+		, m_cuda.GetStream(*this)
+		>> >(sourceDelta, 0);
 }
 
 
@@ -165,30 +165,26 @@ __global__ void UpdateEz(
 
 	unsigned int center = y * Ez->Size.x + x;
 	float hxBottom = Hx->Data[y * Hx->Size.x + x];
-	float hxTop =    Hx->Data[(y - 1) * Hx->Size.x + x];
+	float hxTop = Hx->Data[(y - 1) * Hx->Size.x + x];
 	float dhx = (hxBottom - hxTop);
 
-#ifdef USE_PML
-	float ezyPsi  = Ezy->Decay[y] * Ezy->Psi[center] + Ezy->Amp[y] * dhx;
-	Ezy->Psi[center] = ezyPsi;
-#endif
-
-	float hyRight =  Hy->Data[y * Hy->Size.x + x];
-	float hyLeft =   Hy->Data[y * Hy->Size.x + x - 1];
+	float hyRight = Hy->Data[y * Hy->Size.x + x];
+	float hyLeft = Hy->Data[y * Hy->Size.x + x - 1];
 	float dhy = (hyLeft - hyRight);
 
+	float ezxPsi = 0.f;
+	float ezyPsi = 0.f;
 
-#ifdef USE_PML
-	float ezxPsi = Ezx->Decay[x] * Ezx->Psi[center] + Ezx->Amp[x] * dhy;
-	Ezx->Psi[center] = ezxPsi;
-#endif
+	if (x < 10 || x > Ez->UpdateRangeEnd.x - 10 || y < 10 || y > Ez->UpdateRangeEnd.y - 10)
+	{
+		ezyPsi = Ezy->Decay[y] * Ezy->Psi[center] + Ezy->Amp[y] * dhx;
+		Ezy->Psi[center] = ezyPsi;
+		ezxPsi = Ezx->Decay[x] * Ezx->Psi[center] + Ezx->Amp[x] * dhy;
+		Ezx->Psi[center] = ezxPsi;
 
-	Ez->Data[center] = CA * Ez->Data[center] + cb * (dhy - dhx)
+	}
 
-#ifdef USE_PML
-		+ cb * (ezxPsi - ezyPsi)
-#endif
-		;
+	Ez->Data[center] = CA * Ez->Data[center] + cb * (dhy - dhx) + cb * (ezxPsi - ezyPsi);
 }
 
 __global__ void UpdateHx(dim3 threadOffset)
@@ -210,22 +206,23 @@ __global__ void UpdateHx(dim3 threadOffset)
 	//float ezTop = Ez->Data[y * Ez->Size.x + x];
 	//float ezBottom = Ez->Data[(y+1) * Ez->Size.x + x];
 
-	float dEz = Ez->Data[(y+1) * Ez->Size.x + x] - Ez->Data[y * Ez->Size.x + x];
+	float dEz = Ez->Data[(y + 1) * Ez->Size.x + x] - Ez->Data[y * Ez->Size.x + x];
 
 	float hx = DA * Hx->Data[hxOffset] - db * dEz;
 
-#ifdef USE_PML
-	/// update boundaries
-	float decay = Hxy->Decay[y];
-	float amp = Hxy->Amp[y];
-	float psi = Hxy->Psi[hxOffset];
 
-	psi = decay * psi + amp * dEz / Configuration->Dx;
+	if (y < 10 || y > Hx->UpdateRangeEnd.y - 10 || x < 10 || x > Hx->UpdateRangeEnd.x - 10)
+	{
+		/// update boundaries
+		float decay = Hxy->Decay[y];
+		float amp = Hxy->Amp[y];
+		float psi = Hxy->Psi[hxOffset];
 
-	hx = hx - db * Configuration->Dx * psi;
-	Hxy->Psi[hxOffset] = psi;
+		psi = decay * psi + amp * dEz / Configuration->Dx;
 
-#endif
+		Hxy->Psi[hxOffset] = psi;
+		hx = hx - db * Configuration->Dx * psi;
+	}
 
 	Hx->Data[hxOffset] = hx;
 
@@ -253,19 +250,19 @@ __global__ void UpdateHy(dim3 threadOffset)
 	float dEz = ezRight - ezLeft;
 	float hy = DA * Hy->Data[hyOffset] - db * (ezRight - ezLeft);
 
-#ifdef USE_PML
+	if (x < 10 || y < 10 || x > Hy->UpdateRangeEnd.x - 10 || y > Hy->UpdateRangeEnd.y - 10)
+	{
 
-	float psi = Hyx->Psi[hyOffset];
-	float decay = Hyx->Decay[x];
-	float amp = Hyx->Amp[x];
+		float psi = Hyx->Psi[hyOffset];
+		float decay = Hyx->Decay[x];
+		float amp = Hyx->Amp[x];
 
-	psi = decay * psi + amp * dEz / Configuration->Dx;
+		psi = decay * psi + amp * dEz / Configuration->Dx;
 
-	hy = hy - db * Configuration->Dx * psi;
+		hy = hy - db * Configuration->Dx * psi;
 
-	Hyx->Psi[hyOffset] = psi;
-
-#endif
+		Hyx->Psi[hyOffset] = psi;
+	}
 
 	Hy->Data[hyOffset] = hy;
 }
@@ -278,23 +275,23 @@ __global__ void UpdateHy(dim3 threadOffset)
 
 void Simulator::Update(float elapsedSeconds)
 {
-	if(m_paused)
+	if (m_paused)
 		return;
 
 	Check(cudaDeviceSynchronize());
 
 	/*
-	NOTE: using the same grid and block size for all fields effectively shrinks the domain but a small amount (1 cell assuming the domain size is a multiple of the block size), 
+	NOTE: using the same grid and block size for all fields effectively shrinks the domain but a small amount (1 cell assuming the domain size is a multiple of the block size),
 	but removes the need to check update bounds in the CUDA kernels.
 	*/
 	auto &ez = *m_fields[FieldType::Ez];
 	auto &hx = *m_fields[FieldType::Hx];
 	auto &hy = *m_fields[FieldType::Hy];
 
-	for(auto it = ez.GridBlocks.rbegin(); it != ez.GridBlocks.rend(); ++it)
+	for (auto it = ez.GridBlocks.rbegin(); it != ez.GridBlocks.rend(); ++it)
 		//for(auto it = begin(ez.GridBlocks); it != end(ez.GridBlocks); ++it)
 	{
-		UpdateEz<<<it->GridDim, it->BlockDim,0,m_cuda.GetStream(*it)>>>
+		UpdateEz << <it->GridDim, it->BlockDim, 0, m_cuda.GetStream(*it) >> >
 			(
 			it->GridOffset
 			);
@@ -305,18 +302,18 @@ void Simulator::Update(float elapsedSeconds)
 	Check(cudaDeviceSynchronize());
 
 	//for(auto it = begin(hx.GridBlocks); it != end(hx.GridBlocks); ++it)
-	for(auto it = hx.GridBlocks.rbegin(); it != hx.GridBlocks.rend(); ++it)
+	for (auto it = hx.GridBlocks.rbegin(); it != hx.GridBlocks.rend(); ++it)
 	{
-		UpdateHx<<<it->GridDim, it->BlockDim,0,m_cuda.GetStream(*it)>>>(it->GridOffset);
+		UpdateHx << <it->GridDim, it->BlockDim, 0, m_cuda.GetStream(*it) >> >(it->GridOffset);
 	}
 
 	//for(auto it = begin(hy.GridBlocks); it != end(hy.GridBlocks); ++it)
-	for(auto it = hy.GridBlocks.rbegin(); it != hy.GridBlocks.rend(); ++it)
+	for (auto it = hy.GridBlocks.rbegin(); it != hy.GridBlocks.rend(); ++it)
 	{
-		UpdateHy<<<it->GridDim, it->BlockDim,0,m_cuda.GetStream(*it)>>>(it->GridOffset);
+		UpdateHy << <it->GridDim, it->BlockDim, 0, m_cuda.GetStream(*it) >> >(it->GridOffset);
 	}
 
-	for(auto it = begin(m_monitors); it != end(m_monitors); ++it)
+	for (auto it = begin(m_monitors); it != end(m_monitors); ++it)
 	{
 		Monitor &m = *it->second;
 
@@ -365,7 +362,7 @@ void Simulator::Initialize()
 	m_cuda.GetMemoryInfo(freeMemory, totalMemory);
 	float freeGB = freeMemory / (1024 * 1024 * 1024.f);
 
-	cout << "\tAvailable GPU memory: " << std::setw(3) << std::setprecision(3) << freeMemory * 100.0 / totalMemory << "% or "  << freeGB << "GB\n";
+	cout << "\tAvailable GPU memory: " << std::setw(3) << std::setprecision(3) << freeMemory * 100.0 / totalMemory << "% or " << freeGB << "GB\n";
 
 	InitSimulation();
 
@@ -407,17 +404,17 @@ FieldDescriptor &Simulator::CreateFieldDescriptor(
 	field.DefaultValue = defaultValue;
 
 	field.Name = name;
-	field.Size = dim3(width,height,1);
-	field.UpdateRangeStart = dim3(marginX,marginY);
+	field.Size = dim3(width, height, 1);
+	field.UpdateRangeStart = dim3(marginX, marginY);
 	field.UpdateRangeEnd = dim3(width - marginX - 1, height - marginY - 1);
-	field.GridBlocks = GridBlock::Divide(field.Size,field.UpdateRangeStart,field.UpdateRangeEnd,dim3(32,32));
+	field.GridBlocks = GridBlock::Divide(field.Size, field.UpdateRangeStart, field.UpdateRangeEnd, dim3(32, 32));
 
 	unsigned int count = static_cast<unsigned int>(GetDimSize(field.Size));
-	field.HostArray = vector<float>(count,defaultValue);
+	field.HostArray = vector<float>(count, defaultValue);
 
 	field.DeviceArray = m_cuda.Malloc<float>(count);
 
-	m_cuda.Memcpy(field.DeviceArray,field.HostArray.data(),count);
+	m_cuda.Memcpy(field.DeviceArray, field.HostArray.data(), count);
 
 	field.DeviceDescriptor = m_cuda.Malloc<DeviceFieldDescriptor>(1);
 
@@ -428,7 +425,7 @@ FieldDescriptor &Simulator::CreateFieldDescriptor(
 	fdc.UpdateRangeEnd = field.UpdateRangeEnd;
 	fdc.UpdateRangeStart = field.UpdateRangeStart;
 
-	m_cuda.Memcpy(field.DeviceDescriptor,&fdc,1);
+	m_cuda.Memcpy(field.DeviceDescriptor, &fdc, 1);
 
 	Check(cudaDeviceSynchronize());
 
@@ -451,7 +448,7 @@ FieldDescriptor::BoundaryDescriptor &Simulator::CreateBoundary(FieldDescriptor &
 	boundary.Name = boundaryName;
 	boundary.Direction = dir;
 
-	switch(dir)
+	switch (dir)
 	{
 	case FieldDirection::X:
 		boundary.AmpDecayLength = field.Size.x;
@@ -476,7 +473,7 @@ FieldDescriptor::BoundaryDescriptor &Simulator::CreateBoundary(FieldDescriptor &
 
 	///// amp and decay fields
 	boundary.Amp = m_cuda.Malloc<float>(boundary.AmpDecayLength);
-	m_cuda.Memcpy(boundary.Amp,hostArray.data(),hostArray.size());
+	m_cuda.Memcpy(boundary.Amp, hostArray.data(), hostArray.size());
 
 	boundary.Decay = m_cuda.Malloc<float>(boundary.AmpDecayLength);
 	m_cuda.Memcpy(boundary.Decay, hostArray.data(), hostArray.size());
@@ -484,7 +481,7 @@ FieldDescriptor::BoundaryDescriptor &Simulator::CreateBoundary(FieldDescriptor &
 	unsigned int count = field.Size.x * field.Size.y * field.Size.z;
 
 	boundary.Psi = m_cuda.Malloc<float>(count);
-	m_cuda.Memset(boundary.Psi,count,0);
+	m_cuda.Memset(boundary.Psi, count, 0);
 
 	/// allocate device-side boundary descriptor
 	boundary.DeviceDescriptor = m_cuda.Malloc<FieldDescriptor::BoundaryDescriptor>(1);
@@ -532,7 +529,7 @@ void Simulator::InitSimulation()
 	if (loadModel)
 	{
 		ModelProvider::LoadModel(&modelBytes, &modelWidth, &modelHeight, &modelChannels, m_configuration.ModelPath);
-		m_configuration.DomainSize = dim3(modelWidth,modelHeight,1);
+		m_configuration.DomainSize = dim3(modelWidth, modelHeight, 1);
 	}
 
 	dim3 domainSize = m_configuration.DomainSize;
@@ -540,22 +537,22 @@ void Simulator::InitSimulation()
 	unsigned int count = static_cast<unsigned int>(GetDimSize(domainSize));
 
 	/// create field and boundary descriptors
-	auto &ez = CreateFieldDescriptor(FieldType::Ez,domainSize.x + 1,	domainSize.y + 1, 1, 1);
+	auto &ez = CreateFieldDescriptor(FieldType::Ez, domainSize.x + 1, domainSize.y + 1, 1, 1);
 
-	auto &ezx = CreateBoundary(ez, FieldType::Ezx,FieldDirection::X);
-	auto &ezy = CreateBoundary(ez, FieldType::Ezy,FieldDirection::Y);
+	auto &ezx = CreateBoundary(ez, FieldType::Ezx, FieldDirection::X);
+	auto &ezy = CreateBoundary(ez, FieldType::Ezy, FieldDirection::Y);
 
-	auto &hx = CreateFieldDescriptor(FieldType::Hx,domainSize.x + 1,	domainSize.y, 0, 1);
-	auto &hxy = CreateBoundary(hx, FieldType::Hxy,FieldDirection::Y);
+	auto &hx = CreateFieldDescriptor(FieldType::Hx, domainSize.x + 1, domainSize.y, 0, 1);
+	auto &hxy = CreateBoundary(hx, FieldType::Hxy, FieldDirection::Y);
 
-	auto &hy = CreateFieldDescriptor(FieldType::Hy,domainSize.x ,	domainSize.y + 1, 0, 1);
-	auto &hyx = CreateBoundary(hy, FieldType::Hyx,FieldDirection::X);
+	auto &hy = CreateFieldDescriptor(FieldType::Hy, domainSize.x, domainSize.y + 1, 0, 1);
+	auto &hyx = CreateBoundary(hy, FieldType::Hyx, FieldDirection::X);
 
 	/// initialize materials
 	const float eps0 = 1.f;
 	float cbDefault = m_configuration.Dt / (eps0 * m_configuration.Dx);
 
-	auto &cb = CreateFieldDescriptor(FieldType::Cb,domainSize.x + 1, domainSize.y + 1, 0, 0, cbDefault);
+	auto &cb = CreateFieldDescriptor(FieldType::Cb, domainSize.x + 1, domainSize.y + 1, 0, 0, cbDefault);
 
 	const float mu0 = 1.f;
 	float dbDefault = m_configuration.Dt / (mu0 * m_configuration.Dx);
@@ -571,7 +568,7 @@ void Simulator::InitSimulation()
 
 	float epsOrMuR = m_configuration.EpsilonR;
 
-	float n =  dt / (dx * epsOrMuR);
+	float n = dt / (dx * epsOrMuR);
 
 	vector<unsigned int> sources;
 	sources.reserve(domainSize.x * domainSize.y);
@@ -590,11 +587,11 @@ void Simulator::InitSimulation()
 			, m_configuration.PmlLayers
 			);
 
-		BuildMonitors(modelBytes,modelWidth,modelHeight,modelChannels);
+		BuildMonitors(modelBytes, modelWidth, modelHeight, modelChannels);
 	}
 	else
 	{
-		auto sourcePosition = ModelProvider::WGMTest(cb,n,0.25f,10,5,0.09);
+		auto sourcePosition = ModelProvider::WGMTest(cb, n, 0.25f, 10, 5, 0.09);
 
 		//for(unsigned int j = m_configuration.PmlLayers; j < ez.Size.y - m_configuration.PmlLayers; ++j)
 		//{
@@ -607,8 +604,8 @@ void Simulator::InitSimulation()
 	free(modelBytes);
 	modelBytes = nullptr;
 
-	size_t bytes = sizeof(float) * cb.HostArray.size();
-	m_cuda.Memcpy(cb.DeviceArray,cb.HostArray.data(),cb.HostArray.size());
+	size_t bytes = sizeof(float)* cb.HostArray.size();
+	m_cuda.Memcpy(cb.DeviceArray, cb.HostArray.data(), cb.HostArray.size());
 
 	InitializeBoundaryData();
 
@@ -627,24 +624,24 @@ void Simulator::InitSimulation()
 	m_cuda.Memcpy(deviceSources, sources.data(), sources.size());
 
 
-	InitDevicePointers<<<dim3(1),dim3(1)>>>(
+	InitDevicePointers << <dim3(1), dim3(1) >> >(
 		ez.DeviceDescriptor
-		,hx.DeviceDescriptor
-		,hy.DeviceDescriptor
-		,ezx.DeviceDescriptor
-		,ezy.DeviceDescriptor
-		,hxy.DeviceDescriptor
-		,hyx.DeviceDescriptor
-		,cb.DeviceDescriptor
+		, hx.DeviceDescriptor
+		, hy.DeviceDescriptor
+		, ezx.DeviceDescriptor
+		, ezy.DeviceDescriptor
+		, hxy.DeviceDescriptor
+		, hyx.DeviceDescriptor
+		, cb.DeviceDescriptor
 #ifdef USE_MAGNETIC_MATERIALS
 		,db.DeviceDescriptor
 #else
-		,dbDefault
+		, dbDefault
 #endif
 
-		,config
-		,deviceSources
-		,m_sourceCount
+		, config
+		, deviceSources
+		, m_sourceCount
 		);
 
 	Check(cudaDeviceSynchronize());
@@ -653,7 +650,7 @@ void Simulator::InitSimulation()
 
 vector<float> Zeros(unsigned int length)
 {
-	return vector<float>(length,0.f);
+	return vector<float>(length, 0.f);
 }
 
 /// <summary>
@@ -672,24 +669,24 @@ void Simulator::InitializeBoundaryData()
 	auto &hy = *m_fields[FieldType::Hy];
 	auto &hyx = *hy.Boundaries[FieldType::Hyx];
 
-	auto ezxAmp = vector<float>(ezx.AmpDecayLength,0.f);
-	auto ezxDecay = vector<float>(ezx.AmpDecayLength,0.f);
+	auto ezxAmp = vector<float>(ezx.AmpDecayLength, 0.f);
+	auto ezxDecay = vector<float>(ezx.AmpDecayLength, 0.f);
 
-	auto ezyAmp = vector<float>(ezy.AmpDecayLength,0.f);
-	auto ezyDecay = vector<float>(ezy.AmpDecayLength,0.f);
+	auto ezyAmp = vector<float>(ezy.AmpDecayLength, 0.f);
+	auto ezyDecay = vector<float>(ezy.AmpDecayLength, 0.f);
 
-	auto hyxAmp = vector<float>(hyx.AmpDecayLength,0.f);
-	auto hyxDecay = vector<float>(hyx.AmpDecayLength,0.f);
+	auto hyxAmp = vector<float>(hyx.AmpDecayLength, 0.f);
+	auto hyxDecay = vector<float>(hyx.AmpDecayLength, 0.f);
 
-	auto hxyAmp = vector<float>(hxy.AmpDecayLength,0.f);
-	auto hxyDecay = vector<float>(hxy.AmpDecayLength,0.f);
+	auto hxyAmp = vector<float>(hxy.AmpDecayLength, 0.f);
+	auto hxyDecay = vector<float>(hxy.AmpDecayLength, 0.f);
 
 
-	auto layers =		m_configuration.PmlLayers;
-	auto sigmaMax =		m_configuration.PmlSigmaMax;
-	auto sigmaOrder =	m_configuration.PmlSigmaOrder;
-	auto dx =			m_configuration.Dx;
-	auto dt =			m_configuration.Dt;
+	auto layers = m_configuration.PmlLayers;
+	auto sigmaMax = m_configuration.PmlSigmaMax;
+	auto sigmaOrder = m_configuration.PmlSigmaOrder;
+	auto dx = m_configuration.Dx;
+	auto dt = m_configuration.Dt;
 
 	float eps0 = 1.f;
 
@@ -705,7 +702,7 @@ void Simulator::InitializeBoundaryData()
 		float esigma = sigmaMax * (float)pow((abs(elength - xmin) * invLayersDx), sigmaOrder);
 		float hsigma = sigmaMax * (float)pow((abs(hlength - xmin) * invLayersDx), sigmaOrder);
 
-		auto edecay =  exp(-(dt * esigma) / eps0);
+		auto edecay = exp(-(dt * esigma) / eps0);
 
 		auto hdecay = exp(-(dt * hsigma) / eps0);
 
@@ -738,20 +735,20 @@ void Simulator::InitializeBoundaryData()
 
 	/// copy fields to the GPU
 
-	m_cuda.Memcpy(ezx.Amp,ezxAmp.data(),ezxAmp.size());
-	m_cuda.Memcpy(ezx.Decay,ezxDecay.data(),ezxDecay.size());
+	m_cuda.Memcpy(ezx.Amp, ezxAmp.data(), ezxAmp.size());
+	m_cuda.Memcpy(ezx.Decay, ezxDecay.data(), ezxDecay.size());
 
-	m_cuda.Memcpy(ezx.Amp,ezxAmp.data(),ezxAmp.size());
-	m_cuda.Memcpy(ezx.Decay,ezxDecay.data(),ezxDecay.size());
+	m_cuda.Memcpy(ezx.Amp, ezxAmp.data(), ezxAmp.size());
+	m_cuda.Memcpy(ezx.Decay, ezxDecay.data(), ezxDecay.size());
 
-	m_cuda.Memcpy(ezy.Amp,ezyAmp.data(),ezyAmp.size());
-	m_cuda.Memcpy(ezy.Decay,ezyDecay.data(),ezyDecay.size());
+	m_cuda.Memcpy(ezy.Amp, ezyAmp.data(), ezyAmp.size());
+	m_cuda.Memcpy(ezy.Decay, ezyDecay.data(), ezyDecay.size());
 
-	m_cuda.Memcpy(hxy.Amp,hxyAmp.data(),hxyAmp.size());
-	m_cuda.Memcpy(hxy.Decay,hxyDecay.data(),hxyDecay.size());
+	m_cuda.Memcpy(hxy.Amp, hxyAmp.data(), hxyAmp.size());
+	m_cuda.Memcpy(hxy.Decay, hxyDecay.data(), hxyDecay.size());
 
-	m_cuda.Memcpy(hyx.Amp,hyxAmp.data(),hyxAmp.size());
-	m_cuda.Memcpy(hyx.Decay,hyxDecay.data(),hyxDecay.size());
+	m_cuda.Memcpy(hyx.Amp, hyxAmp.data(), hyxAmp.size());
+	m_cuda.Memcpy(hyx.Decay, hyxDecay.data(), hyxDecay.size());
 }
 
 
@@ -790,17 +787,17 @@ void Simulator::InitCuda()
 	m_deviceId = 0;
 
 	cudaDeviceProp deviceProperties;
-	Check(cudaGetDeviceProperties(&deviceProperties,m_deviceId));
+	Check(cudaGetDeviceProperties(&deviceProperties, m_deviceId));
 
-	m_maxGridSize = make_uint3(deviceProperties.maxGridSize[0],deviceProperties.maxGridSize[1],deviceProperties.maxGridSize[2]);
-	m_maxThreadsDim = make_uint3(deviceProperties.maxThreadsDim[0],deviceProperties.maxThreadsDim[1],deviceProperties.maxThreadsDim[2]);
+	m_maxGridSize = make_uint3(deviceProperties.maxGridSize[0], deviceProperties.maxGridSize[1], deviceProperties.maxGridSize[2]);
+	m_maxThreadsDim = make_uint3(deviceProperties.maxThreadsDim[0], deviceProperties.maxThreadsDim[1], deviceProperties.maxThreadsDim[2]);
 	m_maxThreadsPerBlock = deviceProperties.maxThreadsPerBlock;
 
 	cout << "Using device """ << deviceProperties.name << """" << endl;
-	printArray("\tMax grid",deviceProperties.maxGridSize);
-	printArray("\tMax block",deviceProperties.maxThreadsDim);	
+	printArray("\tMax grid", deviceProperties.maxGridSize);
+	printArray("\tMax block", deviceProperties.maxThreadsDim);
 	cout << "\tMax threads per block: " << deviceProperties.maxThreadsPerBlock << endl;
-	cout << "\tTotal GPU Memory: " << deviceProperties.totalGlobalMem / (1024*1024*1024.f) << "GB" << endl;
+	cout << "\tTotal GPU Memory: " << deviceProperties.totalGlobalMem / (1024 * 1024 * 1024.f) << "GB" << endl;
 
 }
 
@@ -882,9 +879,9 @@ void Simulator::BuildMonitors(
 
 	auto layers = m_configuration.PmlLayers;
 
-	for(unsigned int j = layers; j < height- 1 - layers; ++j)
+	for (unsigned int j = layers; j < height - 1 - layers; ++j)
 	{
-		for(unsigned int i = layers; i < width-1 - layers; ++i)
+		for (unsigned int i = layers; i < width - 1 - layers; ++i)
 		{
 			unsigned int pixelOffset = channels  * (j * width + i);
 
@@ -902,7 +899,7 @@ void Simulator::BuildMonitors(
 		}
 	}
 
-	for(auto it = begin(monitorPositions); it != end(monitorPositions); ++it)
+	for (auto it = begin(monitorPositions); it != end(monitorPositions); ++it)
 	{
 		vector<unsigned int> &positions = it->second;
 
@@ -911,7 +908,7 @@ void Simulator::BuildMonitors(
 
 		m_monitors[it->first] = ptr;
 
-		ptr->Initialize(m_cuda, positions,1);
+		ptr->Initialize(m_cuda, positions, 1);
 	}
 }
 
