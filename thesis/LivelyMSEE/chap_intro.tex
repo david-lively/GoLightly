@@ -42,14 +42,14 @@ Yee \cite{Yee} defines a computational unit known as a "cell." The cell describe
 
 More formally, we may expand the $E_Z$ wave equation, arriving at:
 
-\begin{equation} \label{ezupdate}
+\begin{equation} \label{eq:ezupdate}
 {E_z}_{i,j}^{t} = C_a * {E_z}_{i,j}^{t-1} 
 + C_b * ({H_x}_{i,j+\frac{1}{2}}^{t-\frac{1}{2}} - {H_x}_{i,j-\frac{1}{2}}^{t-\frac{1}{2}})
 + C_b * ({H_y}_{i+\frac{1}{2},j}^{t-\frac{1}{2}} - {H_xy}_{i-\frac{1}{2},j}^{t-\frac{1}{2}})
 \end{equation}
 
 Similarly, the equations for the coupled fields $H_x$ and $H_y$ may be expressed as:
-\begin{equation} \label{hxupdate}
+\begin{equation} \label{eq:hxupdate}
 {H_x}_{i,j}^t = D_a * {H_x}_{i,j}^{t-1} + D_b * (
 {E_z}_{i,j+\frac{1}{2}}^{t-\frac{1}{2}} 
 -
@@ -57,7 +57,7 @@ Similarly, the equations for the coupled fields $H_x$ and $H_y$ may be expressed
 )  
 \end{equation}
 
-\begin{equation} \label{hyupdate}
+\begin{equation} \label{eq:hyupdate}
 {H_y}_{i,j}^t = D_a * {H_y}_{i,j}^{t-1} + D_b * (
 {E_z}_{i+\frac{1}{2},j}^{t-\frac{1}{2}} 
 -

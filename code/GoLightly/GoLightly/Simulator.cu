@@ -175,6 +175,7 @@ __global__ void UpdateEz(
 	float ezxPsi = 0.f;
 	float ezyPsi = 0.f;
 
+	// PML
 	if (x < 10 || x > Ez->UpdateRangeEnd.x - 10 || y < 10 || y > Ez->UpdateRangeEnd.y - 10)
 	{
 		ezyPsi = Ezy->Decay[y] * Ezy->Psi[center] + Ezy->Amp[y] * dhx;

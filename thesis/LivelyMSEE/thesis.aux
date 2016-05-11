@@ -29,9 +29,9 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.1.2.}Yee Cell}{2}{subsection.1.1.2}}
 \@writefile{lof}{\contentsline {figure}{\numberline {1.1}{\ignorespaces 2D $TM_Z$ Yee Cell}}{3}{figure.1.1}}
 \newlabel{fig:yeecell}{{1.1}{3}{2D $TM_Z$ Yee Cell}{figure.1.1}{}}
-\newlabel{ezupdate}{{1.2}{3}{Introduction}{equation.1.1.2}{}}
-\newlabel{hxupdate}{{1.3}{3}{Introduction}{equation.1.1.3}{}}
-\newlabel{hyupdate}{{1.4}{3}{Introduction}{equation.1.1.4}{}}
+\newlabel{eq:ezupdate}{{1.2}{3}{Introduction}{equation.1.1.2}{}}
+\newlabel{eq:hxupdate}{{1.3}{3}{Introduction}{equation.1.1.3}{}}
+\newlabel{eq:hyupdate}{{1.4}{3}{Introduction}{equation.1.1.4}{}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {\hfill 2.\hbox {\hskip 0.8em}\ignorespaces }Device Architecture}{4}{chapter.2}}
 \newlabel{ch:device architecture}{{2}{4}{Device Architecture}{chapter.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.1.}CPU}{4}{section.2.1}}
@@ -55,30 +55,40 @@
 \newlabel{listing:modelFromImage}{{4.2.1}{11}{GoLightly}{lstnumber.4.1.23}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2.}Simulator}{11}{subsection.4.2.2}}
 \newlabel{sec:simulator}{{4.2.2}{11}{GoLightly}{subsection.4.2.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.3.}Visualizer}{11}{subsection.4.2.3}}
-\newlabel{sec:visualizer}{{4.2.3}{12}{GoLightly}{subsection.4.2.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.3.}Modeling approach}{12}{section.4.3}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.4.}Implementation}{12}{section.4.4}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.5.}Testing methodology}{12}{section.4.5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.1.}Test Model}{12}{subsection.4.5.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.2.}Analytical Result}{12}{subsection.4.5.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.3.}Numerical Result}{12}{subsection.4.5.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.4.}Comparison}{12}{subsection.4.5.4}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.6.}Additional Examples}{12}{section.4.6}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.6.1.}Coupler}{12}{subsection.4.6.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.6.2.}Splitter}{12}{subsection.4.6.2}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {\hfill 5.\hbox {\hskip 0.8em}\ignorespaces }Conclusions}{13}{chapter.5}}
-\newlabel{ch:conclusions}{{5}{13}{Conclusions}{chapter.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1.}Meep performance}{13}{section.5.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.2.}GoLightly performancec}{13}{section.5.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.3.}Meep vs GoLightly}{13}{section.5.3}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.4.}Results}{13}{section.5.4}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.5.}Limitations}{13}{section.5.5}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.2}Host Field Descriptor structure}{11}{lstlisting.4.2}}
+\newlabel{listing:fieldDescriptor}{{4.2.2}{13}{GoLightly}{lstnumber.4.2.39}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.3}Device Field Descriptor}{13}{lstlisting.4.3}}
+\newlabel{listing:deviceFieldDescriptor}{{4.2.2}{13}{GoLightly}{lstnumber.4.3.12}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.4}CUDA kernel for updating $E_Z$}{13}{lstlisting.4.4}}
+\newlabel{listing:updateEzCpp}{{4.2.2}{15}{GoLightly}{lstnumber.4.4.36}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.5}CUDA kernel for updating $H_X$}{15}{lstlisting.4.5}}
+\newlabel{listing:updateHxCpp}{{4.2.2}{16}{GoLightly}{lstnumber.4.5.38}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.6}CUDA kernel for updating $H_Y$}{16}{lstlisting.4.6}}
+\newlabel{listing:updateHyCpp}{{4.2.2}{18}{GoLightly}{lstnumber.4.6.38}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.3.}Visualizer}{18}{subsection.4.2.3}}
+\newlabel{sec:visualizer}{{4.2.3}{18}{GoLightly}{subsection.4.2.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.3.}Modeling approach}{18}{section.4.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.4.}Implementation}{18}{section.4.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.5.}Testing methodology}{18}{section.4.5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.1.}Test Model}{18}{subsection.4.5.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.2.}Analytical Result}{18}{subsection.4.5.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.3.}Numerical Result}{18}{subsection.4.5.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.4.}Comparison}{18}{subsection.4.5.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.6.}Additional Examples}{19}{section.4.6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6.1.}Coupler}{19}{subsection.4.6.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6.2.}Splitter}{19}{subsection.4.6.2}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {\hfill 5.\hbox {\hskip 0.8em}\ignorespaces }Conclusions}{20}{chapter.5}}
+\newlabel{ch:conclusions}{{5}{20}{Conclusions}{chapter.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1.}Meep performance}{20}{section.5.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.2.}GoLightly performancec}{20}{section.5.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.3.}Meep vs GoLightly}{20}{section.5.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.4.}Results}{20}{section.5.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.5.}Limitations}{20}{section.5.5}}
 \bibstyle{acm}
 \citation{*}
 \bibdata{thesis}
-\@writefile{toc}{\contentsline {chapter}{\numberline {\hfill 6.\hbox {\hskip 0.8em}\ignorespaces }FUTURE WORK}{14}{chapter.6}}
-\newlabel{ch:futurework}{{6}{14}{FUTURE WORK}{chapter.6}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {\hfill 6.\hbox {\hskip 0.8em}\ignorespaces }FUTURE WORK}{21}{chapter.6}}
+\newlabel{ch:futurework}{{6}{21}{FUTURE WORK}{chapter.6}{}}
 \@writefile{toc}{\noindent APPENDIX \hfill \vskip 0.05in}
 \bibcite{Yee}{1}
-\@writefile{toc}{\contentsline {chapter}{REFERENCES}{15}{appendix.A}}
+\@writefile{toc}{\contentsline {chapter}{REFERENCES}{22}{appendix.A}}
