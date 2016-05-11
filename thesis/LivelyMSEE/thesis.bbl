@@ -1,5 +1,34 @@
 \begin{thebibliography}{1}
 
+\bibitem{Nickolls:2008:SPP:1365490.1365500}
+{\sc Nickolls, J., Buck, I., Garland, M., and Skadron, K.}
+\newblock Scalable parallel programming with cuda.
+\newblock {\em Queue 6}, 2 (Mar. 2008), 40--53.
+
+\bibitem{OskooiRo10}
+{\sc Oskooi, A.~F., Roundy, D., Ibanescu, M., Bermel, P., Joannopoulos, J.~D.,
+  and Johnson, S.~G.}
+\newblock {MEEP}: A flexible free-software package for electromagnetic
+  simulations by the {FDTD} method.
+\newblock {\em Computer Physics Communications 181\/} (January 2010), 687--702.
+
+\bibitem{Raina09largescaledeep}
+{\sc Raina, R., Madhavan, A., and Ng, A.~Y.}
+\newblock Largescale deep unsupervised learning using graphics processors.
+\newblock In {\em International Conf. on Machine Learning\/} (2009).
+
+\bibitem{QIMS1079}
+{\sc Shi, L., Liu, W., Zhang, H., Xie, Y., and Wang, D.}
+\newblock A survey of gpu-based medical image computing techniques.
+\newblock {\em Quantitative Imaging in Medicine and Surgery 2}, 3 (2012).
+
+\bibitem{wu2009clustering}
+{\sc Wu, R., Zhang, B., and Hsu, M.}
+\newblock Clustering billions of data points using gpus.
+\newblock In {\em Proceedings of the combined workshops on UnConventional high
+  performance computing workshop plus memory access workshop\/} (2009), ACM,
+  pp.~1--6.
+
 \bibitem{Yee}
 {\sc Yee, K.}
 \newblock Numerical solution of initial boundary value problems involving
