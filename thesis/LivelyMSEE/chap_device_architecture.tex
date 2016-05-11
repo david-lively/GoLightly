@@ -1,6 +1,6 @@
 \chapter{Device Architecture} \label{ch:device architecture}
 
-CPUs and GPUs each offer advantages for different computational tasks. Multi-core CPUs offer complete, semi-independent cores which are effectively discrete processsors. GPUs, however, offer large-scale parallelization, but require strong data and code coherence in order to achieve acceptable performance.
+CPUs and GPUs each offer advantages for different computational tasks. Multi-core CPUs offer independent cores which are effectively discrete processors. GPUs, however, offer large-scale parallelization, but require strong data and code coherence in order to achieve acceptable performance.
 
 
 \section{CPU}
@@ -22,7 +22,7 @@ GPUs were initially designed for one thing: to determine, as quickly as possibly
 
 \subsection{SIMD}
 
-GPUs implement what is known as a single-instruction (SIMD), multiple-data processing model.
+GPUs implement what is known as a single-instruction, multiple-data (SIMD)\cite{techpattichis2003} processing model.
 
 In a SIMD architecture, a core may consist of a single ALU, with multiple register banks. Separate "threads" load different data into dedicated register banks. The ALU executes identitical operations on all registers simultaneously.
 

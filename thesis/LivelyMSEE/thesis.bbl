@@ -17,6 +17,12 @@
 \newblock Largescale deep unsupervised learning using graphics processors.
 \newblock In {\em International Conf. on Machine Learning\/} (2009).
 
+\bibitem{techpattichis2003}
+{\sc Rodriguez, P., Pattichis, M., and Jordan, R.}
+\newblock Parallel single instruction multiple data (simd) fft: Algorithm and
+  implementation.
+\newblock Tech. Rep. HPCERC2003-002, January 2003.
+
 \bibitem{QIMS1079}
 {\sc Shi, L., Liu, W., Zhang, H., Xie, Y., and Wang, D.}
 \newblock A survey of gpu-based medical image computing techniques.
