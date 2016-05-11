@@ -4,7 +4,7 @@ GoLightly is the GPU-based FDTD simulator application that is the focus and prod
 
 \section{Goals}
 
-GoLightly is intended to address some issues that seem common to CPU-based solutions. In particular, it is designed to be fast, friendly and portable.
+GoLightly is intended to address deficiencies common to CPU-based solutions. In particular, it is designed to be fast, friendly and portable.
 
 
 \begin{itemize}
@@ -20,20 +20,36 @@ To meet those goals, GoLightly takes advantage of the oft-underutilized programm
 GoLightly comprises three primary application blocks:
 
 \begin{itemize}
-	\item Model Processor
-	\item Simulator
-	\item Visualizer
+	\item Model Processor \ref{sec:modelProcessor}
+	\item Simulator \ref{sec:simulator}
+	\item Visualizer \ref{sec:visualizer}
 \end{itemize}
 
 
 FLOWCHART HERE?
 
-\subsection{Model Processor}
+\subsection{Model Processor}\label{sec:modelProcessor}
 
-The model processor is responsible for initialization of the simulator. At launch, the 
+The model processor (MP) is responsible for initialization of the simulator. When launching the simulator, a domain size and image file, containing a coded image of the desired dielectric, as well as a max $\epsilon$ are specified.
 
-\subsection{Simulator}
-\subsection{Visualizer}
+The MP allocates arrays to hold the dielectric properties for each Yee cell. These arrays are of the same dimensions as the domain, which may be different than the dimensions of the model. 
+
+Once the model image is loaded, the MP iterates through each element in the dielectric array. (See \autoref{listing:modelFromImage})
+
+For each element:
+
+\begin{enumerate}
+	\item Determine the normalized texel coordinate that corresponds to the current cell position	
+	\item Read the red (R), green (G) and blue (B) color components from the image
+	\item If $R > 128$, this texel is part of a source. Add the cell to the list of sources.
+%	\item If $G > 0$, this texel has non-unity dielectric properties. Set  ${C_b}_{i,j} = \epsilon_{max} * \frac{G}{255.0}$
+%	\item If $B > 0$, this texel is part of a \boldsymbol{monitor}.
+\end{enumerate}
+
+\lstinputlisting[language=c++, title=Generating a model from an image]{model-from-image.cpp}\label{listing:modelFromImage}
+
+\subsection{Simulator}\label{sec:simulator}
+\subsection{Visualizer}\label{sec:visualizer}
 
 
 \section{Modeling approach}
