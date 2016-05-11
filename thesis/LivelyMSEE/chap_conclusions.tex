@@ -1,71 +1,27 @@
 \chapter{Conclusions} \label{ch:conclusions}
 
+Using the GoLightly GPU simulator, we have shown a speedup potential of 8 to 16 times that achieved by comparable software currently enjoying wide adoption. 
 
-\section{Performance Comparison}
+\section{Usability}
 
-Metrics were calculated using domain sizes ranging from 128x64 to 8192x4096 over 5000 frames. (In this case, a frame represents a complete time step wherein both E and H fields are updated.) For benchmarking purposes, the visualizer was disabled.
+Although the software, in its current state, may not be suitable for production, it is clear that a GPU-based approach promises substantially improved performance. This results in increased productivity and, ultimately, better products. Eliminating the script-only modeling approach enforced by other packages makes utilization of this application significantly easier, and therefore accessible to a wider audience.
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth,
-	keepaspectratio]{gpu_time_vs_domain_size.png}
-	\caption{GoLightly: seconds for 5000 frames with the given domain size}
-	\label{fig:gpuTimeVsDomainSize}
-\end{figure}
+\section{Future Work}
 
-As expected, As the number of computational cells in the simulation domain increases, the required computation time increases linearly.
+The vastly-improved performance afforded by this system presents some interesting opportunities:
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth,
-	keepaspectratio]{grid-cells-vs-compute-time.png}
-	%	\caption{GoLightly: seconds for 5000 frames with the given domain size}
-	\label{fig:gridSizeVsComputeTime}
-\end{figure}
+\subsection{Genetic Algorithms}
+Genetic algorithms are intended to let software take over a part of the design process. By defining a problem in terms of a number of inputs and creating a fitness function, an application can potentially tests many different designs and use a feedback loop to suggest new permutations. This approach has been shown to be successful in such diverse fields as turbine design and pharmaceutical research. 
 
-Note that the total throughput (represented in the following figure as “cell” operations per second) increases dramatically as the domain size increases, until the point where GPU initialization overhead is outweighed by computation time.
+A fast FDTD implementation will facilitate application of this technique to optical circuit design. By defining a circuit in terms of desired package size, available inputs, allowed waveguide shape, available dielectric properties, and others - and designing an appropriate fitness function, software will be able to rapidly evaluate different designs, and suggest new permutations. This may also dramatically reduce time-to-market and suggest new research avenues. 
 
-Comparing to Meep:
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth,
-	keepaspectratio]{gpu-vs-meep.png}
-	\caption{GoLightly vs Meep}
-	\label{fig:gpuVsMeep}
-\end{figure}
-
-This gives us a speedup ranging from 1.2 to 8, depending on the domain size. At lower resolutions, the overhead of initializing assets on the GPU can outweigh the required simulation time, which accounts for the difference.
-
-\section{Additional Examples}
-
-Although the plane wave example used for validation and benchmarking is correct, there are far more interesting circuits that can be modeled. 
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth,
-	keepaspectratio]{example1.png}
-	\caption{Simple "tuning fork" E-field splitter}
-	\label{fig:example1}
-\end{figure}
+\subsection{Arbitrary Domain Shape and PML Sinks}
+Given the more flexible voxel-based model definition used in GoLightly, it becomes possible to create completely arbitrary domain shapes. Non-rectangular domains with PML "sinks" at any desired position within the domain would allow the designer to more tightly fit the computational domain to the circuit in question, and ignore areas that are not relevant to the task at hand. 
 
 
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth,
-	keepaspectratio]{example2.png}
-	\caption{Example 2}
-	\label{fig:example2}
-\end{figure}
+\section{Final Words}
 
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=\textwidth,
-	keepaspectratio]{example3.png}
-	\caption{Example 3}
-	\label{fig:example3}
-\end{figure}
+While not new, the field of general-purpose GPU computing offers potential that has to be realized in many of the areas where it shows the most promise. We pray that our investigation and demonstration detailed in this thesis encourages others to explore this area, and help to further reduce or eliminate boundaries that cripple or inhibit advances in the design process.
 
 
 

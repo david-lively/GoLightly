@@ -24,9 +24,12 @@
 \contentsline {section}{\numberline {4.4.}Testing and Validation Methodology}{23}{section.4.4}
 \contentsline {subsection}{\numberline {4.4.1.}Analytical Result}{24}{subsection.4.4.1}
 \contentsline {subsection}{\numberline {4.4.2.}Numerical Result}{26}{subsection.4.4.2}
-\contentsline {chapter}{\numberline {\hfill 5.\hbox {\hskip 0.8em}\ignorespaces }Conclusions}{32}{chapter.5}
-\contentsline {section}{\numberline {5.1.}Performance Comparison}{32}{section.5.1}
-\contentsline {section}{\numberline {5.2.}Additional Examples}{34}{section.5.2}
-\contentsline {chapter}{\numberline {\hfill 6.\hbox {\hskip 0.8em}\ignorespaces }FUTURE WORK}{38}{chapter.6}
+\contentsline {chapter}{\numberline {\hfill 5.\hbox {\hskip 0.8em}\ignorespaces }Results}{32}{chapter.5}
+\contentsline {chapter}{\numberline {\hfill 6.\hbox {\hskip 0.8em}\ignorespaces }Conclusions}{35}{chapter.6}
+\contentsline {section}{\numberline {6.1.}Usability}{35}{section.6.1}
+\contentsline {section}{\numberline {6.2.}Future Work}{35}{section.6.2}
+\contentsline {subsection}{\numberline {6.2.1.}Genetic Algorithms}{35}{subsection.6.2.1}
+\contentsline {subsection}{\numberline {6.2.2.}Arbitrary Domain Shape and PML Sinks}{36}{subsection.6.2.2}
+\contentsline {section}{\numberline {6.3.}Final Words}{36}{section.6.3}
 \noindent APPENDIX \hfill \vskip 0.05in
-\contentsline {chapter}{REFERENCES}{39}{appendix.A}
+\contentsline {chapter}{REFERENCES}{37}{appendix.A}

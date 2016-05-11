@@ -23,8 +23,11 @@
 \BOOKMARK [1][-]{section.4.4}{Testing and Validation Methodology}{chapter.4}% 23
 \BOOKMARK [2][-]{subsection.4.4.1}{Analytical Result}{section.4.4}% 24
 \BOOKMARK [2][-]{subsection.4.4.2}{Numerical Result}{section.4.4}% 25
-\BOOKMARK [0][-]{chapter.5}{Conclusions}{}% 26
-\BOOKMARK [1][-]{section.5.1}{Performance Comparison}{chapter.5}% 27
-\BOOKMARK [1][-]{section.5.2}{Additional Examples}{chapter.5}% 28
-\BOOKMARK [0][-]{chapter.6}{FUTURE WORK}{}% 29
-\BOOKMARK [0][-]{appendix.A}{REFERENCES}{}% 30
+\BOOKMARK [0][-]{chapter.5}{Results}{}% 26
+\BOOKMARK [0][-]{chapter.6}{Conclusions}{}% 27
+\BOOKMARK [1][-]{section.6.1}{Usability}{chapter.6}% 28
+\BOOKMARK [1][-]{section.6.2}{Future Work}{chapter.6}% 29
+\BOOKMARK [2][-]{subsection.6.2.1}{Genetic Algorithms}{section.6.2}% 30
+\BOOKMARK [2][-]{subsection.6.2.2}{Arbitrary Domain Shape and PML Sinks}{section.6.2}% 31
+\BOOKMARK [1][-]{section.6.3}{Final Words}{chapter.6}% 32
+\BOOKMARK [0][-]{appendix.A}{REFERENCES}{}% 33

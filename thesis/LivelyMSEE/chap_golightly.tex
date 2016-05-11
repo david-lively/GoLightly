@@ -398,6 +398,7 @@ T_{error} = |1 - \frac{T_{computed}}{T_{analytical}}| = |1 - \frac{0.507}{0.5}| 
 R_{error} = |1 - \frac{R_{computed}}{R_{analytical}}| = |1 - \frac{0.503}{0.5}| = 0.6\%
 \end{equation}
 
+Careful analysis of different simulation results indicates that this error is due to floating-point precision errors. As every frame output depends on the state of the previous frame, small errors are compounded over time. 
 
 
 
