@@ -9,7 +9,9 @@ One limitation of Meep is it's use of an obscure, uncommon scripting language, S
 
 While adequate for simple models, constructing an arbitrarily-shaped or dynamic structure in this way may be difficult. In practice, proprietary software may be used to convert more complex model definitions created in other software into a format usable by Meep.
 
-It is worth noting that Meep provides a "material function" capability. This allows the user to dynamically determine the material properties of a point in space using their own algorithm rather than defining their model using CSG. 
+It is worth noting that Meep provides a "material function" capability. This allows the user to dynamically determine the material properties of a point in space using their own algorithm rather than defining their model using CSG. However, to advantage of this capability, the user must employ additional software or custom programming, further increasing the complexity of an already complicated system. 
+
+
 
 \section{Performance}
 
@@ -19,8 +21,9 @@ While performant when compared to other FDTD software, Meep suffers from the sam
 
 This sort of cluster configuration incurs its own overhead. Although a domain may be divided into chunks and distributed across cluster nodes, FDTD boundary conditions require that, at some point, parts of the divided domain must be exchanged between nodes to maintain continuity. This necessitates installation of a high-speed local network and supporting hardware. 
 
-While trivial to implement for small clusters, this networking configuration can become prohibitively complex as the system scales. 
+\section{Limitations}
 
+The manner in which models are defined, poor performance on single machines and laptops, incompatibility with Microsoft Windows all indicate that this system is not suitable for rapid design iteration. To that end, we present an alternative, GPU-based approach. \ref{ch:golightly}. 
  
 
 

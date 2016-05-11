@@ -4,19 +4,38 @@ GoLightly is the GPU-based FDTD simulator application that is the focus and prod
 
 \section{Goals}
 
-GoLightly is intended to address some issues that seem common to CPU-based solutions. In particular, it is designed to meet the following goals:
+GoLightly is intended to address some issues that seem common to CPU-based solutions. In particular, it is designed to be fast, friendly and portable.
+
 
 \begin{itemize}
-	\item Be fast. An iterative design process requires rapid feedback from the simulator. 
-	\item Be portable. Ideally, the simulator should run on a high-end consumer grade laptop.  
-	\item Be friendly. Definition of models and other simulation parameters should not require expertise in software development or quasi-proprietary scripting languages.
+	\item Fast. An iterative design process requires rapid feedback from the simulator. Long simulation times necessitated by existing solutions inhibit this process.
+	\item Friendly. Definition of models and other simulation parameters should not require expertise in software development or quasi-proprietary scripting languages. 
+	\item Portable. Ideally, the simulator should run on a high-end consumer grade laptop and support the most common desktop operating systems (Microsoft Windows and Apple OS X).  
+\end{itemize}
+
+To meet those goals, GoLightly takes advantage of the oft-underutilized programmable GPU available in common desktop and laptop computers, resulting in a dramatic speedup. Rather than relying on a proprietary model definition language or obscure, limited scripting system, we use industry-standard image and geometry file formats so that models may be defined using robust, familiar, readily-available tools. By building the software specifically for Microsoft Windows, we ensure that it is compatible with the most common desktop operating system. 
+
+\section{Architecture}
+
+GoLightly comprises three primary application blocks:
+
+\begin{itemize}
+	\item Model Processor
+	\item Simulator
+	\item Visualizer
 \end{itemize}
 
 
+FLOWCHART HERE?
 
-\section{system architecture}
-\subsection{Host}
-\subsection{GPU}
+\subsection{Model Processor}
+
+The model processor is responsible for initialization of the simulator. At launch, the 
+
+\subsection{Simulator}
+\subsection{Visualizer}
+
+
 \section{Modeling approach}
 \section{Implementation}
 \section{Testing methodology}
