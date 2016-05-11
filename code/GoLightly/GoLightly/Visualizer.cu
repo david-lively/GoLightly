@@ -126,6 +126,8 @@ void Visualizer::Render(float elapsedSeconds)
 	gl::Disable(gl::CULL_FACE);
 	gl::PolygonMode(gl::FRONT_AND_BACK, gl::FILL);
 
+	gl::Enable(gl::BLEND);
+	gl::BlendFunc(gl::SRC_ALPHA, gl::ONE_MINUS_SRC_ALPHA);
 	/// render full-screen quad
 	gl::UseProgram(m_program);
 
@@ -288,7 +290,8 @@ void Visualizer::Ready()
 	if (!Enabled)
 		return;
 
-	gl::ClearColor(0, 0, 0, 1);
+	//gl::ClearColor(0, 0, 0, 1);
+	gl::ClearColor(1, 1, 1, 1);
 
 	CreateGeometry();
 	CreateEffects();

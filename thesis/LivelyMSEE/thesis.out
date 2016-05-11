@@ -20,20 +20,19 @@
 \BOOKMARK [2][-]{subsection.4.2.2}{Simulator}{section.4.2}% 20
 \BOOKMARK [2][-]{subsection.4.2.3}{Visualizer}{section.4.2}% 21
 \BOOKMARK [1][-]{section.4.3}{Modeling approach}{chapter.4}% 22
-\BOOKMARK [1][-]{section.4.4}{Implementation}{chapter.4}% 23
-\BOOKMARK [1][-]{section.4.5}{Testing methodology}{chapter.4}% 24
-\BOOKMARK [2][-]{subsection.4.5.1}{Test Model}{section.4.5}% 25
-\BOOKMARK [2][-]{subsection.4.5.2}{Analytical Result}{section.4.5}% 26
-\BOOKMARK [2][-]{subsection.4.5.3}{Numerical Result}{section.4.5}% 27
-\BOOKMARK [2][-]{subsection.4.5.4}{Comparison}{section.4.5}% 28
-\BOOKMARK [1][-]{section.4.6}{Additional Examples}{chapter.4}% 29
-\BOOKMARK [2][-]{subsection.4.6.1}{Coupler}{section.4.6}% 30
-\BOOKMARK [2][-]{subsection.4.6.2}{Splitter}{section.4.6}% 31
-\BOOKMARK [0][-]{chapter.5}{Conclusions}{}% 32
-\BOOKMARK [1][-]{section.5.1}{Meep performance}{chapter.5}% 33
-\BOOKMARK [1][-]{section.5.2}{GoLightly performancec}{chapter.5}% 34
-\BOOKMARK [1][-]{section.5.3}{Meep vs GoLightly}{chapter.5}% 35
-\BOOKMARK [1][-]{section.5.4}{Results}{chapter.5}% 36
-\BOOKMARK [1][-]{section.5.5}{Limitations}{chapter.5}% 37
-\BOOKMARK [0][-]{chapter.6}{FUTURE WORK}{}% 38
-\BOOKMARK [0][-]{appendix.A}{REFERENCES}{}% 39
+\BOOKMARK [1][-]{section.4.4}{Testing methodology}{chapter.4}% 23
+\BOOKMARK [2][-]{subsection.4.4.1}{Test Model}{section.4.4}% 24
+\BOOKMARK [2][-]{subsection.4.4.2}{Analytical Result}{section.4.4}% 25
+\BOOKMARK [2][-]{subsection.4.4.3}{Numerical Result}{section.4.4}% 26
+\BOOKMARK [2][-]{subsection.4.4.4}{Comparison}{section.4.4}% 27
+\BOOKMARK [1][-]{section.4.5}{Additional Examples}{chapter.4}% 28
+\BOOKMARK [2][-]{subsection.4.5.1}{Coupler}{section.4.5}% 29
+\BOOKMARK [2][-]{subsection.4.5.2}{Splitter}{section.4.5}% 30
+\BOOKMARK [0][-]{chapter.5}{Conclusions}{}% 31
+\BOOKMARK [1][-]{section.5.1}{Meep performance}{chapter.5}% 32
+\BOOKMARK [1][-]{section.5.2}{GoLightly performancec}{chapter.5}% 33
+\BOOKMARK [1][-]{section.5.3}{Meep vs GoLightly}{chapter.5}% 34
+\BOOKMARK [1][-]{section.5.4}{Results}{chapter.5}% 35
+\BOOKMARK [1][-]{section.5.5}{Limitations}{chapter.5}% 36
+\BOOKMARK [0][-]{chapter.6}{FUTURE WORK}{}% 37
+\BOOKMARK [0][-]{appendix.A}{REFERENCES}{}% 38
