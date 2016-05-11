@@ -32,6 +32,20 @@ FLOWCHART HERE?
 
 The model processor (MP) is responsible for initialization of the simulator. When launching the simulator, a domain size and image file, containing a coded image of the desired dielectric, as well as a max $\epsilon$ are specified.
 
+\begin{table}[h!]
+	\centering
+	\caption{Model processor inputs}
+	\label{tab:modelProcessorInputs}
+	\begin{tabular}{l | l | l | l}
+		Symbol	& Data Type & Meaning & Typical value				\\
+		\hline														\\
+		Width	& int 		& Domain size in X & 1024				\\
+		Height	& int 		& Domain size in Y & 1024				\\
+		Media	& float 	& $\epsilon_{max}$ & 9						\\
+		Model	& string	& Model definition stored as a bitmap & filename
+	\end{tabular}
+\end{table}
+
 The MP allocates arrays to hold the dielectric properties for each Yee cell. These arrays are of the same dimensions as the domain, which may be different than the dimensions of the model. 
 
 Once the model image is loaded, the MP iterates through each element in the dielectric array. (See \autoref{listing:modelFromImage})
@@ -41,14 +55,27 @@ For each element:
 \begin{enumerate}
 	\item Determine the normalized texel coordinate that corresponds to the current cell position	
 	\item Read the red (R), green (G) and blue (B) color components from the image
-	\item If $R > 128$, this texel is part of a source. Add the cell to the list of sources.
-%	\item If $G > 0$, this texel has non-unity dielectric properties. Set  ${C_b}_{i,j} = \epsilon_{max} * \frac{G}{255.0}$
-%	\item If $B > 0$, this texel is part of a \boldsymbol{monitor}.
+	\item If $R > 128$, this texel is part of a source. Add the cell to the list of sources
+	\item If $G > 0$, this texel has non-unity dielectric. Set ${C_b}_{i,j} = \epsilon_{max} * \frac{G}{255.0}$
+	\item If $B > 0$, this texel is part of a monitor. Add its position to the monitor definition with ID = $B$
 \end{enumerate}
 
-\lstinputlisting[language=c++, title=Generating a model from an image]{model-from-image.cpp}\label{listing:modelFromImage}
+\lstinputlisting[language=c++,caption=Generating a model from an image]{model-from-image.cpp}\label{listing:modelFromImage}
+
+Once the dielectric, sources and monitors are derived from the model image, the model processor transfers control to the simulator.
 
 \subsection{Simulator}\label{sec:simulator}
+
+The simulator block implements the FDTD algorithm. Given the dielectric, source and monitor configurations from the model processor, the simulator initializes the GPU, transfers required data from host memory to the GPU, and begins the simulation loop.
+
+For each loop iteration, the simulator launches a CUDA kernel to update all $E$ fields. Once the $E$ update is complete, the simulator launches kernels to update all $H$ fields.
+
+Note that all $E$ updates occur simultaneously, as do all H fields. However, given the dependence between the $E$ and $H$ fields, the $E$ field update kernels must complete before the $H$ fields are updated.
+
+The simulator repeats this operation until the application is closed, or the desired number of frames are completed. 
+
+Finally, the completed field arrays are copied to the host from the GPU, and saved to disk in bitmap and CSV format for later analysis. 
+
 \subsection{Visualizer}\label{sec:visualizer}
 
 

@@ -1,4 +1,5 @@
 \contentsline {chapter}{\noindent {LIST OF FIGURES}}{vii}{chapter*.2}
+\contentsline {chapter}{\noindent {LIST OF TABLES}}{viii}{chapter*.3}
 \noindent CHAPTER \hfill \vskip 0.05in
 \contentsline {chapter}{\numberline {\hfill 1.\hbox {\hskip 0.8em}\ignorespaces }Introduction}{1}{chapter.1}
 \contentsline {section}{\numberline {1.1.}FDTD Overview}{2}{section.1.1}
@@ -17,24 +18,24 @@
 \contentsline {section}{\numberline {4.1.}Goals}{8}{section.4.1}
 \contentsline {section}{\numberline {4.2.}Architecture}{9}{section.4.2}
 \contentsline {subsection}{\numberline {4.2.1.}Model Processor}{9}{subsection.4.2.1}
-\contentsline {subsection}{\numberline {4.2.2.}Simulator}{10}{subsection.4.2.2}
-\contentsline {subsection}{\numberline {4.2.3.}Visualizer}{10}{subsection.4.2.3}
-\contentsline {section}{\numberline {4.3.}Modeling approach}{10}{section.4.3}
-\contentsline {section}{\numberline {4.4.}Implementation}{11}{section.4.4}
-\contentsline {section}{\numberline {4.5.}Testing methodology}{11}{section.4.5}
-\contentsline {subsection}{\numberline {4.5.1.}Test Model}{11}{subsection.4.5.1}
-\contentsline {subsection}{\numberline {4.5.2.}Analytical Result}{11}{subsection.4.5.2}
-\contentsline {subsection}{\numberline {4.5.3.}Numerical Result}{11}{subsection.4.5.3}
-\contentsline {subsection}{\numberline {4.5.4.}Comparison}{11}{subsection.4.5.4}
-\contentsline {section}{\numberline {4.6.}Additional Examples}{11}{section.4.6}
-\contentsline {subsection}{\numberline {4.6.1.}Coupler}{11}{subsection.4.6.1}
-\contentsline {subsection}{\numberline {4.6.2.}Splitter}{11}{subsection.4.6.2}
-\contentsline {chapter}{\numberline {\hfill 5.\hbox {\hskip 0.8em}\ignorespaces }Conclusions}{12}{chapter.5}
-\contentsline {section}{\numberline {5.1.}Meep performance}{12}{section.5.1}
-\contentsline {section}{\numberline {5.2.}GoLightly performancec}{12}{section.5.2}
-\contentsline {section}{\numberline {5.3.}Meep vs GoLightly}{12}{section.5.3}
-\contentsline {section}{\numberline {5.4.}Results}{12}{section.5.4}
-\contentsline {section}{\numberline {5.5.}Limitations}{12}{section.5.5}
-\contentsline {chapter}{\numberline {\hfill 6.\hbox {\hskip 0.8em}\ignorespaces }FUTURE WORK}{13}{chapter.6}
+\contentsline {subsection}{\numberline {4.2.2.}Simulator}{11}{subsection.4.2.2}
+\contentsline {subsection}{\numberline {4.2.3.}Visualizer}{11}{subsection.4.2.3}
+\contentsline {section}{\numberline {4.3.}Modeling approach}{12}{section.4.3}
+\contentsline {section}{\numberline {4.4.}Implementation}{12}{section.4.4}
+\contentsline {section}{\numberline {4.5.}Testing methodology}{12}{section.4.5}
+\contentsline {subsection}{\numberline {4.5.1.}Test Model}{12}{subsection.4.5.1}
+\contentsline {subsection}{\numberline {4.5.2.}Analytical Result}{12}{subsection.4.5.2}
+\contentsline {subsection}{\numberline {4.5.3.}Numerical Result}{12}{subsection.4.5.3}
+\contentsline {subsection}{\numberline {4.5.4.}Comparison}{12}{subsection.4.5.4}
+\contentsline {section}{\numberline {4.6.}Additional Examples}{12}{section.4.6}
+\contentsline {subsection}{\numberline {4.6.1.}Coupler}{12}{subsection.4.6.1}
+\contentsline {subsection}{\numberline {4.6.2.}Splitter}{12}{subsection.4.6.2}
+\contentsline {chapter}{\numberline {\hfill 5.\hbox {\hskip 0.8em}\ignorespaces }Conclusions}{13}{chapter.5}
+\contentsline {section}{\numberline {5.1.}Meep performance}{13}{section.5.1}
+\contentsline {section}{\numberline {5.2.}GoLightly performancec}{13}{section.5.2}
+\contentsline {section}{\numberline {5.3.}Meep vs GoLightly}{13}{section.5.3}
+\contentsline {section}{\numberline {5.4.}Results}{13}{section.5.4}
+\contentsline {section}{\numberline {5.5.}Limitations}{13}{section.5.5}
+\contentsline {chapter}{\numberline {\hfill 6.\hbox {\hskip 0.8em}\ignorespaces }FUTURE WORK}{14}{chapter.6}
 \noindent APPENDIX \hfill \vskip 0.05in
-\contentsline {chapter}{REFERENCES}{14}{appendix.A}
+\contentsline {chapter}{REFERENCES}{15}{appendix.A}
