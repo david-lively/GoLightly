@@ -1,7 +1,19 @@
-\chapter{GOLIGHTLY} \label{ch:golightly}
+\chapter{GoLightly} \label{ch:golightly}
+
+GoLightly is the GPU-based FDTD simulator application that is the focus and product of this thesis. Written using a combination of C++, CUDA and OpenGL, it provides a lightweight yet complete FDTD solution.
+
+\section{Goals}
+
+GoLightly is intended to address some issues that seem common to CPU-based solutions. In particular, it is designed to meet the following goals:
+
+\begin{itemize}
+	\item Be fast. An iterative design process requires rapid feedback from the simulator. 
+	\item Be portable. Ideally, the simulator should run on a high-end consumer grade laptop.  
+	\item Be friendly. Definition of models and other simulation parameters should not require expertise in software development or quasi-proprietary scripting languages.
+\end{itemize}
 
 
-\section{goals}
+
 \section{system architecture}
 \subsection{Host}
 \subsection{GPU}

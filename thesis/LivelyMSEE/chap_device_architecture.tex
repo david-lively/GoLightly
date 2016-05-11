@@ -1,13 +1,43 @@
-\chapter{DEVICE ARCHITECTURE} \label{ch:device architecture}
+\chapter{Device Architecture} \label{ch:device architecture}
+
+CPUs and GPUs each offer advantages for different computational tasks. Multi-core CPUs offer complete, semi-independent cores which are effectively discrete processsors. GPUs, however, offer large-scale parallelization, but require strong data and code coherence in order to achieve acceptable performance.
+
 
 \section{CPU}
-independent cores, separate cache, dedicated ALU and registers
+
+Users typically run many different applications in parallel: a web browser, music player, word processor and email client are a common combination.
+
+In a modern multi-core CPU, each core provides a dedicated ALU and register set. This allows each core to operate as an independent device. This architecture is advantageous when the device is required to perform disparate operations.
+
+However, this approach also introduces some performance limitations. If we wish to perform identical operations on large datasets, we are limited to 4-8 threads. The same processor that excels at executing many different tasks at the same time performs sub-optimally. 
+
+When running FDTD on a CPU, each core's ALU executes essentially the same operations on a dedicated register set. Each ALU performs the same operation at the same time, indicating that the additional ALUs are redundant. Thus, the flexible, general-purpose nature of a CPU becomes a liability.
 
 \section{GPU}
+
+GPUs were initially designed for one thing: to determine, as quickly as possibly, what color a pixel should be. 
+
+.... more history stuff here...
+
+
 \subsection{SIMD}
-SIMD - single ALU for multiple register sets
+
+GPUs implement what is known as a single-instruction (SIMD), multiple-data processing model.
+
+In a SIMD architecture, a core may consist of a single ALU, with multiple register banks. Separate "threads" load different data into dedicated register banks. The ALU executes identitical operations on all registers simultaneously.
+
+The approach provides some benefits and limitations:
+
+\begin{itemize}
+	\item Fewer components are required per core since fewer ALUs are required. Leads to reduced die space requirements.
+	\item Better code caching. A single ALU, and corresponding cache, are used for many threads, eliminating the need to load or monitor cache behavior per thread.
+	\item TODO
+\end{itemize}
+
+
 \subsection{FDTD in SIMD}
-why FDTD maps well to GPUs
+
+TODO: why FDTD maps well to GPUs
 
 
 
