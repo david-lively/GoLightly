@@ -21,20 +21,19 @@
 \contentsline {subsection}{\numberline {4.2.2.}Simulator}{11}{subsection.4.2.2}
 \contentsline {subsection}{\numberline {4.2.3.}Visualizer}{18}{subsection.4.2.3}
 \contentsline {section}{\numberline {4.3.}Modeling approach}{21}{section.4.3}
-\contentsline {section}{\numberline {4.4.}Testing methodology}{23}{section.4.4}
-\contentsline {subsection}{\numberline {4.4.1.}Test Model}{23}{subsection.4.4.1}
-\contentsline {subsection}{\numberline {4.4.2.}Analytical Result}{24}{subsection.4.4.2}
-\contentsline {subsection}{\numberline {4.4.3.}Numerical Result}{24}{subsection.4.4.3}
-\contentsline {subsection}{\numberline {4.4.4.}Comparison}{24}{subsection.4.4.4}
-\contentsline {section}{\numberline {4.5.}Additional Examples}{24}{section.4.5}
-\contentsline {subsection}{\numberline {4.5.1.}Coupler}{24}{subsection.4.5.1}
-\contentsline {subsection}{\numberline {4.5.2.}Splitter}{24}{subsection.4.5.2}
-\contentsline {chapter}{\numberline {\hfill 5.\hbox {\hskip 0.8em}\ignorespaces }Conclusions}{25}{chapter.5}
-\contentsline {section}{\numberline {5.1.}Meep performance}{25}{section.5.1}
-\contentsline {section}{\numberline {5.2.}GoLightly performancec}{25}{section.5.2}
-\contentsline {section}{\numberline {5.3.}Meep vs GoLightly}{25}{section.5.3}
-\contentsline {section}{\numberline {5.4.}Results}{25}{section.5.4}
-\contentsline {section}{\numberline {5.5.}Limitations}{25}{section.5.5}
-\contentsline {chapter}{\numberline {\hfill 6.\hbox {\hskip 0.8em}\ignorespaces }FUTURE WORK}{26}{chapter.6}
+\contentsline {section}{\numberline {4.4.}Testing and Validation Methodology}{23}{section.4.4}
+\contentsline {subsection}{\numberline {4.4.1.}Analytical Result}{24}{subsection.4.4.1}
+\contentsline {subsection}{\numberline {4.4.2.}Numerical Result}{26}{subsection.4.4.2}
+\contentsline {subsection}{\numberline {4.4.3.}Comparison}{27}{subsection.4.4.3}
+\contentsline {section}{\numberline {4.5.}Additional Examples}{27}{section.4.5}
+\contentsline {subsection}{\numberline {4.5.1.}Coupler}{27}{subsection.4.5.1}
+\contentsline {subsection}{\numberline {4.5.2.}Splitter}{27}{subsection.4.5.2}
+\contentsline {chapter}{\numberline {\hfill 5.\hbox {\hskip 0.8em}\ignorespaces }Conclusions}{28}{chapter.5}
+\contentsline {section}{\numberline {5.1.}Meep performance}{28}{section.5.1}
+\contentsline {section}{\numberline {5.2.}GoLightly performancec}{28}{section.5.2}
+\contentsline {section}{\numberline {5.3.}Meep vs GoLightly}{28}{section.5.3}
+\contentsline {section}{\numberline {5.4.}Results}{28}{section.5.4}
+\contentsline {section}{\numberline {5.5.}Limitations}{28}{section.5.5}
+\contentsline {chapter}{\numberline {\hfill 6.\hbox {\hskip 0.8em}\ignorespaces }FUTURE WORK}{29}{chapter.6}
 \noindent APPENDIX \hfill \vskip 0.05in
-\contentsline {chapter}{REFERENCES}{27}{appendix.A}
+\contentsline {chapter}{REFERENCES}{30}{appendix.A}
