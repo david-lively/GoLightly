@@ -15,12 +15,19 @@ When running FDTD on a CPU, each core's ALU executes essentially the same operat
 
 \section{GPU}
 
+Unlike CPUs, GPUs are capable of running thousands of threads in parallel using a SIMD (single-instruction, multiple-data) model. This architecture is allows rapid processing of large datasets wherein each datum exhibits little or no interdependence. 
+
+This independence is crucial to performant GPU-based applications, as detailed in \autoref{sec:simd}.
+
+
 GPUs were initially designed for one thing: to determine, as quickly as possibly, what color a pixel should be. 
+
+
 
 .... more history stuff here...
 
 
-\subsection{SIMD}
+\subsection{SIMD}\label{sec:simd}
 
 GPUs implement what is known as a single-instruction, multiple-data (SIMD)\cite{techpattichis2003} processing model.
 

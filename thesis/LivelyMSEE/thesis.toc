@@ -25,6 +25,7 @@
 \contentsline {subsection}{\numberline {4.4.1.}Analytical Result}{24}{subsection.4.4.1}
 \contentsline {subsection}{\numberline {4.4.2.}Numerical Result}{26}{subsection.4.4.2}
 \contentsline {chapter}{\numberline {\hfill 5.\hbox {\hskip 0.8em}\ignorespaces }Results}{32}{chapter.5}
+\contentsline {section}{\numberline {5.1.}Optimization and Enhancements}{35}{section.5.1}
 \contentsline {chapter}{\numberline {\hfill 6.\hbox {\hskip 0.8em}\ignorespaces }Conclusions}{36}{chapter.6}
 \contentsline {section}{\numberline {6.1.}Usability}{36}{section.6.1}
 \contentsline {section}{\numberline {6.2.}Future Work}{36}{section.6.2}
