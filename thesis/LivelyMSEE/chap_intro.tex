@@ -4,30 +4,30 @@
 	\centering
 	\includegraphics[width=\textwidth,
 	keepaspectratio]{point-source-comparison.jpg}
-	\caption{GoLightly (left) and Meep (right) result for a point source with Dirlecht boundary conditions}
+	\caption{GoLightly (left) and Meep (right). $TM_Z$ $E_Z$ result for a point source with Dirlecht boundary.}
 	\label{fig:pointSourceComparison}
 \end{figure}
 
 
-The FDTD \cite{Yee} algorithm is the underlying mechanism used by many commercial RF simulation packages, as well as open source software such as MIT's Meep\cite{OskooiRo10}. 
+The FDTD \cite{Yee} algorithm is the underlying mechanism used by many commercial electromagnetic wave simulation packages, as well as open source software such as MIT's Meep\cite{OskooiRo10}. 
 
 Given the computationally-intensive nature of FDTD, organizations requiring simulation of large domains or complex circuits must provide significant resources. These may take the form of leased server time or utilization of an on-site high-performance cluster, amongst other options.
 
-In this thesis, we explore an implementation of FDTD utilizing graphics processing units (GPUs). Initially designed to perform image generation tasks such as those required by games, cinema and related fields, modern versions are well-suited for general computation work. GPUs are now enjoying wide adoption in fields such as machine learning\cite{Raina09largescaledeep} and artificial intelligence\cite{wu2009clustering}, medical research\cite{QIMS1079}, and other areas which require rapid analysis of large datasets.
+In this thesis, we explore an implementation of FDTD utilizing graphics processing units (GPUs) via NVIDIA's CUDA\cite{cuda} language. Initially designed to perform image generation tasks such as those required by games, cinema and related fields, modern versions are well-suited for general computation work. GPUs are now enjoying wide adoption in fields such as machine learning\cite{Raina09largescaledeep} and artificial intelligence\cite{wu2009clustering}, medical research\cite{QIMS1079}, and other areas which require rapid analysis of large datasets.
 
-Even modern consumer-grade GPUs offer thousands or tens of thousands of processing units ("cores"), while high-end CPUs typically offer 4-8 cores. While the two are not interchangeable, some algorithms, such as FDTD, require little or no data interdependence, no branching logic (a severe performance impediment on GPUs) and consist of short cycles of simple operations. The power of the GPU lies in performing these simple operations at large scale, with thousands of threads running in parallel. 
+Modern consumer-grade GPUs offer thousands or tens of thousands of processing units ("cores"), while high-end CPUs typically offer 4-8 cores. While the two are not interchangeable, some algorithms, such as FDTD, require little or no data interdependence, no branching logic (a severe performance impediment on GPUs) and consist of short cycles of simple operations. The power of the GPU lies in performing these simple operations at large scale, with thousands of threads running in parallel. 
 
 The following sections detail FDTD. Later sections describe a CPU-based implementation (MIT's  Meep simulator), and our GPU-based GoLightly simulator. We verify the GPU solution numerically, and compare performance between CPU- and GPU-based implementations. Finally, we consider future applications and enhancements. 
 
 
 \section{FDTD Overview}
 
-At it's heart, FDTD expresses Maxwell's equations as a discretized set of time-domain equations\cite{Yee}. These equations describe each electric field component in terms if its orthogonal, coupled magnetic fields, and each magnetic field component as a function of its coupled, orthogonal electric fields.
+FDTD expresses Maxwell's equations as a set of discretized time-domain equations\cite{Yee}. These equations describe each electric field component in terms if its orthogonal, coupled magnetic fields, and each magnetic field component as a function of its coupled electric fields.
 
 
 \subsection{Wave equation}
 
-In a $TM_z$ time domain simulation, wave equation for  $ E_z $ is of the form:
+In a time-domain simulation, the wave equation for  $ E_z $ is of the form:
 
 \begin{equation} \label{eq:waveequation} 
 \frac{\partial E_z}{\partial t} = K * (\frac{\partial H_x}{\partial y} + \frac{\partial H_y}{\partial x})
@@ -40,7 +40,7 @@ In order to apply this equation to a computational domain, FDTD defines a cell-b
 
 \subsection{Yee Cell}
 
-Yee \cite{Yee} defines a computational unit known as a "cell." The cell describes how each field component within a domain is related to it's coupled fields. For instance, in a 2D $TM_z$ simulation, $E_Z$ depends on adjacent $H_y$ and $H_x$ components. The cell format used in such a simulation is of the form shown in \ref{fig:yeecell}.
+Yee \cite{Yee} defines a computational unit known as a "cell." The cell describes how each field component within a domain is related to it's coupled fields. For instance, each $E_Z$ field component depends on adjacent $H_y$ and $H_x$ components. The cell format used in such a simulation is of the form shown in \autoref{fig:yeecell}.
 
 \begin{figure}[H]
 	\centering

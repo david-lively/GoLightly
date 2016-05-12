@@ -1,9 +1,21 @@
 \begin{thebibliography}{1}
 
+\bibitem{Massingill:2007:SAP:1772070.1772078}
+{\sc Massingill, B.~L., Mattson, T.~G., and Sanders, B.~A.}
+\newblock Simd: An additional pattern for plpp (pattern language for parallel
+  programming).
+\newblock In {\em Proceedings of the 14th Conference on Pattern Languages of
+  Programs\/} (New York, NY, USA, 2007), PLOP '07, ACM, pp.~6:1--6:15.
+
 \bibitem{Nickolls:2008:SPP:1365490.1365500}
 {\sc Nickolls, J., Buck, I., Garland, M., and Skadron, K.}
 \newblock Scalable parallel programming with cuda.
 \newblock {\em Queue 6}, 2 (Mar. 2008), 40--53.
+
+\bibitem{cuda}
+{\sc {NVIDIA Corporation}}.
+\newblock {NVIDIA CUDA C} programming guide, 2010.
+\newblock Version 3.2.
 
 \bibitem{OskooiRo10}
 {\sc Oskooi, A.~F., Roundy, D., Ibanescu, M., Bermel, P., Joannopoulos, J.~D.,

@@ -32,5 +32,4 @@
 \contentsline {subsection}{\numberline {6.2.1.}Genetic Algorithms}{39}{subsection.6.2.1}
 \contentsline {subsection}{\numberline {6.2.2.}Arbitrary Domain Shape and PML Sinks}{40}{subsection.6.2.2}
 \contentsline {section}{\numberline {6.3.}Final Words}{40}{section.6.3}
-\noindent APPENDIX \hfill \vskip 0.05in
-\contentsline {chapter}{REFERENCES}{41}{appendix.A}
+\contentsline {chapter}{REFERENCES}{41}{chapter.7}
