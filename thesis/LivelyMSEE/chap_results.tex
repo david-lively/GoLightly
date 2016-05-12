@@ -16,7 +16,7 @@ As expected, As the number of computational cells in the simulation domain incre
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\textwidth,
-	keepaspectratio]{grid-cells-vs-compute-time.png}
+	keepaspectratio]{cells-per-second.png}
 	%	\caption{GoLightly: seconds for 5000 frames with the given domain size}
 	\label{fig:gridSizeVsComputeTime}
 \end{figure}
@@ -33,7 +33,14 @@ Comparing to Meep:
 	\label{fig:gpuVsMeep}
 \end{figure}
 
-This gives us a speedup ranging from 1.2 to 8, depending on the domain size. At lower resolutions, the overhead of initializing assets on the GPU can outweigh the required simulation time, which accounts for the difference.
+This gives us a speedup ranging from 1.2 to 8, depending on the domain size. At lower resolutions, the overhead of initializing assets on the GPU can outweigh the required simulation time. In that case, a CPU-based simulation may outperform the GPU solution.
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth,
+	keepaspectratio]{gpu-vs-meep-speedup.png}
+	\caption{Speedup - Meep Time / GoLightly Time}
+	\label{fig:gpuVsMeepSpeedup}
+\end{figure}
 
 
