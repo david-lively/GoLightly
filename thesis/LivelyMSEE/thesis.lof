@@ -1,17 +1,18 @@
-\contentsline {figure}{\numberline {1.1}{\ignorespaces 2D $TM_Z$ Yee Cell}}{3}{figure.1.1}
-\contentsline {figure}{\numberline {4.1}{\ignorespaces 2D Whispering Gallery Mode Sensor}}{21}{figure.4.1}
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Arbitrarily-shaped source (Red pixels)}}{23}{figure.4.2}
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Arbitrarily-shaped source after 20 frames}}{23}{figure.4.3}
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Arbitrarily-shaped source after 100 frames}}{23}{figure.4.4}
-\contentsline {figure}{\numberline {4.5}{\ignorespaces $TM_Z$ Test Model with Plane Wave.}}{24}{figure.4.5}
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Snell's Law}}{25}{figure.4.6}
-\contentsline {figure}{\numberline {4.7}{\ignorespaces Plane wave with $\epsilon _R = 1$}}{27}{figure.4.7}
-\contentsline {figure}{\numberline {4.8}{\ignorespaces Time-averaged (RMS) output in free space $\epsilon _R = 1$}}{27}{figure.4.8}
-\contentsline {figure}{\numberline {4.9}{\ignorespaces Steady state with $\epsilon _R = 9$}}{28}{figure.4.9}
-\contentsline {figure}{\numberline {4.10}{\ignorespaces Raw monitor output with $\epsilon _R = 9$}}{28}{figure.4.10}
-\contentsline {figure}{\numberline {4.11}{\ignorespaces RMS output with $\epsilon _R = 9$}}{29}{figure.4.11}
-\contentsline {figure}{\numberline {4.12}{\ignorespaces Normalized output with $\epsilon _R = 9$}}{30}{figure.4.12}
-\contentsline {figure}{\numberline {5.1}{\ignorespaces GoLightly: seconds for 5000 frames with the given domain size}}{32}{figure.5.1}
-\contentsline {figure}{\numberline {5.2}{\ignorespaces GoLightly: Completed E and H updates per second}}{33}{figure.5.2}
-\contentsline {figure}{\numberline {5.3}{\ignorespaces GoLightly vs Meep}}{34}{figure.5.3}
-\contentsline {figure}{\numberline {5.4}{\ignorespaces Speedup - Meep Time / GoLightly Time}}{35}{figure.5.4}
+\contentsline {figure}{\numberline {1.1}{\ignorespaces GoLightly (left) and Meep (right) result for a point source with Dirlecht boundary conditions}}{1}{figure.1.1}
+\contentsline {figure}{\numberline {1.2}{\ignorespaces 2D $TM_Z$ Yee Cell}}{3}{figure.1.2}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces 2D Whispering Gallery Mode Sensor}}{23}{figure.4.1}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Arbitrarily-shaped source (Red pixels)}}{25}{figure.4.2}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Arbitrarily-shaped source after 20 frames}}{25}{figure.4.3}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Arbitrarily-shaped source after 100 frames}}{25}{figure.4.4}
+\contentsline {figure}{\numberline {4.5}{\ignorespaces $TM_Z$ Test Model with Plane Wave.}}{26}{figure.4.5}
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Snell's Law}}{27}{figure.4.6}
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Plane wave with $\epsilon _R = 1$}}{29}{figure.4.7}
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Time-averaged (RMS) output in free space $\epsilon _R = 1$}}{29}{figure.4.8}
+\contentsline {figure}{\numberline {4.9}{\ignorespaces Steady state with $\epsilon _R = 9$}}{30}{figure.4.9}
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Raw monitor output with $\epsilon _R = 9$}}{30}{figure.4.10}
+\contentsline {figure}{\numberline {4.11}{\ignorespaces RMS output with $\epsilon _R = 9$}}{31}{figure.4.11}
+\contentsline {figure}{\numberline {4.12}{\ignorespaces Normalized output with $\epsilon _R = 9$}}{32}{figure.4.12}
+\contentsline {figure}{\numberline {5.1}{\ignorespaces GoLightly: seconds for 5000 frames with the given domain size}}{34}{figure.5.1}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces GoLightly: Completed E and H updates per second}}{35}{figure.5.2}
+\contentsline {figure}{\numberline {5.3}{\ignorespaces GoLightly vs Meep}}{36}{figure.5.3}
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Speedup - Meep Time / GoLightly Time}}{37}{figure.5.4}

@@ -44,7 +44,20 @@ Comparing to Meep:
 This gives us a speedup ranging from 1.2 to 12, depending on the domain size. At lower resolutions, the overhead of initializing assets on the GPU can take more time than the simulation. In that case, a CPU-based simulation may outperform the GPU solution.
 
 \section{Optimization and Enhancements}
+
 Although a 1200\% speed increase is significant, there is much room for improvement. 
+
+GPUs provide different memory spaces that vary in size and access speed. In addition to global device memory, each warp (group of 32 threads sharing an ALU) has shared memory\footnote{Shared memory is physically local to the ALU and accessible by all threads within the warp.} and local memory\footnote{Each thread has local memory which is not accessible to any other thread}.
+
+While global memory is the most flexible and plentiful - typically on the order of gigabytes on current generation hardware - it is also the slowest. 
+
+Shared memory is roughly equivelant to a CPU's L2 cache. It can be used for intra-thread synchronization and resource sharing. It is significantly faster than global memory.
+
+Finally, local memory - similar to a CPU L1 cache - provides thread-local storage. Local memory provides the lowest latency of all of the memory spaces.
+
+In its current form, GoLightly makes little use of shared or local memory. Modifying the application to take advantage of those may improve performance.
+
+
 
 
 

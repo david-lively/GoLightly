@@ -19,32 +19,23 @@ Unlike CPUs, GPUs are capable of running thousands of threads in parallel using 
 
 This independence is crucial to performant GPU-based applications, as detailed in \autoref{sec:simd}.
 
-
-GPUs were initially designed for one thing: to determine, as quickly as possibly, what color a pixel should be. 
-
-
-
-.... more history stuff here...
-
-
 \subsection{SIMD}\label{sec:simd}
 
-GPUs implement what is known as a single-instruction, multiple-data (SIMD)\cite{techpattichis2003} processing model.
+In a SIMD architecture, a core may consist of a single ALU, with multiple register banks. Separate "threads" load different data into dedicated register banks. The ALU executes identitical operations on all registers simultaneously. In this way, each register bank is analagous to a CPU "thread." However, since the same instruction must be executed on all register sets at every step, this design is not as flexible as a system where each core is truly independent.
 
-In a SIMD architecture, a core may consist of a single ALU, with multiple register banks. Separate "threads" load different data into dedicated register banks. The ALU executes identitical operations on all registers simultaneously.
-
-The approach provides some benefits and limitations:
+That said, the approach provides some benefits and limitations:
 
 \begin{itemize}
 	\item Fewer components are required per core since fewer ALUs are required. Leads to reduced die space requirements.
-	\item Better code caching. A single ALU, and corresponding cache, are used for many threads, eliminating the need to load or monitor cache behavior per thread.
-	\item TODO
+	\item Better code caching. A single ALU, and corresponding cache, are used for many threads, eliminating the need to load or monitor code cache behavior per thread.
+	\item Smaller footprint. Use of fewer components allows more cores to be placed within a given physical space. 
 \end{itemize}
 
 
 \subsection{FDTD in SIMD}
 
-TODO: why FDTD maps well to GPUs
+FDTD's leap-frog update method, whereby E fields and H fields are successively calculated, is well-suited to a GPU implementation. E field values depend on adjacent H field values, and visa-versa. Since the E-field update equation requires knowledge only of the H field state and previous E field state, each field component can be calculated independently with no opportunity for a pipeline stall or race condition. 
+
 
 
 
