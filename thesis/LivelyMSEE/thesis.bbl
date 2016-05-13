@@ -1,4 +1,18 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{raycasting}
+
+
+\bibitem{nvidiaNationalLabs}
+{\sc Corporation, N.}
+\newblock U.s. to build two flagship supercomputers for national labs, 2014.
+
+\bibitem{geodesicGrid}
+{\sc Ma, K.-L., Xie, J., and Yu, H.}
+\newblock Scalable visualizing large 3d geodesic grid data with massively
+  distributed gpus.
+\newblock In {\em In Proceedings of 2014 IEEE Large Data Analysis and
+  Visualization Symposium (LDAV)\/} (Nov 2014), pp.~3--10.
 
 \bibitem{Massingill:2007:SAP:1772070.1772078}
 {\sc Massingill, B.~L., Mattson, T.~G., and Sanders, B.~A.}
@@ -39,6 +53,13 @@
 {\sc Shi, L., Liu, W., Zhang, H., Xie, Y., and Wang, D.}
 \newblock A survey of gpu-based medical image computing techniques.
 \newblock {\em Quantitative Imaging in Medicine and Surgery 2}, 3 (2012).
+
+\bibitem{Strzodka2013381}
+{\sc Strzodka, R., Cohen, J., and Posey, S.}
+\newblock Gpu-accelerated algebraic multigrid for applied \{CFD\}.
+\newblock {\em Procedia Engineering 61\/} (2013), 381 -- 387.
+\newblock 25th International Conference on Parallel Computational Fluid
+  Dynamics.
 
 \bibitem{wu2009clustering}
 {\sc Wu, R., Zhang, B., and Hsu, M.}
