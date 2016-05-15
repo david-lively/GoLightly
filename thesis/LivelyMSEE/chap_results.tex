@@ -11,11 +11,13 @@
 \begin{table}
 	\centering
 	\label{tab:modelColorComponentUsage}
-	\begin{tabular}{l | l}		
-		\includegraphics[width=0.4\textwidth]{point-source-comparison-golightly.png} & \includegraphics[width=0.4\textwidth]{point-source-comparison-golightly.png}
+	\begin{tabular}{c | c}		
+		\includegraphics[width=0.4\textwidth]{point-source-comparison-golightly.png} &  \includegraphics[width=0.4\textwidth]{point-source-comparison-meep.png} \\
+		GoLightly (A) & Meep (B) \\
 	\end{tabular}
-	\caption{blah}
+	\caption{Point source with Dirlect boundary. GoLightly (A) and Meep (B) results.}
 \end{table}
+
 
 
 Metrics were calculated using domain sizes ranging from 128x64 to 8192x4096 over 5000 frames. (In this case, a frame represents a complete time step wherein both E and H fields are updated.) For benchmarking purposes, the visualizer was disabled.
@@ -50,6 +52,8 @@ Comparing to Meep:
 	\caption{GoLightly vs Meep}
 	\label{fig:gpuVsMeep}
 \end{figure}
+
+In \autoref{fig:gpuVsMeep}, note some performance variance near the middle and end of the graph. This appears to be caused by suboptimal cache usage at some domain sizes. Multiple runs have consistently exhibited this behavior.
 
 \begin{figure}[H]
 	\centering

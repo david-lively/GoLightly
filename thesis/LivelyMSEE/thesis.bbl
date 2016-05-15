@@ -3,9 +3,26 @@
 \bibitem{raycasting}
 
 
+\bibitem{Chi:2009:MLG:1651932.1652161}
+{\sc Chi, H.-M., Moskowitz, H., Ersoy, O.~K., Altinkemer, K., Gavin, P.~F.,
+  Huff, B.~E., and Olsen, B.~A.}
+\newblock Machine learning and genetic algorithms in pharmaceutical development
+  and manufacturing processes.
+\newblock {\em Decis. Support Syst. 48}, 1 (Dec. 2009), 69--80.
+
 \bibitem{nvidiaNationalLabs}
 {\sc Corporation, N.}
 \newblock U.s. to build two flagship supercomputers for national labs, 2014.
+
+\bibitem{globus2006automated}
+{\sc Globus, A., Hornby, G., Linden, D., and Lohn, J.}
+\newblock Automated antenna design with evolutionary algorithms.
+
+\bibitem{Goldberg:1989:GAS:534133}
+{\sc Goldberg, D.~E.}
+\newblock {\em Genetic Algorithms in Search, Optimization and Machine
+  Learning}, 1st~ed.
+\newblock Addison-Wesley Longman Publishing Co., Inc., Boston, MA, USA, 1989.
 
 \bibitem{geodesicGrid}
 {\sc Ma, K.-L., Xie, J., and Yu, H.}
@@ -20,6 +37,18 @@
   programming).
 \newblock In {\em Proceedings of the 14th Conference on Pattern Languages of
   Programs\/} (New York, NY, USA, 2007), PLOP '07, ACM, pp.~6:1--6:15.
+
+\bibitem{Mitchell:1998:IGA:522098}
+{\sc Mitchell, M.}
+\newblock {\em An Introduction to Genetic Algorithms}.
+\newblock MIT Press, Cambridge, MA, USA, 1998.
+
+\bibitem{MOSETTI1994105}
+{\sc Mosetti, G., Poloni, C., and Diviacco, B.}
+\newblock Optimization of wind turbine positioning in large windfarms by means
+  of a genetic algorithm.
+\newblock {\em Journal of Wind Engineering and Industrial Aerodynamics 51}, 1
+  (1994), 105 -- 116.
 
 \bibitem{Nickolls:2008:SPP:1365490.1365500}
 {\sc Nickolls, J., Buck, I., Garland, M., and Skadron, K.}

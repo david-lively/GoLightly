@@ -1,34 +1,35 @@
 \BOOKMARK [0][-]{chapter*.2}{LIST OF FIGURES}{}% 1
 \BOOKMARK [0][-]{chapter*.3}{LIST OF TABLES}{}% 2
 \BOOKMARK [0][-]{chapter.1}{Introduction}{}% 3
-\BOOKMARK [1][-]{section.1.1}{FDTD Overview}{chapter.1}% 4
-\BOOKMARK [2][-]{subsection.1.1.1}{Wave equation}{section.1.1}% 5
-\BOOKMARK [2][-]{subsection.1.1.2}{Yee Cell}{section.1.1}% 6
-\BOOKMARK [0][-]{chapter.2}{Device Architecture}{}% 7
-\BOOKMARK [1][-]{section.2.1}{CPU}{chapter.2}% 8
-\BOOKMARK [1][-]{section.2.2}{GPU}{chapter.2}% 9
-\BOOKMARK [2][-]{subsection.2.2.1}{SIMD}{section.2.2}% 10
-\BOOKMARK [2][-]{subsection.2.2.2}{FDTD in SIMD}{section.2.2}% 11
-\BOOKMARK [0][-]{chapter.3}{Meep}{}% 12
-\BOOKMARK [1][-]{section.3.1}{Modeling}{chapter.3}% 13
-\BOOKMARK [1][-]{section.3.2}{Performance}{chapter.3}% 14
-\BOOKMARK [1][-]{section.3.3}{Limitations}{chapter.3}% 15
-\BOOKMARK [0][-]{chapter.4}{GoLightly}{}% 16
-\BOOKMARK [1][-]{section.4.1}{Goals}{chapter.4}% 17
-\BOOKMARK [1][-]{section.4.2}{Architecture}{chapter.4}% 18
-\BOOKMARK [2][-]{subsection.4.2.1}{Model Processor}{section.4.2}% 19
-\BOOKMARK [2][-]{subsection.4.2.2}{Simulator}{section.4.2}% 20
-\BOOKMARK [2][-]{subsection.4.2.3}{Visualizer}{section.4.2}% 21
-\BOOKMARK [1][-]{section.4.3}{Modeling approach}{chapter.4}% 22
-\BOOKMARK [1][-]{section.4.4}{Testing and Validation Methodology}{chapter.4}% 23
-\BOOKMARK [2][-]{subsection.4.4.1}{Analytical Result}{section.4.4}% 24
-\BOOKMARK [2][-]{subsection.4.4.2}{Numerical Result}{section.4.4}% 25
-\BOOKMARK [0][-]{chapter.5}{Results}{}% 26
-\BOOKMARK [1][-]{section.5.1}{Optimization and Enhancements}{chapter.5}% 27
-\BOOKMARK [0][-]{chapter.6}{Conclusions}{}% 28
-\BOOKMARK [1][-]{section.6.1}{Usability}{chapter.6}% 29
-\BOOKMARK [1][-]{section.6.2}{Future Work}{chapter.6}% 30
-\BOOKMARK [2][-]{subsection.6.2.1}{Genetic Algorithms}{section.6.2}% 31
-\BOOKMARK [2][-]{subsection.6.2.2}{Arbitrary Domain Shape and PML Sinks}{section.6.2}% 32
-\BOOKMARK [1][-]{section.6.3}{Final Words}{chapter.6}% 33
-\BOOKMARK [0][-]{chapter.7}{REFERENCES}{}% 34
+\BOOKMARK [0][-]{chapter.2}{Device Architecture}{}% 4
+\BOOKMARK [1][-]{section.2.1}{CPU}{chapter.2}% 5
+\BOOKMARK [1][-]{section.2.2}{GPU}{chapter.2}% 6
+\BOOKMARK [2][-]{subsection.2.2.1}{SIMD}{section.2.2}% 7
+\BOOKMARK [0][-]{chapter.3}{FDTD}{}% 8
+\BOOKMARK [1][-]{section.3.1}{Overview}{chapter.3}% 9
+\BOOKMARK [1][-]{section.3.2}{Wave equation}{chapter.3}% 10
+\BOOKMARK [1][-]{section.3.3}{Yee Cell}{chapter.3}% 11
+\BOOKMARK [2][-]{subsection.3.3.1}{FDTD in SIMD}{section.3.3}% 12
+\BOOKMARK [0][-]{chapter.4}{Meep}{}% 13
+\BOOKMARK [1][-]{section.4.1}{Modeling}{chapter.4}% 14
+\BOOKMARK [1][-]{section.4.2}{Performance}{chapter.4}% 15
+\BOOKMARK [0][-]{chapter.5}{GoLightly}{}% 16
+\BOOKMARK [1][-]{section.5.1}{Goals}{chapter.5}% 17
+\BOOKMARK [1][-]{section.5.2}{Architecture}{chapter.5}% 18
+\BOOKMARK [2][-]{subsection.5.2.1}{Model Processor}{section.5.2}% 19
+\BOOKMARK [2][-]{subsection.5.2.2}{Simulator}{section.5.2}% 20
+\BOOKMARK [2][-]{subsection.5.2.3}{Visualizer}{section.5.2}% 21
+\BOOKMARK [1][-]{section.5.3}{Modeling approach}{chapter.5}% 22
+\BOOKMARK [1][-]{section.5.4}{Testing and Validation Methodology}{chapter.5}% 23
+\BOOKMARK [2][-]{subsection.5.4.1}{Analytical Result}{section.5.4}% 24
+\BOOKMARK [2][-]{subsection.5.4.2}{Numerical Result}{section.5.4}% 25
+\BOOKMARK [0][-]{chapter.6}{Results}{}% 26
+\BOOKMARK [1][-]{section.6.1}{Optimization and Enhancements}{chapter.6}% 27
+\BOOKMARK [0][-]{chapter.7}{Conclusions}{}% 28
+\BOOKMARK [1][-]{section.7.1}{Usability}{chapter.7}% 29
+\BOOKMARK [1][-]{section.7.2}{Future Work}{chapter.7}% 30
+\BOOKMARK [2][-]{subsection.7.2.1}{GoLightly Improvements}{section.7.2}% 31
+\BOOKMARK [2][-]{subsection.7.2.2}{Genetic Algorithms}{section.7.2}% 32
+\BOOKMARK [2][-]{subsection.7.2.3}{Arbitrary Domain Shape and PML Sinks}{section.7.2}% 33
+\BOOKMARK [1][-]{section.7.3}{Final Words}{chapter.7}% 34
+\BOOKMARK [0][-]{chapter.8}{REFERENCES}{}% 35

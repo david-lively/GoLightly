@@ -9,9 +9,9 @@ Users typically run many different applications in parallel: a web browser, musi
 
 In a modern multi-core CPU, each core provides a dedicated ALU and register set. This allows each core to operate as an independent device. This architecture is advantageous when the device is required to perform disparate operations.
 
-However, this approach also introduces some performance limitations. If we wish to perform identical operations on large datasets, we are limited to 4-8 threads. The same processor that excels at executing many different tasks at the same time performs sub-optimally. 
+However, this approach also introduces some performance limitations. The same processor that excels at executing many different tasks at the same time performs sub-optimally. 
 
-When running FDTD on a CPU, each core's ALU executes essentially the same operations on a dedicated register set. Each ALU performs the same operation at the same time, indicating that the additional ALUs are redundant. Thus, the flexible, general-purpose nature of a CPU becomes a liability.
+Each ALU performs the same operation at the same time, indicating that the additional ALUs are redundant. Thus, the flexible, general-purpose nature of a CPU becomes a limitation.
 
 \section{GPU}
 
@@ -28,13 +28,8 @@ That said, the approach provides some benefits and limitations:
 \begin{itemize}
 	\item Fewer components are required per core since fewer ALUs are required. Leads to reduced die space requirements.
 	\item Better code caching. A single ALU, and corresponding cache, are used for many threads, eliminating the need to load or monitor code cache behavior per thread.
-	\item Smaller footprint. Use of fewer components allows more cores to be placed within a given physical space. 
 \end{itemize}
 
-
-\subsection{FDTD in SIMD}
-
-FDTD's leap-frog update method, whereby E fields and H fields are successively calculated, is well-suited to a GPU implementation. E field values depend on adjacent H field values, and visa-versa. Since the E-field update equation requires knowledge only of the H field state and previous E field state, each field component can be calculated independently with no opportunity for a pipeline stall or race condition. 
 
 
 

@@ -15,16 +15,12 @@ It is worth noting that Meep provides a "material function" capability. This all
 
 \section{Performance}
 
-Meep is a mature, highly-optimized suite of tools. While complex to configure and use, it scales well across multiple machines, relying on the MPI protocol to keep nodes within a simulation cluster in sync. 
+Meep is a mature, highly-optimized suite of tools. It scales well across multiple machines, relying on the MPI protocol to keep nodes within a simulation cluster in sync. 
 
 While performant when compared to other FDTD software, Meep suffers from the same architecture-imposed limitations of all CPU-based implementations. The limited number of processing cores available on a general-purpose CPU restricts the number of data points that can be be processed within a given time frame. This problem can be solved by provisioning additional computers which would run in parallel, distributing the computational load evenly across the resulting cluster.
 
 This sort of cluster configuration incurs its own overhead. Although a domain may be divided into chunks and distributed across cluster nodes, FDTD boundary conditions require that, at some point, parts of the divided domain must be exchanged between nodes to maintain continuity. This necessitates installation of a high-speed local network and supporting hardware. 
 
-\section{Limitations}
-
-The manner in which models are defined, poor performance on single machines and laptops, and incompatibility with Microsoft Windows all indicate that this system is not suitable for rapid design iteration. To that end, we present an alternative, GPU-based approach. (See \autoref{ch:golightly})
- 
 
 
 
