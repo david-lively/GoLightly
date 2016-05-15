@@ -72,18 +72,22 @@ This will be important in the discussion between CPU and GPU architectures as yo
 	\begin{tabular}{l | c | l}
 		Symbol	& Definition & Description \\
 		\hline				\\										 	 
+		$C_a$	& $\frac{1}{\epsilon_0}$ & Permittivity of free space	\\
+		$C_b$	& $\frac{dt}{dx}  \frac{1}{\sqrt{\epsilon_0 \epsilon_r}}$ & Permittivity at the location $i,j$\\
+		$D_a$	& $\frac{1}{\mu_0}$	& Permeability of free space \\
+		$D_b$	& $\frac{dt}{dx}\frac{1}{\sqrt{\mu_0 \mu_r}}$	& Permeability at the location $i,j$\\
+		$dx$ 	& $\frac{\lambda}{10}$ 			& Spatial step as a function of max source  fundamental frequency 					\\
+		$dt$ 	& $\frac{dx}{\sqrt{2}} * 0.9$		& Time step \\
 		$i$ 	& &	Field element location along the domain $X$ axis  \\
 		$j$   	& &	Field element location along the domain $Y$ axis  \\
 		$t$   	& &	Time step ($t_E = t_H \frac{+}{-}\frac{1}{2}$) \\
-		$E_Z$ 	& &Electric field amplitude in $Z$ \\
-		$H_X$ 	& &Magnetic field amplitude in $X$ \\
-		$H_Y$	& &Magnetic field amplitude in $Y$ \\
-		$C_a$	& &Permittivity of free space	\\
-		$C_b$	& $\frac{1}{\sqrt{\epsilon_0 \epsilon_R}}$ & Permittivity at the location $i,j$\\
-		$D_a$	& 	& Permeability of free space \\
-		$D_b$	& $\frac{1}{\sqrt{\mu_0 \mu_r}}$	& Permeability at the location $i,j$\\
+		$E_Z$ 	& & Electric field amplitude in $Z$ \\
+		$H_X$ 	& & Magnetic field amplitude in $X$ \\
+		$H_Y$	& & Magnetic field amplitude in $Y$ \\
 	\end{tabular}
 \end{table}
+
+Since Maxwell's equations are scale-invariant, GoLightly substitutes 1 for constants such as $C$, $\mu_0$ and $\epsilon_0$. The $\frac{0.9}{\sqrt{2}}$ scalar in $dt$ prevents aliasing, and corrects for simulation dimensionality
 
 
 \subsection{FDTD in SIMD}
