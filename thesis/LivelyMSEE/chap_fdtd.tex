@@ -87,7 +87,7 @@ Since Maxwell's equations are scale-invariant, GoLightly substitutes 1 for const
 
 In equations \ref{eq:ezupdate}, \ref{eq:hxupdate} and \ref{eq:hyupdate}, note that each $E_{i,j}^{t+1}$ field update depends only upon the previous $E$ value ($E_{i,j}^{t}$), and the previous adjacent $H$ values ($H_X^{t+\frac{1}{2}}$ and $H_Y^{t+\frac{1}{2}}$). This allows each field component to be updated without regard for any other value in the same field. As such, $E$ field values in any order without the risk of a race condition. The same principle applies to $H$-field updates.  
 
-\subsection{Leap Frog: Stepping in Space and Time}
+\section{Leap Frog: Stepping in Space and Time}
 
 In equations \ref{eq:ezupdate}, \ref{eq:hxupdate} and \ref{eq:hyupdate}, note the presence of a "half step" in time ($F^{t + \frac{1}{2}}$) and space $F_{i \frac{+}{-}\frac{1}{2},j \frac{-}{+}\frac{1}{2}}$.
 
@@ -106,11 +106,11 @@ The spatial relationship between $E$ and $H$ grids is illustrated in the Yee lat
 This arrangement reflects the manner in which a wave will propagate through the domain. In the half time step between $E$ and $H$ updates, the wave moves one half-cell. If the $E$ and $H$ components were coincident, the simulation would degrade to a large collection of individual points rather than a discretized domain.
 
 
-\subsection{Boundary Conditions}
+\section{Boundary Conditions}
 
 Recall the $H_Y$ update equation \autoref{eq:hyupdate}, and note that it depends on two adjacent $E_Z$ values on the $X$ axis. The finite grid does not contain enough information to update the $H$ values that lie on the outside of the domain. For instance, ${H_Y}_{0,\frac{1}{2}}$ requires ${E_Z}_{\frac{1}{2},\frac{1}{2}}$ and \bm{${E_Z}_{-\frac{1}{2},\frac{1}{2}}$}.
 
-Since the position $(-\frac{1}{2},\frac{1,2})$ does not exist, the simulator cannot update this value. The simulator must take this case into account by implementing some sort of absorbing boundary condition, or the wave will reflect from the boundaries. 
+Since the position $(-\frac{1}{2},\frac{1}{2})$ does not exist, the simulator cannot update this value. The simulator must take this case into account by implementing some sort of absorbing boundary condition, or the wave will reflect from the boundaries. 
 
 We implement the Perfectly Matched Layer (PML) as described in \cite{BERENGER1994185}. 
 
@@ -118,7 +118,7 @@ A detailed explanation of PML is beyond the scope of this thesis. In practice, P
 
 
 
-\subsection{FDTD in SIMD}
+\section{FDTD in SIMD}
 
 FDTD's leap-frog update method, whereby E fields and H fields are successively calculated, is well-suited to a GPU implementation. E field values depend on adjacent H field values, and visa-versa. Since the E-field update equation requires knowledge only of the H field state and previous E field state, each field component can be calculated independently with no opportunity for a pipeline stall or race condition. 
 

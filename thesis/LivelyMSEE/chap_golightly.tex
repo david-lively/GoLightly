@@ -25,7 +25,7 @@ GoLightly comprises three primary application blocks:
 	\item Visualizer \ref{sec:visualizer}
 \end{itemize}
 
-\subsection{Model Processor}\label{sec:modelProcessor}
+\section{Model Processor}\label{sec:modelProcessor}
 
 The model processor (MP) is responsible for initialization of the simulator. When launching the simulator, a domain size and image file, containing a coded image of the desired dielectric, as well as a max $\epsilon$ are specified.
 
@@ -61,7 +61,7 @@ For each element:
 
 Once the dielectric, sources and monitors are derived from the model image, the model processor transfers control to the simulator.
 
-\subsection{Simulator}\label{sec:simulator}
+\section{Simulator}\label{sec:simulator}
 
 The simulator block implements the FDTD algorithm. Given the dielectric, source and monitor configurations from the model processor, the simulator initializes the GPU, transfers required data from host memory to the GPU, and begins the simulation loop.
 
@@ -97,7 +97,7 @@ The simulator repeats this operation until the application is closed, or the des
 
 Finally, the completed field arrays are copied to the host from the GPU, and saved to disk in bitmap and CSV format for later analysis. 
 
-\subsection{Visualizer}\label{sec:visualizer}
+\section{Visualizer}\label{sec:visualizer}
 
 If enabled \footnote{The visualizer requires some GPU overhead. As such, its use may affect simulator performance.}, the visualizer application block provides interactive display of the simulation. 
 
@@ -113,7 +113,7 @@ After the required number of frames have been completed, the visualizer launches
 
 A completed PBO is bound to a uniform input for a shader (\autoref{listing:basicVertGlsl},\autoref{listing:basicFragGlsl}) which renders the texture to the visualizer window. 
 
-\lstinputlisting[language=c++,caption=GLSL Vertex Shaderr]{basic_vert.glsl}\label{listing:basicVertGlsl}
+\lstinputlisting[language=c++,caption=GLSL Vertex Shader]{basic_vert.glsl}\label{listing:basicVertGlsl}
 \lstinputlisting[language=c++,caption=GLSL Fragment Shader]{basic_frag.glsl}\label{listing:basicFragGlsl}
 
 This process runs continuously. However, the texture is only updated at the frequency requested by the user when the simulation was launched. 
