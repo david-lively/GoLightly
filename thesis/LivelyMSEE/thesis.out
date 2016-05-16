@@ -6,10 +6,10 @@
 \BOOKMARK [1][-]{section.2.2}{GPU}{chapter.2}% 6
 \BOOKMARK [2][-]{subsection.2.2.1}{SIMD}{section.2.2}% 7
 \BOOKMARK [0][-]{chapter.3}{FDTD}{}% 8
-\BOOKMARK [1][-]{section.3.1}{Overview}{chapter.3}% 9
-\BOOKMARK [1][-]{section.3.2}{Wave equation}{chapter.3}% 10
-\BOOKMARK [1][-]{section.3.3}{Yee Cell}{chapter.3}% 11
-\BOOKMARK [2][-]{subsection.3.3.1}{FDTD in SIMD}{section.3.3}% 12
+\BOOKMARK [1][-]{section.3.1}{Wave equation}{chapter.3}% 9
+\BOOKMARK [1][-]{section.3.2}{Yee Cell}{chapter.3}% 10
+\BOOKMARK [2][-]{subsection.3.2.1}{Leap Frog: Stepping in Space and Time}{section.3.2}% 11
+\BOOKMARK [2][-]{subsection.3.2.2}{FDTD in SIMD}{section.3.2}% 12
 \BOOKMARK [0][-]{chapter.4}{Meep}{}% 13
 \BOOKMARK [1][-]{section.4.1}{Modeling}{chapter.4}% 14
 \BOOKMARK [1][-]{section.4.2}{Performance}{chapter.4}% 15

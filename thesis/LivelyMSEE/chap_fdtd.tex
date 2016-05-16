@@ -2,8 +2,6 @@
 \chapter{FDTD} \label{ch:fdtd}
 
 
-\section{Overview}
-
 FDTD expresses Maxwell's equations as a set of discretized time-domain equations\cite{Yee}. These equations describe each electric field component in terms if its orthogonal, coupled magnetic fields, and each magnetic field component as a function of its coupled electric fields.
 
 
@@ -18,7 +16,7 @@ In a time-domain simulation, the wave equation for  $ E_z $ is of the form:
 Equation \ref{eq:waveequation} states that the temporal derivative (change in amplitude) of $E_z$ is a function of the $Y$-axis spatial derivative of the $H_x$ field and the $X$-axis spatial derivative of the $H_y$ field.
 
 
-In order to apply this equation to a computational domain, FDTD defines a discretization strategy. The simulation domain is divided into cells, and each frame is updated using a fixed time step derived from parameters such as source wavelength and simulation dimensionality.
+In order to apply this equation to a computational domain, FDTD defines discretization strategies for simulated time and space. The simulation domain is divided into cells, and each frame is updated using a fixed time step derived from parameters such as source wavelength and simulation dimensionality.
 
 
 \section{Yee Cell}
@@ -35,25 +33,25 @@ Yee \cite{Yee} defines a computational unit known as a "cell." The cell describe
 More formally, we may expand the $E_Z$ wave equation, arriving at:
 
 \begin{equation} \label{eq:ezupdate}
-{E_z}_{i,j}^{t} = C_a * {E_z}_{i,j}^{t-1} 
-+ C_b * ({H_x}_{i,j+\frac{1}{2}}^{t-\frac{1}{2}} - {H_x}_{i,j-\frac{1}{2}}^{t-\frac{1}{2}})
-+ C_b * ({H_y}_{i+\frac{1}{2},j}^{t-\frac{1}{2}} - {H_xy}_{i-\frac{1}{2},j}^{t-\frac{1}{2}})
+{E_z}_{i,j}^{t+1} = C_a * {E_z}_{i,j}^{t} 
++ C_b * ({H_x}_{i,j+\frac{1}{2}}^{t+\frac{1}{2}} - {H_x}_{i,j-\frac{1}{2}}^{t+\frac{1}{2}})
++ C_b * ({H_y}_{i+\frac{1}{2},j}^{t+\frac{1}{2}} - {H_xy}_{i-\frac{1}{2},j}^{t+\frac{1}{2}})
 \end{equation}
 
 Similarly, the equations for the coupled fields $H_x$ and $H_y$ may be expressed as:
 \begin{equation} \label{eq:hxupdate}
-{H_x}_{i,j}^t = D_a * {H_x}_{i,j}^{t-1} + D_b * (
-{E_z}_{i,j+\frac{1}{2}}^{t-\frac{1}{2}} 
+{H_x}_{i,j}^{t+1} = D_a * {H_x}_{i,j}^{t} + D_b * (
+{E_z}_{i,j+\frac{1}{2}}^{t+\frac{1}{2}} 
 -
-{E_z}_{i,j-\frac{1}{2}}^{t-\frac{1}{2}}
+{E_z}_{i,j-\frac{1}{2}}^{t+\frac{1}{2}}
 )  
 \end{equation}
 
 \begin{equation} \label{eq:hyupdate}
-{H_y}_{i,j}^t = D_a * {H_y}_{i,j}^{t-1} + D_b * (
-{E_z}_{i+\frac{1}{2},j}^{t-\frac{1}{2}} 
+{H_y}_{i,j}^{t+1} = D_a * {H_y}_{i,j}^{t} + D_b * (
+{E_z}_{i+\frac{1}{2},j}^{t+\frac{1}{2}} 
 -
-{E_z}_{i-\frac{1}{2},j}^{t-\frac{1}{2}}
+{E_z}_{i-\frac{1}{2},j}^{t+\frac{1}{2}}
 )  
 \end{equation}
 
@@ -77,19 +75,21 @@ This will be important in the discussion between CPU and GPU architectures as yo
 		$C_b$	& $\frac{dt}{dx}  \frac{1}{\sqrt{\epsilon_0 \epsilon_r}}$ & Permittivity at the location $i,j$\\
 		$D_a$	& $\frac{1}{\mu_0}$	& Permeability of free space \\
 		$D_b$	& $\frac{dt}{dx}\frac{1}{\sqrt{\mu_0 \mu_r}}$	& Permeability at the location $i,j$\\
-
-		$i$ 	& &	Field element location along the domain $X$ axis  \\
-		$j$   	& &	Field element location along the domain $Y$ axis  \\
-		$t$   	& &	Time step ($t_E = t_H \frac{+}{-}\frac{1}{2}$) \\
+		$i$, $j$ 	& &	Field element location within the domain  \\
+		$t$   	& &	Current time step ($t_E = t_H \frac{+}{-}\frac{1}{2}$) \\
 		$E_Z$ 	& & Electric field amplitude in $Z$ \\
 		$H_X$ 	& & Magnetic field amplitude in $X$ \\
 		$H_Y$	& & Magnetic field amplitude in $Y$ \\
 	\end{tabular}
 \end{table}
 
-Since Maxwell's equations are scale-invariant, GoLightly substitutes 1 for constants such as $C$, $\mu_0$ and $\epsilon_0$. The $\frac{0.9}{\sqrt{2}}$ scalar in $dt$ prevents aliasing, and corrects for simulation dimensionality
+Since Maxwell's equations are scale-invariant, GoLightly substitutes 1 for constants such as $C$, $\mu_0$ and $\epsilon_0$. The $\frac{0.9}{\sqrt{2}}$ scalar in $dt$ prevents aliasing, and corrects for simulation dimensionality. 
 
+In equations \ref{eq:ezupdate}, \ref{eq:hxupdate} and \ref{eq:hyupdate}, note that each $E$ field update depends only upon the previous $E$ value ($E_Z^{t}$), and the previous adjacent $H$ values ($H_X^{t+\frac{1}{2}}$ and $H_Y^{t+\frac{1}{2}}$. This allows each field component to be updated without regard for any other value in the same field. This allows the simulator to update all $E$ field values in any order without the risk of a race condition. This also applies to $H$-field calculations. 
 
+\subsection{Leap Frog: Stepping in Space and Time}
+
+In equations \ref{eq:ezupdate}, \ref{eq:hxupdate} and \ref{eq:hyupdate},
 
 \subsection{FDTD in SIMD}
 
