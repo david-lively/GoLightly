@@ -83,13 +83,27 @@ This will be important in the discussion between CPU and GPU architectures as yo
 	\end{tabular}
 \end{table}
 
-Since Maxwell's equations are scale-invariant, GoLightly substitutes 1 for constants such as $C$, $\mu_0$ and $\epsilon_0$. The $\frac{0.9}{\sqrt{2}}$ scalar in $dt$ prevents aliasing, and corrects for simulation dimensionality. 
+Since Maxwell's equations are scale-invariant, GoLightly substitutes 1 for constants such as $C$, $\mu_0$ and $\epsilon_0$. The $\frac{0.9}{\sqrt{2}}$ scalar in $dt$ prevents aliasing, and corrects for simulation dimensionality\footnote{This value should be $\frac{0.9}{\sqrt{n}}$, where $n$ is 3 for a 3D domain, 2 for a 2D domain and 1 for a 1D domain.} 
 
-In equations \ref{eq:ezupdate}, \ref{eq:hxupdate} and \ref{eq:hyupdate}, note that each $E$ field update depends only upon the previous $E$ value ($E_Z^{t}$), and the previous adjacent $H$ values ($H_X^{t+\frac{1}{2}}$ and $H_Y^{t+\frac{1}{2}}$. This allows each field component to be updated without regard for any other value in the same field. This allows the simulator to update all $E$ field values in any order without the risk of a race condition. This also applies to $H$-field calculations. 
+In equations \ref{eq:ezupdate}, \ref{eq:hxupdate} and \ref{eq:hyupdate}, note that each $E_{i,j}^{t+1}$ field update depends only upon the previous $E$ value ($E_{i,j}^{t}$), and the previous adjacent $H$ values ($H_X^{t+\frac{1}{2}}$ and $H_Y^{t+\frac{1}{2}}$). This allows each field component to be updated without regard for any other value in the same field. As such, $E$ field values in any order without the risk of a race condition. The same principle applies to $H$-field updates.  
 
 \subsection{Leap Frog: Stepping in Space and Time}
 
-In equations \ref{eq:ezupdate}, \ref{eq:hxupdate} and \ref{eq:hyupdate},
+In equations \ref{eq:ezupdate}, \ref{eq:hxupdate} and \ref{eq:hyupdate}, note the presence of a "half step" in time ($F^{t + \frac{1}{2}}$) and space $F_{i \frac{+}{-}\frac{1}{2},j \frac{-}{+}\frac{1}{2}}$.
+
+This $t\frac{+}{-}\frac{1}{2}$ represents the temporal step size between an $E$-field update and the next $H$-field update,and visa-versa. Similarly, the spatial offset $x\frac{+}{-}\frac{1}{2}$ represents the distance between an $E$-field component and its adjacent, dependent $H$ values.
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm,keepaspectratio]{YeeMesh.png}
+	\caption{4x4 Yee Lattice}
+	\label{fig:yeeLattice}
+\end{figure}
+
+The spatial relationship between $E$ and $H$ grids is illustrated in the Yee lattice in \autoref{fig:yeeLattice}. Note that each $E_Z$ component is in the middle of a cell, at the $(i + \frac{1}{2}, j + \frac{1}{2})$ position where ($i,j$) is  the upper-left corner of the cell. $H$ components, however, are positioned at integer coordinates.
+
+This arrangement reflects the manner in which a wave will propagate through the domain. In the half time step between $E$ and $H$ updates, the wave moves one half-cell. If the $E$ and $H$ components were coincident, the simulation would degrade to a large collection of individual points rather than a discretized domain.
 
 \subsection{FDTD in SIMD}
 

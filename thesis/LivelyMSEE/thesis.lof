@@ -1,17 +1,18 @@
-\contentsline {figure}{\numberline {3.1}{\ignorespaces 2D $TM_Z$ Yee Cell}}{6}{figure.3.1}
-\contentsline {figure}{\numberline {5.1}{\ignorespaces 2D Whispering Gallery Mode Sensor}}{24}{figure.5.1}
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Arbitrarily-shaped source (Red pixels)}}{26}{figure.5.2}
-\contentsline {figure}{\numberline {5.3}{\ignorespaces Arbitrarily-shaped source after 20 frames}}{26}{figure.5.3}
-\contentsline {figure}{\numberline {5.4}{\ignorespaces Arbitrarily-shaped source after 100 frames}}{26}{figure.5.4}
-\contentsline {figure}{\numberline {5.5}{\ignorespaces $TM_Z$ Test Model with Plane Wave.}}{27}{figure.5.5}
-\contentsline {figure}{\numberline {5.6}{\ignorespaces Snell's Law}}{28}{figure.5.6}
-\contentsline {figure}{\numberline {5.7}{\ignorespaces Plane wave with $\epsilon _R = 1$}}{30}{figure.5.7}
-\contentsline {figure}{\numberline {5.8}{\ignorespaces Time-averaged (RMS) output in free space $\epsilon _R = 1$}}{30}{figure.5.8}
-\contentsline {figure}{\numberline {5.9}{\ignorespaces Steady state with $\epsilon _R = 9$}}{31}{figure.5.9}
-\contentsline {figure}{\numberline {5.10}{\ignorespaces Raw monitor output with $\epsilon _R = 9$}}{31}{figure.5.10}
-\contentsline {figure}{\numberline {5.11}{\ignorespaces RMS output with $\epsilon _R = 9$}}{32}{figure.5.11}
-\contentsline {figure}{\numberline {5.12}{\ignorespaces Normalized output with $\epsilon _R = 9$}}{33}{figure.5.12}
-\contentsline {figure}{\numberline {6.1}{\ignorespaces GoLightly: seconds for 5000 frames with the given domain size}}{35}{figure.6.1}
-\contentsline {figure}{\numberline {6.2}{\ignorespaces GoLightly: Completed E and H updates per second}}{36}{figure.6.2}
-\contentsline {figure}{\numberline {6.3}{\ignorespaces GoLightly vs Meep}}{37}{figure.6.3}
-\contentsline {figure}{\numberline {6.4}{\ignorespaces Speedup - Meep Time / GoLightly Time}}{38}{figure.6.4}
+\contentsline {figure}{\numberline {3.1}{\ignorespaces 2D $TM_Z$ Yee Cell\relax }}{6}{figure.caption.5}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces 4x4 Yee Lattice\relax }}{8}{figure.caption.7}
+\contentsline {figure}{\numberline {5.1}{\ignorespaces 2D Whispering Gallery Mode Sensor\relax }}{25}{figure.caption.9}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Arbitrarily-shaped source (Red pixels)\relax }}{26}{figure.caption.11}
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Arbitrarily-shaped source after 20 frames\relax }}{27}{figure.caption.12}
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Arbitrarily-shaped source after 100 frames\relax }}{27}{figure.caption.13}
+\contentsline {figure}{\numberline {5.5}{\ignorespaces $TM_Z$ Test Model with Plane Wave.\relax }}{27}{figure.caption.14}
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Snell's Law\relax }}{29}{figure.caption.15}
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Plane wave with $\epsilon _R = 1$\relax }}{31}{figure.caption.16}
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Time-averaged (RMS) output in free space $\epsilon _R = 1$\relax }}{31}{figure.caption.17}
+\contentsline {figure}{\numberline {5.9}{\ignorespaces Steady state with $\epsilon _R = 9$\relax }}{32}{figure.caption.18}
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Raw monitor output with $\epsilon _R = 9$\relax }}{32}{figure.caption.19}
+\contentsline {figure}{\numberline {5.11}{\ignorespaces RMS output with $\epsilon _R = 9$\relax }}{33}{figure.caption.20}
+\contentsline {figure}{\numberline {5.12}{\ignorespaces Normalized output with $\epsilon _R = 9$\relax }}{33}{figure.caption.21}
+\contentsline {figure}{\numberline {6.1}{\ignorespaces GoLightly: seconds for 5000 frames with the given domain size\relax }}{35}{figure.caption.23}
+\contentsline {figure}{\numberline {6.2}{\ignorespaces GoLightly: Completed E and H updates per second\relax }}{36}{figure.caption.24}
+\contentsline {figure}{\numberline {6.3}{\ignorespaces GoLightly vs Meep\relax }}{37}{figure.caption.25}
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Speedup - Meep Time / GoLightly Time\relax }}{38}{figure.caption.26}
