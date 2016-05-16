@@ -10,27 +10,28 @@
 \contentsline {section}{\numberline {3.1.}Wave equation}{5}{section.3.1}
 \contentsline {section}{\numberline {3.2.}Yee Cell}{5}{section.3.2}
 \contentsline {subsection}{\numberline {3.2.1.}Leap Frog: Stepping in Space and Time}{7}{subsection.3.2.1}
-\contentsline {subsection}{\numberline {3.2.2.}FDTD in SIMD}{9}{subsection.3.2.2}
-\contentsline {chapter}{\numberline {\hfill 4.\hbox {\hskip 0.8em}\ignorespaces }Meep}{10}{chapter.4}
-\contentsline {section}{\numberline {4.1.}Modeling}{10}{section.4.1}
-\contentsline {section}{\numberline {4.2.}Performance}{10}{section.4.2}
-\contentsline {chapter}{\numberline {\hfill 5.\hbox {\hskip 0.8em}\ignorespaces }GoLightly}{12}{chapter.5}
-\contentsline {section}{\numberline {5.1.}Goals}{12}{section.5.1}
-\contentsline {section}{\numberline {5.2.}Architecture}{13}{section.5.2}
-\contentsline {subsection}{\numberline {5.2.1.}Model Processor}{13}{subsection.5.2.1}
-\contentsline {subsection}{\numberline {5.2.2.}Simulator}{15}{subsection.5.2.2}
-\contentsline {subsection}{\numberline {5.2.3.}Visualizer}{22}{subsection.5.2.3}
-\contentsline {section}{\numberline {5.3.}Modeling approach}{25}{section.5.3}
-\contentsline {section}{\numberline {5.4.}Testing and Validation Methodology}{27}{section.5.4}
-\contentsline {subsection}{\numberline {5.4.1.}Analytical Result}{28}{subsection.5.4.1}
-\contentsline {subsection}{\numberline {5.4.2.}Numerical Result}{30}{subsection.5.4.2}
-\contentsline {chapter}{\numberline {\hfill 6.\hbox {\hskip 0.8em}\ignorespaces }Results}{35}{chapter.6}
-\contentsline {section}{\numberline {6.1.}Optimization and Enhancements}{38}{section.6.1}
-\contentsline {chapter}{\numberline {\hfill 7.\hbox {\hskip 0.8em}\ignorespaces }Conclusions}{40}{chapter.7}
-\contentsline {section}{\numberline {7.1.}Usability}{40}{section.7.1}
-\contentsline {section}{\numberline {7.2.}Future Work}{40}{section.7.2}
-\contentsline {subsection}{\numberline {7.2.1.}GoLightly Improvements}{40}{subsection.7.2.1}
-\contentsline {subsection}{\numberline {7.2.2.}Genetic Algorithms}{40}{subsection.7.2.2}
-\contentsline {subsection}{\numberline {7.2.3.}Arbitrary Domain Shape and PML Sinks}{41}{subsection.7.2.3}
-\contentsline {section}{\numberline {7.3.}Final Words}{42}{section.7.3}
-\contentsline {chapter}{REFERENCES}{43}{chapter.8}
+\contentsline {subsection}{\numberline {3.2.2.}Boundary Conditions}{9}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3.}FDTD in SIMD}{9}{subsection.3.2.3}
+\contentsline {chapter}{\numberline {\hfill 4.\hbox {\hskip 0.8em}\ignorespaces }Meep}{11}{chapter.4}
+\contentsline {section}{\numberline {4.1.}Modeling}{11}{section.4.1}
+\contentsline {section}{\numberline {4.2.}Performance}{11}{section.4.2}
+\contentsline {chapter}{\numberline {\hfill 5.\hbox {\hskip 0.8em}\ignorespaces }GoLightly}{13}{chapter.5}
+\contentsline {section}{\numberline {5.1.}Goals}{13}{section.5.1}
+\contentsline {section}{\numberline {5.2.}Architecture}{14}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1.}Model Processor}{14}{subsection.5.2.1}
+\contentsline {subsection}{\numberline {5.2.2.}Simulator}{16}{subsection.5.2.2}
+\contentsline {subsection}{\numberline {5.2.3.}Visualizer}{23}{subsection.5.2.3}
+\contentsline {section}{\numberline {5.3.}Modeling approach}{26}{section.5.3}
+\contentsline {section}{\numberline {5.4.}Testing and Validation Methodology}{28}{section.5.4}
+\contentsline {subsection}{\numberline {5.4.1.}Analytical Result}{29}{subsection.5.4.1}
+\contentsline {subsection}{\numberline {5.4.2.}Numerical Result}{31}{subsection.5.4.2}
+\contentsline {chapter}{\numberline {\hfill 6.\hbox {\hskip 0.8em}\ignorespaces }Results}{37}{chapter.6}
+\contentsline {section}{\numberline {6.1.}Optimization and Enhancements}{40}{section.6.1}
+\contentsline {chapter}{\numberline {\hfill 7.\hbox {\hskip 0.8em}\ignorespaces }Conclusions}{42}{chapter.7}
+\contentsline {section}{\numberline {7.1.}Usability}{42}{section.7.1}
+\contentsline {section}{\numberline {7.2.}Future Work}{42}{section.7.2}
+\contentsline {subsection}{\numberline {7.2.1.}GoLightly Improvements}{42}{subsection.7.2.1}
+\contentsline {subsection}{\numberline {7.2.2.}Genetic Algorithms}{42}{subsection.7.2.2}
+\contentsline {subsection}{\numberline {7.2.3.}Arbitrary Domain Shape and PML Sinks}{43}{subsection.7.2.3}
+\contentsline {section}{\numberline {7.3.}Final Words}{44}{section.7.3}
+\contentsline {chapter}{REFERENCES}{45}{chapter.8}

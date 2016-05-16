@@ -9,27 +9,28 @@
 \BOOKMARK [1][-]{section.3.1}{Wave equation}{chapter.3}% 9
 \BOOKMARK [1][-]{section.3.2}{Yee Cell}{chapter.3}% 10
 \BOOKMARK [2][-]{subsection.3.2.1}{Leap Frog: Stepping in Space and Time}{section.3.2}% 11
-\BOOKMARK [2][-]{subsection.3.2.2}{FDTD in SIMD}{section.3.2}% 12
-\BOOKMARK [0][-]{chapter.4}{Meep}{}% 13
-\BOOKMARK [1][-]{section.4.1}{Modeling}{chapter.4}% 14
-\BOOKMARK [1][-]{section.4.2}{Performance}{chapter.4}% 15
-\BOOKMARK [0][-]{chapter.5}{GoLightly}{}% 16
-\BOOKMARK [1][-]{section.5.1}{Goals}{chapter.5}% 17
-\BOOKMARK [1][-]{section.5.2}{Architecture}{chapter.5}% 18
-\BOOKMARK [2][-]{subsection.5.2.1}{Model Processor}{section.5.2}% 19
-\BOOKMARK [2][-]{subsection.5.2.2}{Simulator}{section.5.2}% 20
-\BOOKMARK [2][-]{subsection.5.2.3}{Visualizer}{section.5.2}% 21
-\BOOKMARK [1][-]{section.5.3}{Modeling approach}{chapter.5}% 22
-\BOOKMARK [1][-]{section.5.4}{Testing and Validation Methodology}{chapter.5}% 23
-\BOOKMARK [2][-]{subsection.5.4.1}{Analytical Result}{section.5.4}% 24
-\BOOKMARK [2][-]{subsection.5.4.2}{Numerical Result}{section.5.4}% 25
-\BOOKMARK [0][-]{chapter.6}{Results}{}% 26
-\BOOKMARK [1][-]{section.6.1}{Optimization and Enhancements}{chapter.6}% 27
-\BOOKMARK [0][-]{chapter.7}{Conclusions}{}% 28
-\BOOKMARK [1][-]{section.7.1}{Usability}{chapter.7}% 29
-\BOOKMARK [1][-]{section.7.2}{Future Work}{chapter.7}% 30
-\BOOKMARK [2][-]{subsection.7.2.1}{GoLightly Improvements}{section.7.2}% 31
-\BOOKMARK [2][-]{subsection.7.2.2}{Genetic Algorithms}{section.7.2}% 32
-\BOOKMARK [2][-]{subsection.7.2.3}{Arbitrary Domain Shape and PML Sinks}{section.7.2}% 33
-\BOOKMARK [1][-]{section.7.3}{Final Words}{chapter.7}% 34
-\BOOKMARK [0][-]{chapter.8}{REFERENCES}{}% 35
+\BOOKMARK [2][-]{subsection.3.2.2}{Boundary Conditions}{section.3.2}% 12
+\BOOKMARK [2][-]{subsection.3.2.3}{FDTD in SIMD}{section.3.2}% 13
+\BOOKMARK [0][-]{chapter.4}{Meep}{}% 14
+\BOOKMARK [1][-]{section.4.1}{Modeling}{chapter.4}% 15
+\BOOKMARK [1][-]{section.4.2}{Performance}{chapter.4}% 16
+\BOOKMARK [0][-]{chapter.5}{GoLightly}{}% 17
+\BOOKMARK [1][-]{section.5.1}{Goals}{chapter.5}% 18
+\BOOKMARK [1][-]{section.5.2}{Architecture}{chapter.5}% 19
+\BOOKMARK [2][-]{subsection.5.2.1}{Model Processor}{section.5.2}% 20
+\BOOKMARK [2][-]{subsection.5.2.2}{Simulator}{section.5.2}% 21
+\BOOKMARK [2][-]{subsection.5.2.3}{Visualizer}{section.5.2}% 22
+\BOOKMARK [1][-]{section.5.3}{Modeling approach}{chapter.5}% 23
+\BOOKMARK [1][-]{section.5.4}{Testing and Validation Methodology}{chapter.5}% 24
+\BOOKMARK [2][-]{subsection.5.4.1}{Analytical Result}{section.5.4}% 25
+\BOOKMARK [2][-]{subsection.5.4.2}{Numerical Result}{section.5.4}% 26
+\BOOKMARK [0][-]{chapter.6}{Results}{}% 27
+\BOOKMARK [1][-]{section.6.1}{Optimization and Enhancements}{chapter.6}% 28
+\BOOKMARK [0][-]{chapter.7}{Conclusions}{}% 29
+\BOOKMARK [1][-]{section.7.1}{Usability}{chapter.7}% 30
+\BOOKMARK [1][-]{section.7.2}{Future Work}{chapter.7}% 31
+\BOOKMARK [2][-]{subsection.7.2.1}{GoLightly Improvements}{section.7.2}% 32
+\BOOKMARK [2][-]{subsection.7.2.2}{Genetic Algorithms}{section.7.2}% 33
+\BOOKMARK [2][-]{subsection.7.2.3}{Arbitrary Domain Shape and PML Sinks}{section.7.2}% 34
+\BOOKMARK [1][-]{section.7.3}{Final Words}{chapter.7}% 35
+\BOOKMARK [0][-]{chapter.8}{REFERENCES}{}% 36

@@ -105,6 +105,19 @@ The spatial relationship between $E$ and $H$ grids is illustrated in the Yee lat
 
 This arrangement reflects the manner in which a wave will propagate through the domain. In the half time step between $E$ and $H$ updates, the wave moves one half-cell. If the $E$ and $H$ components were coincident, the simulation would degrade to a large collection of individual points rather than a discretized domain.
 
+
+\subsection{Boundary Conditions}
+
+Recall the $H_Y$ update equation \autoref{eq:hyupdate}, and note that it depends on two adjacent $E_Z$ values on the $X$ axis. The finite grid does not contain enough information to update the $H$ values that lie on the outside of the domain. For instance, ${H_Y}_{0,\frac{1}{2}}$ requires ${E_Z}_{\frac{1}{2},\frac{1}{2}}$ and \bm{${E_Z}_{-\frac{1}{2},\frac{1}{2}}$}.
+
+Since the position $(-\frac{1}{2},\frac{1,2})$ does not exist, the simulator cannot update this value. The simulator must take this case into account by implementing some sort of absorbing boundary condition, or the wave will reflect from the boundaries. 
+
+We implement the Perfectly Matched Layer (PML) as described in \cite{BERENGER1994185}. 
+
+A detailed explanation of PML is beyond the scope of this thesis. In practice, PML adds imaginary hyperplanes orthogonal to each field in the simulation. In the boundary regions, power couples between $E$ and $H$ as expected, but \emph{also} couples into those hyperplanes. Unlike the $E$ and $H$ interdependence, though, the transfer is one-way. Cells in the PML hyperplanes "contain" materials which force the coupled power to decay over a number of layers. In our implementation, we use 10 PML layers as experimentation showed this to provide the most satisfactory results.
+
+
+
 \subsection{FDTD in SIMD}
 
 FDTD's leap-frog update method, whereby E fields and H fields are successively calculated, is well-suited to a GPU implementation. E field values depend on adjacent H field values, and visa-versa. Since the E-field update equation requires knowledge only of the H field state and previous E field state, each field component can be calculated independently with no opportunity for a pipeline stall or race condition. 
