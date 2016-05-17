@@ -21,17 +21,17 @@
 \contentsline {section}{\numberline {5.3.}Model Processor}{14}{section.5.3}
 \contentsline {section}{\numberline {5.4.}Simulator}{16}{section.5.4}
 \contentsline {section}{\numberline {5.5.}Visualizer}{23}{section.5.5}
-\contentsline {section}{\numberline {5.6.}Modeling approach}{26}{section.5.6}
-\contentsline {section}{\numberline {5.7.}Testing and Validation Methodology}{28}{section.5.7}
-\contentsline {subsection}{\numberline {5.7.1.}Analytical Result}{29}{subsection.5.7.1}
-\contentsline {subsection}{\numberline {5.7.2.}Numerical Result}{31}{subsection.5.7.2}
-\contentsline {chapter}{\numberline {\hfill 6.\hbox {\hskip 0.8em}\ignorespaces }Results}{37}{chapter.6}
-\contentsline {section}{\numberline {6.1.}Optimization and Enhancements}{40}{section.6.1}
-\contentsline {chapter}{\numberline {\hfill 7.\hbox {\hskip 0.8em}\ignorespaces }Conclusions}{42}{chapter.7}
-\contentsline {section}{\numberline {7.1.}Usability}{42}{section.7.1}
-\contentsline {section}{\numberline {7.2.}Future Work}{42}{section.7.2}
-\contentsline {subsection}{\numberline {7.2.1.}GoLightly Improvements}{42}{subsection.7.2.1}
-\contentsline {subsection}{\numberline {7.2.2.}Genetic Algorithms}{42}{subsection.7.2.2}
-\contentsline {subsection}{\numberline {7.2.3.}Arbitrary Domain Shape and PML Sinks}{43}{subsection.7.2.3}
-\contentsline {section}{\numberline {7.3.}Final Words}{44}{section.7.3}
-\contentsline {chapter}{REFERENCES}{45}{chapter.8}
+\contentsline {section}{\numberline {5.6.}Modeling approach}{27}{section.5.6}
+\contentsline {section}{\numberline {5.7.}Testing and Validation Methodology}{29}{section.5.7}
+\contentsline {subsection}{\numberline {5.7.1.}Analytical Result}{30}{subsection.5.7.1}
+\contentsline {subsection}{\numberline {5.7.2.}Numerical Result}{32}{subsection.5.7.2}
+\contentsline {chapter}{\numberline {\hfill 6.\hbox {\hskip 0.8em}\ignorespaces }Results}{38}{chapter.6}
+\contentsline {section}{\numberline {6.1.}Optimization and Enhancements}{41}{section.6.1}
+\contentsline {chapter}{\numberline {\hfill 7.\hbox {\hskip 0.8em}\ignorespaces }Conclusions}{43}{chapter.7}
+\contentsline {section}{\numberline {7.1.}Usability}{43}{section.7.1}
+\contentsline {section}{\numberline {7.2.}Future Work}{43}{section.7.2}
+\contentsline {subsection}{\numberline {7.2.1.}GoLightly Improvements}{43}{subsection.7.2.1}
+\contentsline {subsection}{\numberline {7.2.2.}Genetic Algorithms}{43}{subsection.7.2.2}
+\contentsline {subsection}{\numberline {7.2.3.}Arbitrary Domain Shape and PML Sinks}{44}{subsection.7.2.3}
+\contentsline {section}{\numberline {7.3.}Final Words}{45}{section.7.3}
+\contentsline {chapter}{REFERENCES}{46}{chapter.8}

@@ -105,7 +105,17 @@ When running a simulation, the user may optionally specify a visualizer update f
 
 A window and OpenGL context are created using GLFW and the glLoadGen OpenGL extension loader. An OpenGL pixel buffer object (PBO) is allocated to contain a copy\footnote{The PBO may be of different dimensions than the simulation domain. Since the PBO is used only for visualization, it is not necessary for it to contain the full-resolution field.} of the field that the user wishes to see\footnote{The visualizer provides the ability to dynamically select which field(s) should be displayed}. 
 
-The visualizer also creates a screen-aligned quad on which the field texture will be rendered, and allocates an texture object which is then bound to the PBO. 
+The visualizer also creates a screen-aligned quad on which the field texture will be rendered, and allocates a texture object which is then bound to the PBO\autoref{fig:visualizerUpdatePipeline}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[  width=0.5\textwidth,
+	keepaspectratio]{visualizerPipeline.png}
+	\caption{Visualizer Update Pipeline}
+	\label{fig:visualizerUpdatePipeline}
+\end{figure}
+
+
 
 After the required number of frames have been completed, the visualizer launches a CUDA kernel which samples the selected field and populates the PBO. 
 

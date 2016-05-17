@@ -3,7 +3,15 @@
 Meep\cite{OskooiRo10} is a full-featured, open-source simulator produced by the Massachusetts Institute of Technology. In addition to its core FDTD-based simulation engine, it provides a scripting interface for defining models and simulation parameters, recording results, and other tasks.  
 
 
+
+
+
 \section{Modeling}
+
+\iffalse
+
+While I may agree, you need to keep they hyperbole and sarcasm out.  You should re-write this section to state what Meep is, how it is used, and how you made use of some of it's features.  You can also look up how many citations it has (on their website) to showcase that it's widely used and trusted making it a valid point of comparison 
+\fi
 
 One limitation of Meep is it's use of an obscure, uncommon scripting language known as SCHEME. Models are defined in terms of constructive solid geometry (CSG) commands, whereby the user describes their model in terms of boolean operations and regular polyhedra. 
 
@@ -19,7 +27,7 @@ Meep is a mature, highly-optimized suite of tools. It scales well across multipl
 
 While performant when compared to other FDTD software, Meep suffers from the same architecture-imposed limitations of all CPU-based implementations. The limited number of processing cores available on a general-purpose CPU restricts the number of data points that can be be processed within a given time frame. This problem can be solved by provisioning additional computers which would run in parallel, distributing the computational load evenly across the resulting cluster.
 
-This sort of cluster configuration incurs its own overhead. Although a domain may be divided into chunks and distributed across cluster nodes, FDTD boundary conditions require that, at some point, parts of the divided domain must be exchanged between nodes to maintain continuity. This necessitates installation of a high-speed local network and supporting hardware. 
+This sort of cluster configuration incurs its own overhead. Although a domain may be divided into discrete parts and distributed across cluster nodes, FDTD boundary conditions require that, at some point, parts of the divided domain must be exchanged between nodes to maintain continuity. This necessitates installation of a high-speed local network and supporting hardware. 
 
 
 
