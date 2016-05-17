@@ -1,6 +1,6 @@
 \chapter{Meep} \label{ch:meep}
 
-Meep\cite{OskooiRo10} is a full-featured, open-source simulator produced by the Massachusetts Institute of Technology. In addition to its core FDTD-based simulation engine, it provides a scripting interface for defining models and simulation parameters, recording results, and other tasks.  
+Meep\cite{OskooiRo10} is a full-featured, open-source electromagnetic simulator produced by the Massachusetts Institute of Technology. In addition to its core FDTD-based simulation engine, it provides a scripting interface for defining models and simulation parameters, recording results, and other tasks.  
 
 
 
@@ -9,25 +9,29 @@ Meep\cite{OskooiRo10} is a full-featured, open-source simulator produced by the 
 \section{Modeling}
 
 \iffalse
-
+************************************************
 While I may agree, you need to keep they hyperbole and sarcasm out.  You should re-write this section to state what Meep is, how it is used, and how you made use of some of it's features.  You can also look up how many citations it has (on their website) to showcase that it's widely used and trusted making it a valid point of comparison 
+************************************************
 \fi
 
-One limitation of Meep is it's use of an obscure, uncommon scripting language known as SCHEME. Models are defined in terms of constructive solid geometry (CSG) commands, whereby the user describes their model in terms of boolean operations and regular polyhedra. 
+One limitation of Meep is it's CSG\footnote{Constructive Solid Geometry. A method of describing manifolds as a series of boolean operations of convex polyhedra.}-based modeling language. 
 
-While adequate for simple models, constructing an arbitrarily-shaped or dynamic structure in this way may be difficult. In practice, proprietary software may be used to convert more complex model definitions into a format usable by Meep.
-
-It is worth noting that Meep provides a "material function" capability. This allows the user to dynamically determine the material properties of a point in space using their own algorithm rather than defining their model using CSG. However, to take advantage of this capability, the user must employ additional software or custom programming. This further increases the complexity of an already-complicated system. 
-
-
+While adequate for simple models, constructing an arbitrarily-shaped or dynamic structure using CSG is a complex process. It is worth noting that Meep provides a "material function" capability. This allows the user to dynamically determine the material properties of any point in space using their own algorithm rather than defining their model using CSG. However, to take advantage of this capability, the user must employ additional software or custom programming. 
 
 \section{Performance}
 
-Meep is a mature, highly-optimized suite of tools. It scales well across multiple machines, relying on the MPI protocol to keep nodes within a simulation cluster in sync. 
+Meep is a mature, highly-optimized suite of tools. It scales well across multiple machines, relying on the MPI protocol to synchronize nodes within the cluster.
 
 While performant when compared to other FDTD software, Meep suffers from the same architecture-imposed limitations of all CPU-based implementations. The limited number of processing cores available on a general-purpose CPU restricts the number of data points that can be be processed within a given time frame. This problem can be solved by provisioning additional computers which would run in parallel, distributing the computational load evenly across the resulting cluster.
 
 This sort of cluster configuration incurs its own overhead. Although a domain may be divided into discrete parts and distributed across cluster nodes, FDTD boundary conditions require that, at some point, parts of the divided domain must be exchanged between nodes to maintain continuity. This necessitates installation of a high-speed local network and supporting hardware. 
+
+\section{Popularity}
+
+Meep has been widely adopted by many institutions, and is frequently cited in journals such as Nature\cite{vynck2012photon}\cite{krogstrup2013single}, Computer Physics Communication\cite{liu2012s}, Physical Review Letters\cite{levin2010casimir} and others. In fact, a web search revealed over 1200 citations of the original\cite{OskooiRo10} paper. This speaks to its reliability and accuracy, and indicates that it is a trusted, useful tool.
+
+
+
 
 
 

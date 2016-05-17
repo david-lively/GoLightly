@@ -14,23 +14,24 @@
 \BOOKMARK [0][-]{chapter.4}{Meep}{}% 14
 \BOOKMARK [1][-]{section.4.1}{Modeling}{chapter.4}% 15
 \BOOKMARK [1][-]{section.4.2}{Performance}{chapter.4}% 16
-\BOOKMARK [0][-]{chapter.5}{GoLightly}{}% 17
-\BOOKMARK [1][-]{section.5.1}{Goals}{chapter.5}% 18
-\BOOKMARK [1][-]{section.5.2}{Architecture}{chapter.5}% 19
-\BOOKMARK [1][-]{section.5.3}{Model Processor}{chapter.5}% 20
-\BOOKMARK [1][-]{section.5.4}{Simulator}{chapter.5}% 21
-\BOOKMARK [1][-]{section.5.5}{Visualizer}{chapter.5}% 22
-\BOOKMARK [1][-]{section.5.6}{Modeling approach}{chapter.5}% 23
-\BOOKMARK [1][-]{section.5.7}{Testing and Validation Methodology}{chapter.5}% 24
-\BOOKMARK [2][-]{subsection.5.7.1}{Analytical Result}{section.5.7}% 25
-\BOOKMARK [2][-]{subsection.5.7.2}{Numerical Result}{section.5.7}% 26
-\BOOKMARK [0][-]{chapter.6}{Results}{}% 27
-\BOOKMARK [1][-]{section.6.1}{Optimization and Enhancements}{chapter.6}% 28
-\BOOKMARK [0][-]{chapter.7}{Conclusions}{}% 29
-\BOOKMARK [1][-]{section.7.1}{Usability}{chapter.7}% 30
-\BOOKMARK [1][-]{section.7.2}{Future Work}{chapter.7}% 31
-\BOOKMARK [2][-]{subsection.7.2.1}{GoLightly Improvements}{section.7.2}% 32
-\BOOKMARK [2][-]{subsection.7.2.2}{Genetic Algorithms}{section.7.2}% 33
-\BOOKMARK [2][-]{subsection.7.2.3}{Arbitrary Domain Shape and PML Sinks}{section.7.2}% 34
-\BOOKMARK [1][-]{section.7.3}{Final Words}{chapter.7}% 35
-\BOOKMARK [0][-]{chapter.8}{REFERENCES}{}% 36
+\BOOKMARK [1][-]{section.4.3}{Popularity}{chapter.4}% 17
+\BOOKMARK [0][-]{chapter.5}{GoLightly}{}% 18
+\BOOKMARK [1][-]{section.5.1}{Goals}{chapter.5}% 19
+\BOOKMARK [1][-]{section.5.2}{Architecture}{chapter.5}% 20
+\BOOKMARK [1][-]{section.5.3}{Model Processor}{chapter.5}% 21
+\BOOKMARK [1][-]{section.5.4}{Simulator}{chapter.5}% 22
+\BOOKMARK [1][-]{section.5.5}{Visualizer}{chapter.5}% 23
+\BOOKMARK [1][-]{section.5.6}{Modeling approach}{chapter.5}% 24
+\BOOKMARK [1][-]{section.5.7}{Testing and Validation Methodology}{chapter.5}% 25
+\BOOKMARK [2][-]{subsection.5.7.1}{Analytical Result}{section.5.7}% 26
+\BOOKMARK [2][-]{subsection.5.7.2}{Numerical Result}{section.5.7}% 27
+\BOOKMARK [0][-]{chapter.6}{Results}{}% 28
+\BOOKMARK [1][-]{section.6.1}{Optimization and Enhancements}{chapter.6}% 29
+\BOOKMARK [0][-]{chapter.7}{Conclusions}{}% 30
+\BOOKMARK [1][-]{section.7.1}{Usability}{chapter.7}% 31
+\BOOKMARK [1][-]{section.7.2}{Future Work}{chapter.7}% 32
+\BOOKMARK [2][-]{subsection.7.2.1}{GoLightly Improvements}{section.7.2}% 33
+\BOOKMARK [2][-]{subsection.7.2.2}{Genetic Algorithms}{section.7.2}% 34
+\BOOKMARK [2][-]{subsection.7.2.3}{Arbitrary Domain Shape and PML Sinks}{section.7.2}% 35
+\BOOKMARK [1][-]{section.7.3}{Final Words}{chapter.7}% 36
+\BOOKMARK [0][-]{chapter.8}{REFERENCES}{}% 37

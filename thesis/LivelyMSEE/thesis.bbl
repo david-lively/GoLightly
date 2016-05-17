@@ -30,6 +30,23 @@
   Learning}, 1st~ed.
 \newblock Addison-Wesley Longman Publishing Co., Inc., Boston, MA, USA, 1989.
 
+\bibitem{krogstrup2013single}
+{\sc Krogstrup, P., J{\o}rgensen, H.~I., Heiss, M., Demichel, O., Holm, J.~V.,
+  Aagesen, M., Nygard, J., and i~Morral, A.~F.}
+\newblock Single-nanowire solar cells beyond the shockley-queisser limit.
+\newblock {\em Nature Photonics 7}, 4 (2013), 306--310.
+
+\bibitem{levin2010casimir}
+{\sc Levin, M., McCauley, A.~P., Rodriguez, A.~W., Reid, M.~H., and Johnson,
+  S.~G.}
+\newblock Casimir repulsion between metallic objects in vacuum.
+\newblock {\em Physical review letters 105}, 9 (2010), 090403.
+
+\bibitem{liu2012s}
+{\sc Liu, V., and Fan, S.}
+\newblock S 4: A free electromagnetic solver for layered periodic structures.
+\newblock {\em Computer Physics Communications 183}, 10 (2012), 2233--2244.
+
 \bibitem{geodesicGrid}
 {\sc Ma, K.-L., Xie, J., and Yu, H.}
 \newblock Scalable visualizing large 3d geodesic grid data with massively
@@ -95,6 +112,11 @@
 \newblock {\em Procedia Engineering 61\/} (2013), 381 -- 387.
 \newblock 25th International Conference on Parallel Computational Fluid
   Dynamics.
+
+\bibitem{vynck2012photon}
+{\sc Vynck, K., Burresi, M., Riboli, F., and Wiersma, D.~S.}
+\newblock Photon management in two-dimensional disordered media.
+\newblock {\em Nature materials 11}, 12 (2012), 1017--1022.
 
 \bibitem{wu2009clustering}
 {\sc Wu, R., Zhang, B., and Hsu, M.}

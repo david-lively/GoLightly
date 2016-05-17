@@ -15,6 +15,7 @@
 \contentsline {chapter}{\numberline {\hfill 4.\hbox {\hskip 0.8em}\ignorespaces }Meep}{11}{chapter.4}
 \contentsline {section}{\numberline {4.1.}Modeling}{11}{section.4.1}
 \contentsline {section}{\numberline {4.2.}Performance}{11}{section.4.2}
+\contentsline {section}{\numberline {4.3.}Popularity}{12}{section.4.3}
 \contentsline {chapter}{\numberline {\hfill 5.\hbox {\hskip 0.8em}\ignorespaces }GoLightly}{13}{chapter.5}
 \contentsline {section}{\numberline {5.1.}Goals}{13}{section.5.1}
 \contentsline {section}{\numberline {5.2.}Architecture}{14}{section.5.2}
