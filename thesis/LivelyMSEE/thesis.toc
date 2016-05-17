@@ -34,5 +34,6 @@
 \contentsline {subsection}{\numberline {7.2.1.}GoLightly Improvements}{43}{subsection.7.2.1}
 \contentsline {subsection}{\numberline {7.2.2.}Genetic Algorithms}{43}{subsection.7.2.2}
 \contentsline {subsection}{\numberline {7.2.3.}Arbitrary Domain Shape and PML Sinks}{44}{subsection.7.2.3}
+\contentsline {subsection}{\numberline {7.2.4.}Load Balancing}{45}{subsection.7.2.4}
 \contentsline {section}{\numberline {7.3.}Final Words}{45}{section.7.3}
 \contentsline {chapter}{REFERENCES}{46}{chapter.8}

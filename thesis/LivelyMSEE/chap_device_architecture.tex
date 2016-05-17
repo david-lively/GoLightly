@@ -9,8 +9,6 @@ Users typically run many different applications in parallel: a web browser, musi
 
 In a modern multi-core CPU, each core provides a dedicated ALU and register set. This allows each core to operate as an independent device. This architecture is advantageous when the device is required to perform disparate operations.
 
-However, this approach also introduces some performance limitations. The same processor that excels at executing many different tasks at the same time performs sub-optimally. 
-
 Each ALU performs the same operation at the same time, indicating that the additional ALUs are redundant. Thus, the flexible, general-purpose nature of a CPU becomes a limitation.
 
 \section{GPU}
@@ -21,9 +19,9 @@ This independence is crucial to performant GPU-based applications, as detailed i
 
 \subsection{SIMD}\label{sec:simd}
 
-In a SIMD\cite{Massingill:2007:SAP:1772070.1772078} architecture, a core may consist of a single ALU, with multiple register banks. Separate "threads" load different data into dedicated register banks. The ALU executes identitical operations on all registers simultaneously. In this way, each register bank is analagous to a CPU "thread." However, since the same instruction must be executed on all register sets at every step, this design is not as flexible as a system where each core is truly independent.
+In a SIMD\cite{Massingill:2007:SAP:1772070.1772078} architecture, a core may consist of a single ALU, with multiple register banks. Separate "threads" load different data into dedicated register banks. The ALU executes identitical operations on all registers simultaneously. In this way, each register bank is analagous to a CPU "thread." However, since the same instruction must be executed on all register sets at every step, this design is less flexible than a system where each core is truly independent. 
 
-That said, the approach provides some benefits and limitations:
+That said, the approach provides some benefits, including:
 
 \begin{itemize}
 	\item Fewer components are required per core since fewer ALUs are required. Leads to reduced die space requirements.

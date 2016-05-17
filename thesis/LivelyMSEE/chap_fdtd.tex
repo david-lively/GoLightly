@@ -38,7 +38,8 @@ More formally, we may expand the $E_Z$ wave equation, arriving at:
 + C_b * ({H_y}_{i+\frac{1}{2},j}^{t+\frac{1}{2}} - {H_xy}_{i-\frac{1}{2},j}^{t+\frac{1}{2}})
 \end{equation}
 
-Similarly, the equations for the coupled fields $H_x$ and $H_y$ may be expressed as:
+Similarly, the 2D equations for the coupled fields $H_x$ and $H_y$ may be expressed as:
+
 \begin{equation} \label{eq:hxupdate}
 {H_x}_{i,j}^{t+1} = D_a * {H_x}_{i,j}^{t} + D_b * (
 {E_z}_{i,j+\frac{1}{2}}^{t+\frac{1}{2}} 
@@ -91,7 +92,7 @@ In equations \ref{eq:ezupdate}, \ref{eq:hxupdate} and \ref{eq:hyupdate}, note th
 
 In equations \ref{eq:ezupdate}, \ref{eq:hxupdate} and \ref{eq:hyupdate}, note the presence of a "half step" in time ($F^{t + \frac{1}{2}}$) and space $F_{i \frac{+}{-}\frac{1}{2},j \frac{-}{+}\frac{1}{2}}$.
 
-This $t\frac{+}{-}\frac{1}{2}$ represents the temporal step size between an $E$-field update and the next $H$-field update,and visa-versa. Similarly, the spatial offset $x\frac{+}{-}\frac{1}{2}$ represents the distance between an $E$-field component and its adjacent, dependent $H$ values.
+This $t\frac{+}{-}\frac{1}{2}$ represents the temporal step size between an $E$-field update and the next $H$-field update,and visa-versa. Similarly, the spatial offset $x\frac{+}{-}\frac{1}{2}$ represents the distance between an $E$-field component and its adjacent, interdependent $H$ values.
 
 
 \begin{figure}[H]
@@ -103,7 +104,7 @@ This $t\frac{+}{-}\frac{1}{2}$ represents the temporal step size between an $E$-
 
 The spatial relationship between $E$ and $H$ grids is illustrated in the Yee lattice in \autoref{fig:yeeLattice}. Note that each $E_Z$ component is in the middle of a cell, at the $(i + \frac{1}{2}, j + \frac{1}{2})$ position where ($i,j$) is  the upper-left corner of the cell. $H$ components, however, are positioned at integer coordinates.
 
-This arrangement reflects the manner in which a wave will propagate through the domain. In the half time step between $E$ and $H$ updates, the wave moves one half-cell. If the $E$ and $H$ components were coincident, the simulation would degrade to a large collection of individual points rather than a discretized domain.
+This arrangement reflects the manner in which a wave will propagate through the domain. In the half time step between $E$ and $H$ updates, the wave moves one half-cell. If the $E$ and $H$ components were coincident, the simulation would degrade to a large collection of individual, disjoint points rather than a discretized, connected domain.
 
 
 \section{Boundary Conditions}

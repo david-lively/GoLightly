@@ -31,6 +31,11 @@ Although the current implementation treats the domain as a regular grid of ident
 
 In addition to non-rectangular domains, non-rectangular cell shapes could improve simulation fidelity. For example, in a $TM_Z$ simulation, each $E_Z$ component could be treated as the center of a hexagonal grid cell. As such, it would be updated using three derivatives instead of two. While this would increase the computation requirement for each $E$ cell by roughly 50\% (in a two-dimensional domain), the improved fidelity may justify the cost in experiments where improved accuracy is valuable. Inclusion of the afore-mentioned PML sink capability could offset this cost. 
 
+\subsection{Load Balancing}
+Although we have shown that a GPU implementation of FDTD can outperform a CPU implementation, CPUs should not be ignored. It is possible to divide computational load between the CPU and GPU, in a manner analagous to that used to distribute load between machines in a cluster. 
+
+This technique, when combined with load balancing between separate machines, would allow the GPU to act as an additional cluster node, providing a more ideal solution which, rather than trading a CPU for a GPU, provides the power of both. 
+
 
 \section{Final Words}
 
