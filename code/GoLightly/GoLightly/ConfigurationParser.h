@@ -1,5 +1,5 @@
-#ifndef CONFIGURATIONScanner_H
-#define CONFIGURATIONScanner_H
+#ifndef CONFIGURATIONPARSER_H
+#define CONFIGURATIONPARSER_H
 
 
 #include <string>
