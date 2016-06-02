@@ -1,0 +1,9 @@
+This is makeindex, version 2.15 [MiKTeX 2.9 64-bit] (kpathsea + Thai support).
+Scanning input file thesis.idx...
+!! Input index error (file = thesis.idx, line = 1):
+   -- Missing arguments -- need two (premature LFD).
+!! Input index error (file = thesis.idx, line = 2):
+   -- Missing arguments -- need two (premature LFD).
+done (0 entries accepted, 2 rejected).
+Nothing written in thesis.ind.
+Transcript written in thesis.ilg.

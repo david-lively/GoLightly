@@ -1,8 +1,5 @@
 \begin{thebibliography}{10}
 
-\bibitem{raycasting}
-
-
 \bibitem{BERENGER1994185}
 {\sc Berenger, J.-P.}
 \newblock A perfectly matched layer for the absorption of electromagnetic
@@ -15,10 +12,6 @@
 \newblock Machine learning and genetic algorithms in pharmaceutical development
   and manufacturing processes.
 \newblock {\em Decis. Support Syst. 48}, 1 (Dec. 2009), 69--80.
-
-\bibitem{nvidiaNationalLabs}
-{\sc Corporation, N.}
-\newblock U.s. to build two flagship supercomputers for national labs, 2014.
 
 \bibitem{globus2006automated}
 {\sc Globus, A., Hornby, G., Linden, D., and Lohn, J.}
@@ -46,13 +39,6 @@
 {\sc Liu, V., and Fan, S.}
 \newblock S 4: A free electromagnetic solver for layered periodic structures.
 \newblock {\em Computer Physics Communications 183}, 10 (2012), 2233--2244.
-
-\bibitem{geodesicGrid}
-{\sc Ma, K.-L., Xie, J., and Yu, H.}
-\newblock Scalable visualizing large 3d geodesic grid data with massively
-  distributed gpus.
-\newblock In {\em In Proceedings of 2014 IEEE Large Data Analysis and
-  Visualization Symposium (LDAV)\/} (Nov 2014), pp.~3--10.
 
 \bibitem{Massingill:2007:SAP:1772070.1772078}
 {\sc Massingill, B.~L., Mattson, T.~G., and Sanders, B.~A.}
@@ -82,6 +68,10 @@
 {\sc {NVIDIA Corporation}}.
 \newblock {NVIDIA CUDA C} programming guide, 2010.
 \newblock Version 3.2.
+
+\bibitem{nvidiaNationalLabs}
+{\sc {NVIDIA Corporation}}.
+\newblock U.s. to build two flagship supercomputers for national labs, 2014.
 
 \bibitem{OskooiRo10}
 {\sc Oskooi, A.~F., Roundy, D., Ibanescu, M., Bermel, P., Joannopoulos, J.~D.,
@@ -124,6 +114,11 @@
 \newblock In {\em Proceedings of the combined workshops on UnConventional high
   performance computing workshop plus memory access workshop\/} (2009), ACM,
   pp.~1--6.
+
+\bibitem{raycasting}
+{\sc Xie, J., Yu, H., and Ma, K.-L.}
+\newblock Interactive ray casting of geodesic grids.
+\newblock {\em Computer Graphics Forum 32}, 3pt4 (2013), 481--490.
 
 \bibitem{Yee}
 {\sc Yee, K.}

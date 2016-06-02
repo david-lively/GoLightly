@@ -2,16 +2,8 @@ This is BibTeX, Version 0.99dThe top-level auxiliary file: thesis.aux
 The style file: acm.bst
 Database file #1: thesis.bib
 Warning--entry type for "nvidiaNationalLabs" isn't style-file defined
---line 112 of file thesis.bib
-I was expecting a `,' or a `}'---line 151 of file thesis.bib
- :  
- :  author = {Jinrong Xie and Hongfeng Yu and Kwan-Liu Ma},
-(Error may have been on previous line)
-I'm skipping whatever remains of this entry
-Warning--to sort, need author or key in raycasting
-Warning--empty author in raycasting
-Warning--empty title in raycasting
-Warning--empty booktitle in raycasting
+--line 124 of file thesis.bib
+Warning--I didn't find a database entry for "geodesicGrid"
 Warning--empty journal in globus2006automated
 Warning--empty institution in techpattichis2003
-(There was 1 error message)
+(There were 4 warnings)
