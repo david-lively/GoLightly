@@ -1,25 +1,5 @@
 \chapter{Results} \label{ch:conclusions}
 
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[width=\textwidth,
-%	keepaspectratio]{point-source-comparison-split.jpg}
-%	\caption{GoLightly (left) vs Meep: point source with Dirlecht boundary}
-%	\label{fig:pointSourceComparison}
-%\end{figure}
-
-\begin{table}
-	\centering
-	\label{tab:modelColorComponentUsage}
-	\begin{tabular}{c | c}		
-		\includegraphics[width=0.4\textwidth]{point-source-comparison-golightly.png} &  \includegraphics[width=0.4\textwidth]{point-source-comparison-meep.png} \\
-		GoLightly (A) & Meep (B) \\
-	\end{tabular}
-	\caption{Point source with Dirlect boundary. GoLightly (A) and Meep (B) results.}
-\end{table}
-
-
-
 Metrics were calculated using domain sizes ranging from 128x64 to 8192x4096 over 5000 frames. (In this case, a frame represents a complete time step wherein both E and H fields are updated.) For benchmarking purposes, the visualizer was disabled.
 
 
@@ -31,7 +11,8 @@ Metrics were calculated using domain sizes ranging from 128x64 to 8192x4096 over
 	\label{fig:gpuTimeVsDomainSize}
 \end{figure}
 
-As expected, As the number of computational cells in the simulation domain increases, the required computation time increases linearly.
+\autoref{fig:gpuTimeVsDomainSize} shows that computation time increases linearly as a function of simulation domain size.
+
 
 \begin{figure}[H]
 	\centering
@@ -41,7 +22,7 @@ As expected, As the number of computational cells in the simulation domain incre
 	\label{fig:gridSizeVsComputeTime}
 \end{figure}
 
-Note that the total throughput (represented in the following figure as “cell” operations per second) increases dramatically as the domain size increases, until the point where GPU initialization overhead is outweighed by computation time.
+Note that GPU throughput (represented in \autoref{fig:gridSizeVsComputeTime} as “cell” operations per second) increases dramatically as the domain size increases, until GPU initialization overhead is overcome by computation time.
 
 Comparing to Meep:
 

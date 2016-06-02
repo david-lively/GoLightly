@@ -79,9 +79,9 @@ This will be important in the discussion between CPU and GPU architectures as yo
 		\hline				\\										 	 
 		$dx$ 	& $\frac{\lambda}{10}$ 			& Spatial step as a function of max source  fundamental frequency 					\\
 		$dt$ 	& $\frac{dx}{\sqrt{n}} * 0.9$		& Time step between frame updates, where $n$ is the domain dimensionality \\		$C_a$	& $\frac{1}{\epsilon_0}$ & Permittivity of free space	\\
-		$C_b$	& $\frac{dt}{dx}  \frac{1}{\sqrt{\epsilon_0 \epsilon_r}}$ & Permittivity at the location $i,j$\\
+		$C_b$	& $\frac{dt}{dx}  \frac{1}{\epsilon} $ & Permittivity at the location $i,j$\\
 		$D_a$	& $\frac{1}{\mu_0}$	& Permeability of free space \\
-		$D_b$	& $\frac{dt}{dx}\frac{1}{\sqrt{\mu_0 \mu_r}}$	& Permeability at the location $i,j$\\
+		$D_b$	& $\frac{dt}{dx}\frac{1}{\mu}$	& Permeability at the location $i,j$\\
 		$i$, $j$ 	& &	Field element location within the domain  \\
 		$t$   	& &	Current time step ($t_E = t_H \frac{+}{-}\frac{1}{2}$) \\
 		$E_Z$ 	& & Electric field amplitude in $Z$ \\
@@ -92,7 +92,7 @@ This will be important in the discussion between CPU and GPU architectures as yo
 
 Since Maxwell's equations are scale-invariant, GoLightly substitutes 1 for constants such as $C$, $\mu_0$ and $\epsilon_0$. The $\frac{0.9}{\sqrt{2}}$ scalar in $dt$ prevents aliasing, and corrects for simulation dimensionality\footnote{This value should be $\frac{0.9}{\sqrt{n}}$, where $n$ is 3 for a 3D domain, 2 for a 2D domain and 1 for a 1D domain.} 
 
-In equations \ref{eq:ezupdate}, \ref{eq:hxupdate} and \ref{eq:hyupdate}, note that each $E_{i,j}^{t+1}$ field update depends only upon the previous $E$ value ($E_{i,j}^{t}$), and the previous adjacent $H$ values ($H_X^{t+\frac{1}{2}}$ and $H_Y^{t+\frac{1}{2}}$). This allows each field component to be updated without regard for any other value in the same field. As such, $E$ field values may be updated in any order without the risk of a race condition. The same principle applies to $H$-field updates.  
+In equations \ref{eq:ezupdate}, \ref{eq:hxupdate} and \ref{eq:hyupdate}, note that each $E_{i,j}^{t+1}$ field update depends only upon the previous $E$ value ($E_{i,j}^{t}$), and the previous adjacent $H$ values ($H_X^{t+\frac{1}{2}}$ and $H_Y^{t+\frac{1}{2}}$). This independence allows each field component to be updated without regard for any other value in the same field.   
 
 \section{Leap Frog: Stepping in Space and Time}
 

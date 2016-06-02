@@ -204,11 +204,9 @@ In order to validate the functionality of the simulator, a 2D $TM_Z$ simulation 
 	\label{fig:plane-wave-test-model}
 \end{figure}
 
-As can be seen in \autoref{fig:plane-wave-test-model}, the simulation includes a plane wave source (red line), monitors for incident and transmitted waves, and a slab of dielectric with $\epsilon_R = 9$. An additional monitor at the source location is not clearly visible due to it's relatively low ID (B = 5).
+As can be seen in \autoref{fig:plane-wave-test-model}, the simulation includes a plane wave source (red line), monitors for incident and transmitted waves (blue), and a slab of dielectric with $\epsilon_R = 9$ (green). An additional monitor at the source location is not clearly visible due to it's relatively low ID (B = 5).
 
-The simulation was first run with $\epsilon_R = 1$ to to record the incident magnitude in absenceof any reflective interfaces.
-
-The simulation was then run with $\epsilon_R = 9$ to record combined incidence and reflection, as well as transmittance within the dielectric.
+The simulation was first run with $\epsilon_R = 1$ to to record the incident magnitude in absenceof any reflective interfaces. The simulation was then run with $\epsilon_R = 9$ to record combined incidence and reflection, as well as transmittance within the dielectric.
 
 In a post-processing step, the reflective magnitude was found by subtracting the incident wave magnitude obtained from the first simulation from the combined incidence and reflection magnitudes obtained from the second simulation.
 
