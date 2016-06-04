@@ -1,5 +1,13 @@
 \chapter{Results} \label{ch:conclusions}
 
+In order to determine the effectiveness of the GPU-based FDTD implementation, we compare performance of GPU and CPU implementations. Performance is measured as a function of total execution time for a given domain size, as well as throughput (cells updated per second).
+
+\section{Test Environment}
+
+Tests were performed on a 2015 Dell XPS 9550 with 32GB of RAM, Intel i7 2600 CPU and NVIDIA 960M GPU. GoLightly GPU tests were executed under Microsoft Windows 10, while Meep CPU tests were run under Ubuntu Desktop version 16.04.   \footnote{Meep is incompatible with Microsoft Windows. Thus, Ubuntu was used for the CPU simulation, while the GPU simulation was benchmarked in its target Microsoft Windows environment.}
+
+\section{Performance Metrics}
+
 Metrics were calculated using domain sizes ranging from 128x64 to 8192x4096 over 5000 frames. (In this case, a frame represents a complete time step wherein both E and H fields are updated.) For benchmarking purposes, the visualizer was disabled.
 
 
@@ -34,7 +42,7 @@ Comparing to Meep:
 	\label{fig:gpuVsMeep}
 \end{figure}
 
-In \autoref{fig:gpuVsMeep}, note some performance variance near the middle and end of the graph. This appears to be caused by suboptimal cache usage at some domain sizes. Multiple runs have consistently exhibited this behavior.
+In \autoref{fig:gpuVsMeep}, note some CPU performance variance near the middle and end of the graph. Multiple runs consistently exhibited this behavior. While the cause of these variances is not clear, it has been reproduced on different hardware and operating system versions. Potential causes may include multitasking preemption, cache behavior for a given domain size, and others. See also \autoref{fig:gpuVsMeepSpeedup}.
 
 \begin{figure}[H]
 	\centering
@@ -44,7 +52,7 @@ In \autoref{fig:gpuVsMeep}, note some performance variance near the middle and e
 	\label{fig:gpuVsMeepSpeedup}
 \end{figure}
 
-This gives us a speedup ranging from 1.2 to 12, depending on the domain size. At lower resolutions, the overhead of initializing assets on the GPU can take more time than the simulation. In that case, a CPU-based simulation may outperform the GPU solution.
+This gives us a speedup ranging from 1.2 to 12, depending on the domain size. At lower resolutions, the overhead of initializing assets on the GPU can take more time than the simulation. In that case, the CPU may outperform the GPU solution.
 
 \section{Optimization and Enhancements}
 

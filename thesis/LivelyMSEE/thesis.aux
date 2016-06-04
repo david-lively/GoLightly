@@ -96,10 +96,10 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Visualizer Update Pipeline}}{24}{figure.5.1}}
 \newlabel{fig:visualizerUpdatePipeline}{{5.1}{24}{Visualizer Update Pipeline}{figure.5.1}{}}
 \@writefile{lol}{\contentsline {lstlisting}{\numberline {5.7}CUDA kernel for updating visualizer pixel buffer object}{24}{lstlisting.5.7}}
+\newlabel{lst:basicvert}{{5.8}{25}{GLSL Vertex Shader}{lstlisting.5.8}{}}
 \@writefile{lol}{\contentsline {lstlisting}{\numberline {5.8}GLSL Vertex Shader}{25}{lstlisting.5.8}}
-\newlabel{listing:basicVertGlsl}{{5.5}{26}{GoLightly}{lstnumber.5.8.30}{}}
+\newlabel{lst:basicfrag}{{5.9}{26}{GLSL Fragment Shader}{lstlisting.5.9}{}}
 \@writefile{lol}{\contentsline {lstlisting}{\numberline {5.9}GLSL Fragment Shader}{26}{lstlisting.5.9}}
-\newlabel{listing:basicFragGlsl}{{5.5}{27}{GoLightly}{lstnumber.5.9.18}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces 2D Whispering Gallery Mode Sensor}}{27}{figure.5.2}}
 \newlabel{fig:wgm}{{5.2}{27}{2D Whispering Gallery Mode Sensor}{figure.5.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {5.6.}Modeling approach}{27}{section.5.6}}
@@ -132,32 +132,34 @@
 \newlabel{fig:pwEpsilon9Normalized}{{5.13}{36}{Normalized output with $\epsilon _R = 9$}{figure.5.13}{}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {\hfill 6.\hbox {\hskip 0.8em}\ignorespaces }Results}{38}{chapter.6}}
 \newlabel{ch:conclusions}{{6}{38}{Results}{chapter.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.1}{\ignorespaces GoLightly: seconds for 5000 frames with the given domain size}}{38}{figure.6.1}}
-\newlabel{fig:gpuTimeVsDomainSize}{{6.1}{38}{GoLightly: seconds for 5000 frames with the given domain size}{figure.6.1}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.2}{\ignorespaces GoLightly: Completed E and H updates per second}}{39}{figure.6.2}}
-\newlabel{fig:gridSizeVsComputeTime}{{6.2}{39}{GoLightly: Completed E and H updates per second}{figure.6.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.3}{\ignorespaces GoLightly vs Meep}}{40}{figure.6.3}}
-\newlabel{fig:gpuVsMeep}{{6.3}{40}{GoLightly vs Meep}{figure.6.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6.4}{\ignorespaces Speedup - Meep Time / GoLightly Time}}{41}{figure.6.4}}
-\newlabel{fig:gpuVsMeepSpeedup}{{6.4}{41}{Speedup - Meep Time / GoLightly Time}{figure.6.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.1.}Optimization and Enhancements}{41}{section.6.1}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {\hfill 7.\hbox {\hskip 0.8em}\ignorespaces }Conclusions}{43}{chapter.7}}
-\newlabel{ch:conclusions}{{7}{43}{Conclusions}{chapter.7}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {7.1.}Usability}{43}{section.7.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {7.2.}Future Work}{43}{section.7.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.1.}GoLightly Improvements}{43}{subsection.7.2.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.2.}Genetic Algorithms}{43}{subsection.7.2.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.1.}Test Environment}{38}{section.6.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.2.}Performance Metrics}{38}{section.6.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.1}{\ignorespaces GoLightly: seconds for 5000 frames with the given domain size}}{39}{figure.6.1}}
+\newlabel{fig:gpuTimeVsDomainSize}{{6.1}{39}{GoLightly: seconds for 5000 frames with the given domain size}{figure.6.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.2}{\ignorespaces GoLightly: Completed E and H updates per second}}{40}{figure.6.2}}
+\newlabel{fig:gridSizeVsComputeTime}{{6.2}{40}{GoLightly: Completed E and H updates per second}{figure.6.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.3}{\ignorespaces GoLightly vs Meep}}{41}{figure.6.3}}
+\newlabel{fig:gpuVsMeep}{{6.3}{41}{GoLightly vs Meep}{figure.6.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.4}{\ignorespaces Speedup - Meep Time / GoLightly Time}}{42}{figure.6.4}}
+\newlabel{fig:gpuVsMeepSpeedup}{{6.4}{42}{Speedup - Meep Time / GoLightly Time}{figure.6.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.3.}Optimization and Enhancements}{42}{section.6.3}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {\hfill 7.\hbox {\hskip 0.8em}\ignorespaces }Conclusions}{44}{chapter.7}}
+\newlabel{ch:conclusions}{{7}{44}{Conclusions}{chapter.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.1.}Usability}{44}{section.7.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.2.}Future Work}{44}{section.7.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.1.}GoLightly Improvements}{44}{subsection.7.2.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.2.}Genetic Algorithms}{44}{subsection.7.2.2}}
 \citation{Mitchell:1998:IGA:522098}
 \citation{Goldberg:1989:GAS:534133}
 \citation{globus2006automated}
 \citation{MOSETTI1994105}
 \citation{Chi:2009:MLG:1651932.1652161}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.3.}Arbitrary Domain Shape and PML Sinks}{44}{subsection.7.2.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.3.}Arbitrary Domain Shape and PML Sinks}{45}{subsection.7.2.3}}
 \bibstyle{acm}
 \citation{*}
 \bibdata{thesis}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.4.}Load Balancing}{45}{subsection.7.2.4}}
-\@writefile{toc}{\contentsline {section}{\numberline {7.3.}Final Words}{45}{section.7.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.4.}Load Balancing}{46}{subsection.7.2.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.3.}Final Words}{46}{section.7.3}}
 \bibcite{BERENGER1994185}{1}
 \bibcite{Chi:2009:MLG:1651932.1652161}{2}
 \bibcite{globus2006automated}{3}
@@ -169,7 +171,7 @@
 \bibcite{Mitchell:1998:IGA:522098}{9}
 \bibcite{MOSETTI1994105}{10}
 \bibcite{Nickolls:2008:SPP:1365490.1365500}{11}
-\@writefile{toc}{\contentsline {chapter}{REFERENCES}{46}{chapter.8}}
+\@writefile{toc}{\contentsline {chapter}{REFERENCES}{47}{chapter.8}}
 \bibcite{cuda}{12}
 \bibcite{nvidiaNationalLabs}{13}
 \bibcite{OskooiRo10}{14}

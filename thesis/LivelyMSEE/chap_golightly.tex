@@ -35,11 +35,12 @@ The model processor (MP) is responsible for initialization of the simulator. Whe
 	\label{tab:modelProcessorInputs}
 	\begin{tabular}{l | l | l | l}
 		Symbol	& Data Type & Meaning & Typical value				\\
-		\hline														\\
+		\hline														
 		Width	& int 		& Domain size in X & 1024				\\
 		Height	& int 		& Domain size in Y & 1024				\\
 		Media	& float 	& $\epsilon_{max}$ & 9						\\
-		Model	& string	& Model definition stored as a bitmap & filename
+		Model	& string	& Model definition stored as a bitmap & filename \\
+		$\epsilon_{max}$ & float & Maximum $\epsilon$ value for this model
 	\end{tabular}
 \end{table}
 
@@ -119,12 +120,14 @@ The visualizer also creates a screen-aligned quad on which the field texture wil
 
 After the required number of frames have been completed, the visualizer launches a CUDA kernel which samples the selected field and populates the PBO. 
 
-\lstinputlisting[language=c++,caption=CUDA kernel for updating visualizer pixel buffer object]{cu_visualizer_update.cpp}
+\lstinputlisting[language=c++,caption=CUDA kernel for updating visualizer pixel buffer object]{cuvisualizerupdate.cpp}
 
-A completed PBO is bound to a uniform input for a shader (\autoref{listing:basicVertGlsl},\autoref{listing:basicFragGlsl}) which renders the texture to the visualizer window. 
+\lstinputlisting[language=c++,caption=GLSL Vertex Shader,label={lst:basicvert}]{basicvert.glsl}
 
-\lstinputlisting[language=c++,caption=GLSL Vertex Shader]{basic_vert.glsl}\label{listing:basicVertGlsl}
-\lstinputlisting[language=c++,caption=GLSL Fragment Shader]{basic_frag.glsl}\label{listing:basicFragGlsl}
+\lstinputlisting[language=c++,caption=GLSL Fragment Shader, label={lst:basicfrag}]{basicfrag.glsl}
+
+A completed PBO is bound to a uniform input for a shader (\autoref{lst:basicvert}, \autoref{lst:basicfrag}) listing which renders the texture to the visualizer window. 
+
 
 This process runs continuously. However, the texture is only updated at the frequency requested by the user when the simulation was launched. 
 
@@ -391,7 +394,7 @@ Comparing to the analytically-derived Fresnel coefficients,
 T = \frac{T_{avg}}{I_{avg}} = \frac{0.4882219...}{0.962135...} = 0.507
 \end{equation}
 \begin{equation}
-R = \frac{R_{avg}}{I_{avg}} = \frac{0.484332......}{0.962135...} = 0.503
+R = \frac{R_{avg}}{I_{avg}} = \frac{0.484332...}{0.962135...} = 0.503
 \end{equation}
 
 The error contribution of each component may be expressed as:
