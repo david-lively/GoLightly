@@ -17,13 +17,11 @@ Care must be taken during the design process to avoid nonsensical monitor config
 \subsection{Genetic Algorithms}
 Genetic algorithms\cite{Mitchell:1998:IGA:522098}\cite{Goldberg:1989:GAS:534133}  are intended to let software take over a part of the design process. By defining a problem in terms of a number of inputs and creating a fitness function, an application can potentially tests many different designs and use a feedback loop to suggest new permutations. This approach has been shown to be successful in such diverse fields as antennae design\cite{globus2006automated}, turbine design\cite{MOSETTI1994105} and pharmaceutical research\cite{Chi:2009:MLG:1651932.1652161}. 
 
-A fast FDTD implementation will facilitate application of this technique to optical circuit design. By defining a circuit in terms of desired package size, available inputs, allowed waveguide shape, available dielectric properties, and others - and designing an appropriate fitness function, software will be able to rapidly evaluate different designs, and suggest new permutations. This may also dramatically reduce time-to-market and suggest new research avenues. 
-
-
+A fast FDTD implementation will facilitate application of this technique to optical circuit design. By defining a problem domain in terms of desired package size, available inputs, allowed waveguide shape, available dielectric properties, and designing an appropriate fitness function, software will be able to rapidly evaluate different designs, and suggest new permutations. This may also dramatically reduce time-to-market and suggest new research avenues. 
 
 
 \subsection{Arbitrary Domain Shape and PML Sinks}
-Given the more flexible voxel-based model definition used in GoLightly, it becomes possible to create completely arbitrary domain shapes. Non-rectangular domains with PML "sinks" at any desired position within the domain would allow the designer to more tightly fit the computational domain to the circuit in question, and ignore areas that are not relevant to the task at hand. 
+Given the more flexible voxel-based model definition used in GoLightly, it becomes possible to create completely arbitrary domain shapes. Non-rectangular domains with PML "sinks" at any desired position within the domain would allow the designer to more tightly fit the computational domain to the circuit in question, and ignore irrelevant or uninteresting areas.
 
 PML sinks would potentially increase performance by reducing memory requirements. If large sections of a domain could be surrounded by PML, those sections are effectively disjoint from the rest of the domain and therefore may be ignored and, in fact, removed from the simulation. 
 
@@ -39,7 +37,11 @@ This technique, when combined with load balancing between separate machines, wou
 
 \section{Final Words}
 
-The field of general-purpose GPU computing offers potential yet to be realized in many of the areas where it shows the most promise. Leveraging this commonly available, underutilized resource will enable shorter, more robust design cycles, and facilitate exploration of more sophisticated waveguide architectures than might otherwise have been practical. 
+The field of general-purpose GPU computing offers potential yet to be realized in many of the areas where it shows the most promise. Leveraging this commonly available, underutilized resource will enable shorter, more robust design cycles, and facilitate exploration of more sophisticated waveguide architectures. 
+
+
+
+
 
 
 

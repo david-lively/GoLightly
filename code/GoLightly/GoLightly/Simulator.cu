@@ -118,7 +118,7 @@ __global__ void UpdateSourcesEz(
 	unsigned int index = blockDim.x * blockIdx.x + threadIdx.x + indexOffset;
 	unsigned int sourceOffset = SourceOffsets[index];
 
-	Ez->Data[sourceOffset] += sourceDelta;
+	Ez->Data[sourceOffset] = sourceDelta;
 }
 
 void Simulator::UpdateSource(float simulationTime)
@@ -139,7 +139,7 @@ void Simulator::UpdateSource(float simulationTime)
 		, dim3(m_sourceCount, 1, 1)
 		, 0
 		, m_cuda.GetStream(*this)
-		>> >(sourceDelta, 0);
+		>> >(sourceValue, 0);
 }
 
 

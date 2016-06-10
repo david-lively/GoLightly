@@ -27,7 +27,7 @@ public:
 	float EpsilonR;
 	bool StartPaused;
 	std::string FilenamePrefix;
-	bool Benchmark;
+	bool Benchmark = false;
 	/// number of samples that make one period of the source
 	unsigned int SamplesPerPeriod;
 
