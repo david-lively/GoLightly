@@ -12,8 +12,8 @@
 \contentsline {figure}{\numberline {5.10}{\ignorespaces Steady state with $\epsilon _R = 9$}}{34}{figure.5.10}
 \contentsline {figure}{\numberline {5.11}{\ignorespaces Raw monitor output with $\epsilon _R = 9$}}{34}{figure.5.11}
 \contentsline {figure}{\numberline {5.12}{\ignorespaces RMS output with $\epsilon _R = 9$}}{35}{figure.5.12}
-\contentsline {figure}{\numberline {5.13}{\ignorespaces Normalized output with $\epsilon _R = 9$}}{35}{figure.5.13}
-\contentsline {figure}{\numberline {6.1}{\ignorespaces GoLightly: seconds for 5000 frames with the given domain size}}{38}{figure.6.1}
-\contentsline {figure}{\numberline {6.2}{\ignorespaces GoLightly: Completed E and H updates per second}}{39}{figure.6.2}
-\contentsline {figure}{\numberline {6.3}{\ignorespaces GoLightly vs Meep}}{40}{figure.6.3}
-\contentsline {figure}{\numberline {6.4}{\ignorespaces Speedup - Meep Time / GoLightly Time}}{41}{figure.6.4}
+\contentsline {figure}{\numberline {5.13}{\ignorespaces Normalized output with $\epsilon _R = 9$}}{36}{figure.5.13}
+\contentsline {figure}{\numberline {6.1}{\ignorespaces GoLightly: seconds for 5000 frames with the given domain size}}{39}{figure.6.1}
+\contentsline {figure}{\numberline {6.2}{\ignorespaces GoLightly: Completed E and H updates per second}}{40}{figure.6.2}
+\contentsline {figure}{\numberline {6.3}{\ignorespaces GoLightly vs Meep}}{41}{figure.6.3}
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Speedup - Meep Time / GoLightly Time}}{42}{figure.6.4}
