@@ -1,21 +1,14 @@
 \chapter{Device Architecture} \label{ch:device architecture}
 
-CPUs and GPUs each offer advantages for different computational tasks. Multi-core CPUs offer independent cores which are effectively discrete processors. GPUs, however, offer large-scale parallelization, but require strong data and code coherence in order to achieve acceptable performance.
-
+CPUs and GPUs each offer advantages for different computational tasks. Multi-core CPUs offer independent cores which are effectively discrete processors. GPUs offer larger-scale parallelization, but require strong data and code coherence in order to achieve acceptable performance.
 
 \section{CPU}
 
-Users typically run many different applications in parallel: a web browser, music player, word processor and email client are a common combination.
-
-In a modern multi-core CPU, each core provides a dedicated ALU and register set. This allows each core to operate as an independent device. This architecture is advantageous when the device is required to perform disparate operations.
-
-Each ALU performs the same operation at the same time, indicating that the additional ALUs are redundant. Thus, the flexible, general-purpose nature of a CPU becomes a limitation when within the context of FDTD.
+Users typically run many different applications in parallel: a web browser, music player, word processor and email client are a common combination. Multicore CPUs are designed to facilitate this by providing separate ALUs, register sets and cache, minimizing dependencies between cores on the same physical device. 
 
 \section{GPU}
 
-Unlike CPUs, GPUs are capable of running thousands of threads in parallel using a SIMD (single-instruction, multiple-data) model. This architecture is allows rapid processing of large datasets wherein each datum exhibits little or no interdependence. 
-
-This independence is crucial to performant GPU-based applications, as detailed in \autoref{sec:simd}.
+Unlike CPUs, GPUs are capable of running thousands of threads in parallel using a SIMD (single-instruction, multiple-data) model. This architecture allows rapid processing of large datasets wherein each datum exhibits little or no interdependence.  This independence is crucial to GPU performance as detailed in \autoref{sec:simd}.
 
 \subsection{SIMD}\label{sec:simd}
 

@@ -7,7 +7,7 @@ FDTD expresses Maxwell's equations as a set of discretized time-domain equations
 
 \section{Wave equation}
 
-The wave equation for  $E_z$, $H_x$, and $H_y$ are of the form:
+The TM wave equation for  $E_z$, $H_x$, and $H_y$ are of the form:
 
 \begin{equation} \label{eq:waveequation} 
 \frac{\partial E_z}{\partial t} = K * (\frac{\partial H_x}{\partial y} + \frac{\partial H_y}{\partial x})
@@ -94,6 +94,8 @@ Since Maxwell's equations are scale-invariant, GoLightly substitutes 1 for const
 
 In equations \ref{eq:ezupdate}, \ref{eq:hxupdate} and \ref{eq:hyupdate}, note that each $E_{i,j}^{t+1}$ field update depends only upon the previous $E$ value ($E_{i,j}^{t}$), and the previous adjacent $H$ values ($H_X^{t+\frac{1}{2}}$ and $H_Y^{t+\frac{1}{2}}$). This independence allows each field component to be updated without regard for any other value in the same field.   
 
+\clearpage
+
 \section{Leap Frog: Stepping in Space and Time}
 
 In equations \ref{eq:ezupdate}, \ref{eq:hxupdate} and \ref{eq:hyupdate}, note the presence of a "half step" in time ($F^{t + \frac{1}{2}}$) and space $F_{i \frac{+}{-}\frac{1}{2},j \frac{-}{+}\frac{1}{2}}$.
@@ -119,9 +121,7 @@ Recall the $H_Y$ update equation \autoref{eq:hyupdate}, and note that it depends
 
 Since the position $(-\frac{1}{2},\frac{1}{2})$ does not exist, the simulator cannot update this value. The simulator must take this case into account by implementing a boundary condition, or the wave will reflect from the boundaries. 
 
-We implement the Perfectly Matched Layer (PML) as described in \cite{BERENGER1994185}. 
-
-A detailed explanation of PML is beyond the scope of this thesis. In practice, PML adds imaginary hyperplanes orthogonal to each field in the simulation. In the boundary regions, power couples between $E$ and $H$ as expected, but \emph{also} couples into those hyperplanes. Unlike the $E$ and $H$ interdependence, the transfer is one-way. Cells in the PML hyperplanes contain non-physically realizable materials which force the coupled power to decay over a number of layers. In our implementation, we use 10 PML layers as experimentation showed this to provide the most satisfactory results.
+We implement the Perfectly Matched Layer (PML) as described in \cite{BERENGER1994185}. A detailed explanation of PML is beyond the scope of this thesis. In practice, PML adds imaginary hyperplanes orthogonal to each field in the simulation. In the boundary regions, power couples between $E$ and $H$ as expected, but \emph{also} couples into those hyperplanes. Unlike the $E$ and $H$ interdependence, the transfer is one-way. Cells in the PML hyperplanes contain non-physically realizable materials which force the coupled power to decay over a number of layers. In our implementation, we use 10 PML layers as experimentation showed this to provide the most satisfactory results.
 
 
 
