@@ -18,7 +18,7 @@
 \contentsline {section}{\numberline {4.3.}Popularity}{12}{section.4.3}
 \contentsline {chapter}{\numberline {\hfill 5.\hbox {\hskip 0.8em}\ignorespaces }GoLightly}{13}{chapter.5}
 \contentsline {section}{\numberline {5.1.}Goals}{13}{section.5.1}
-\contentsline {section}{\numberline {5.2.}Architecture}{14}{section.5.2}
+\contentsline {section}{\numberline {5.2.}Architecture}{13}{section.5.2}
 \contentsline {section}{\numberline {5.3.}Model Processor}{14}{section.5.3}
 \contentsline {section}{\numberline {5.4.}Simulator}{16}{section.5.4}
 \contentsline {section}{\numberline {5.5.}Visualizer}{23}{section.5.5}
@@ -34,7 +34,7 @@
 \contentsline {section}{\numberline {7.1.}Usability}{44}{section.7.1}
 \contentsline {section}{\numberline {7.2.}Future Work}{44}{section.7.2}
 \contentsline {subsection}{\numberline {7.2.1.}GoLightly Improvements}{44}{subsection.7.2.1}
-\contentsline {subsection}{\numberline {7.2.2.}Genetic Algorithms}{44}{subsection.7.2.2}
+\contentsline {subsection}{\numberline {7.2.2.}Genetic Algorithms}{45}{subsection.7.2.2}
 \contentsline {subsection}{\numberline {7.2.3.}Arbitrary Domain Shape and PML Sinks}{45}{subsection.7.2.3}
 \contentsline {subsection}{\numberline {7.2.4.}Load Balancing}{46}{subsection.7.2.4}
 \contentsline {section}{\numberline {7.3.}Final Words}{46}{section.7.3}

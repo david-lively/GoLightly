@@ -2,7 +2,7 @@
 \chapter{FDTD} \label{ch:fdtd}
 
 
-FDTD expresses Maxwell's equations as a set of discretized time-domain equations\cite{Yee}. These equations describe each electric field component in terms if its orthogonal, coupled magnetic fields, and each magnetic field component as a function of its coupled electric fields.
+FDTD expresses Maxwell's equations as a set of discretized time-domain equations\cite{Yee}. These equations describe each electric field component in terms of its orthogonal, coupled magnetic fields, and each magnetic field component as a function of its coupled electric fields.
 
 
 \section{Wave equation}
@@ -27,7 +27,7 @@ In order to apply these equations to a computational domain, FDTD defines discre
 
 \section{Yee Cell}
 
-Yee \cite{Yee} defines a computational unit known as a "cell." The cell describes how each field component within a domain is related to it's coupled fields. For instance, each $E_Z$ field component depends on adjacent $H_y$ and $H_x$ components. The cell format used in such a simulation is of the form shown in \autoref{fig:yeecell}.
+Yee \cite{Yee} defines a computational unit known as a "cell." The cell describes how each field component within a domain is related to it's coupled fields. For instance, each $E_Z$ field component depends on adjacent $H_y$ and $H_x$ components. The cell format in a $TM_Z$ simulation is of the form shown in \autoref{fig:yeecell}.
 
 \begin{figure}[H]
 	\centering
@@ -72,7 +72,7 @@ This will be important in the discussion between CPU and GPU architectures as yo
 
 \begin{table}[h!]
 	\centering
-	\caption{FDTD Equation Terms}
+	\caption{$TM_Z$ FDTD Equation Terms}
 	\label{tab:modelColorComponentUsage}
 	\begin{tabular}{l | c | l}
 		Symbol	& Definition & Description \\
@@ -121,7 +121,7 @@ Recall the $H_Y$ update equation \autoref{eq:hyupdate}, and note that it depends
 
 Since the position $(-\frac{1}{2},\frac{1}{2})$ does not exist, the simulator cannot update this value. The simulator must take this case into account by implementing a boundary condition, or the wave will reflect from the boundaries. 
 
-We implement the Perfectly Matched Layer (PML) as described in \cite{BERENGER1994185}. A detailed explanation of PML is beyond the scope of this thesis. In practice, PML adds imaginary hyperplanes orthogonal to each field in the simulation. In the boundary regions, power couples between $E$ and $H$ as expected, but \emph{also} couples into those hyperplanes. Unlike the $E$ and $H$ interdependence, the transfer is one-way. Cells in the PML hyperplanes contain non-physically realizable materials which force the coupled power to decay over a number of layers. In our implementation, we use 10 PML layers as experimentation showed this to provide the most satisfactory results.
+We implement the Perfectly Matched Layer (PML) as described in \cite{BERENGER1994185}. A detailed explanation of PML is beyond the scope of this thesis. In practice, PML adds imaginary hyperplanes orthogonal to each field in the simulation. In the boundary regions, power couples between $E$ and $H$ as expected, but \emph{also} couples into those hyperplanes. Unlike the $E$ and $H$ interdependence, the transfer is one-way. Dielectric values in the cells in the PML describe non-physically realizable materials which force the coupled power to decay over a number of layers. In our implementation, we use 10 PML layers as experimentation showed this to provide the most satisfactory results.
 
 
 
