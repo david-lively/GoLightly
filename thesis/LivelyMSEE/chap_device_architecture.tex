@@ -21,6 +21,12 @@ That said, the SIMD approach provides some benefits, including:
 	\item Better code caching. A single ALU, and corresponding cache, are used for many threads. This simplifies cache controller architecture.
 \end{itemize}
 
+\section{Resource Limitations}
+
+When comparing CPUs and GPUs, it is important to consider available resources. Modern GPUs may provide as much as 16GB (or more) of onboard RAM. However, if a simulation requires more RAM than is available on the device, the simulator will be responsible for swapping data between the GPU and the host system over the PCIe bus. Due to the relatively slow speed of the PCIe bus versus the speed of onboard RAM, this incurs a severe performance penalty which can negate the speedup provided by the GPU. 
+
+In contrast, CPUs potentially have much more memory available. A modern consumer desktop may have 32GB or 64GB of host RAM. Operating systems such as Microsoft Windows, Linus and Apple MacOS offer the ability to swap RAM contents to disk when an application's requirements exceed available RAM. While this incurs its own performance penalty, it makes it possible to simulate very large domains that would not fit on a GPU. 
+
 
 
 

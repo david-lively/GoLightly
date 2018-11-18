@@ -27,7 +27,7 @@ GoLightly comprises three primary application blocks:
 
 \section{Model Processor}\label{sec:modelProcessor}
 
-The model processor (MP) is responsible for initialization of the simulator. When launching the simulator, a domain size and image file, containing a coded image of the desired dielectric, as well as a max $\epsilon$ are specified.
+The model processor (MP) is responsible for initialization of the simulator. When launching the simulator, a domain size and image file containing a coded image of the desired dielectric as well as $\epsilon_{max}$ are specified.
 
 \begin{table}[h!]
 	\centering
@@ -44,9 +44,9 @@ The model processor (MP) is responsible for initialization of the simulator. Whe
 	\end{tabular}
 \end{table}
 
-The MP allocates arrays to hold the dielectric properties for each Yee cell. These arrays are of the same dimensions as the domain, which may be different than the dimensions of the model. 
+The MP allocates arrays to hold the dielectric properties for each Yee cell. These arrays are of the same dimensions as the domain, which may be different than the dimensions of the model to accomodate boundary cells.
 
-Once the model image is loaded, the MP iterates through each element in the dielectric array. (See \autoref{listing:modelFromImage})
+Once the model image is loaded, the MP iterates through each pixel in the image. (See \autoref{listing:modelFromImage}), and parses each pixel to populate data structures describing the dielectric contents of the simulation as well as source and monitor locations and parameters.
 
 For each element:
 
@@ -57,6 +57,8 @@ For each element:
 	\item If $G > 0$, this texel has non-unity dielectric. Set ${C_b}_{i,j} = \epsilon_{max} * \frac{G}{255.0}$
 	\item If $B > 0$, this texel is part of a monitor. Add its position to the monitor definition with ID = $B$
 \end{enumerate}
+
+Source code for the image processor is shown in listing \autoref{listing:modelFromImage}.
 
 \lstinputlisting[language=c++,caption=Generating a model from an image]{model-from-image.cpp}\label{listing:modelFromImage}
 
@@ -194,7 +196,7 @@ A significant advantage of this approach over the CSG method used in Meep is tha
 
 \section{Testing and Validation Methodology}
 
-In order to validate the results of the simulator, a 2D $TM_Z$ simulation was executed.
+In order to validate the GPU simulation results, a 2D $TM_Z$ simulation was executed.
 
 \begin{figure}[H]
 	\centering

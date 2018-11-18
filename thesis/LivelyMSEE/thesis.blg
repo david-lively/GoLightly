@@ -3,7 +3,6 @@ The style file: acm.bst
 Database file #1: thesis.bib
 Warning--entry type for "nvidiaNationalLabs" isn't style-file defined
 --line 124 of file thesis.bib
-Warning--I didn't find a database entry for "geodesicGrid"
 Warning--empty journal in globus2006automated
 Warning--empty institution in techpattichis2003
-(There were 4 warnings)
+(There were 3 warnings)

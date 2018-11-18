@@ -12,6 +12,7 @@
 \usepackage{epstopdf}
 \usepackage{float}
 \usepackage{color}
+%\usepackage{appendix}
 %\usepackage{algorithm}
 %\usepackage{algorithmic}
 \usepackage{fancyhdr}
@@ -134,8 +135,10 @@
  	 and \\
  	 Morgan and Kelley
  	 }
- 
 
+%\renewcommand{\lstlistingname}{Algorithm}% Listing -> Algorithm
+%\renewcommand{\lstlistlistingname}{List of \lstlistingname s}% List of Listings -> List of Algorithms 
+%\lstlistoflistings
 %===================================================================
 %   Begin the body of the thesis
 %===================================================================
@@ -162,9 +165,9 @@
 %===================================================================
 %   Appendices go here if no appendix, remove \StartAppendix
 %===================================================================
-%\StartAppendix %All chapters from this point are treated as appendices
+\StartAppendix %All chapters from this point are treated as appendices
 
-%\input{app.tex}
+\input{app.tex}
 %\input{app2.tex}
 
 %===================================================================

@@ -5,36 +5,39 @@
 \BOOKMARK [1][-]{section.2.1}{CPU}{chapter.2}% 5
 \BOOKMARK [1][-]{section.2.2}{GPU}{chapter.2}% 6
 \BOOKMARK [2][-]{subsection.2.2.1}{SIMD}{section.2.2}% 7
-\BOOKMARK [0][-]{chapter.3}{FDTD}{}% 8
-\BOOKMARK [1][-]{section.3.1}{Wave equation}{chapter.3}% 9
-\BOOKMARK [1][-]{section.3.2}{Yee Cell}{chapter.3}% 10
-\BOOKMARK [1][-]{section.3.3}{Leap Frog: Stepping in Space and Time}{chapter.3}% 11
-\BOOKMARK [1][-]{section.3.4}{Boundary Conditions}{chapter.3}% 12
-\BOOKMARK [1][-]{section.3.5}{FDTD in SIMD}{chapter.3}% 13
-\BOOKMARK [0][-]{chapter.4}{Meep}{}% 14
-\BOOKMARK [1][-]{section.4.1}{Modeling}{chapter.4}% 15
-\BOOKMARK [1][-]{section.4.2}{Performance}{chapter.4}% 16
-\BOOKMARK [1][-]{section.4.3}{Popularity}{chapter.4}% 17
-\BOOKMARK [0][-]{chapter.5}{GoLightly}{}% 18
-\BOOKMARK [1][-]{section.5.1}{Goals}{chapter.5}% 19
-\BOOKMARK [1][-]{section.5.2}{Architecture}{chapter.5}% 20
-\BOOKMARK [1][-]{section.5.3}{Model Processor}{chapter.5}% 21
-\BOOKMARK [1][-]{section.5.4}{Simulator}{chapter.5}% 22
-\BOOKMARK [1][-]{section.5.5}{Visualizer}{chapter.5}% 23
-\BOOKMARK [1][-]{section.5.6}{Modeling approach}{chapter.5}% 24
-\BOOKMARK [1][-]{section.5.7}{Testing and Validation Methodology}{chapter.5}% 25
-\BOOKMARK [2][-]{subsection.5.7.1}{Analytical Result}{section.5.7}% 26
-\BOOKMARK [2][-]{subsection.5.7.2}{Numerical Result}{section.5.7}% 27
-\BOOKMARK [0][-]{chapter.6}{Results}{}% 28
-\BOOKMARK [1][-]{section.6.1}{Test Environment}{chapter.6}% 29
-\BOOKMARK [1][-]{section.6.2}{Performance Metrics}{chapter.6}% 30
-\BOOKMARK [1][-]{section.6.3}{Optimization and Enhancements}{chapter.6}% 31
-\BOOKMARK [0][-]{chapter.7}{Conclusions}{}% 32
-\BOOKMARK [1][-]{section.7.1}{Usability}{chapter.7}% 33
-\BOOKMARK [1][-]{section.7.2}{Future Work}{chapter.7}% 34
-\BOOKMARK [2][-]{subsection.7.2.1}{GoLightly Improvements}{section.7.2}% 35
-\BOOKMARK [2][-]{subsection.7.2.2}{Genetic Algorithms}{section.7.2}% 36
-\BOOKMARK [2][-]{subsection.7.2.3}{Arbitrary Domain Shape and PML Sinks}{section.7.2}% 37
-\BOOKMARK [2][-]{subsection.7.2.4}{Load Balancing}{section.7.2}% 38
-\BOOKMARK [1][-]{section.7.3}{Final Words}{chapter.7}% 39
-\BOOKMARK [0][-]{chapter.8}{REFERENCES}{}% 40
+\BOOKMARK [1][-]{section.2.3}{Resource Limitations}{chapter.2}% 8
+\BOOKMARK [0][-]{chapter.3}{FDTD}{}% 9
+\BOOKMARK [1][-]{section.3.1}{Wave equation}{chapter.3}% 10
+\BOOKMARK [1][-]{section.3.2}{Yee Cell}{chapter.3}% 11
+\BOOKMARK [1][-]{section.3.3}{Leap Frog: Stepping in Space and Time}{chapter.3}% 12
+\BOOKMARK [1][-]{section.3.4}{Boundary Conditions}{chapter.3}% 13
+\BOOKMARK [1][-]{section.3.5}{FDTD in SIMD}{chapter.3}% 14
+\BOOKMARK [0][-]{chapter.4}{Meep}{}% 15
+\BOOKMARK [1][-]{section.4.1}{Modeling}{chapter.4}% 16
+\BOOKMARK [1][-]{section.4.2}{Performance}{chapter.4}% 17
+\BOOKMARK [1][-]{section.4.3}{Popularity}{chapter.4}% 18
+\BOOKMARK [0][-]{chapter.5}{GoLightly}{}% 19
+\BOOKMARK [1][-]{section.5.1}{Goals}{chapter.5}% 20
+\BOOKMARK [1][-]{section.5.2}{Architecture}{chapter.5}% 21
+\BOOKMARK [1][-]{section.5.3}{Model Processor}{chapter.5}% 22
+\BOOKMARK [1][-]{section.5.4}{Simulator}{chapter.5}% 23
+\BOOKMARK [1][-]{section.5.5}{Visualizer}{chapter.5}% 24
+\BOOKMARK [1][-]{section.5.6}{Modeling approach}{chapter.5}% 25
+\BOOKMARK [1][-]{section.5.7}{Testing and Validation Methodology}{chapter.5}% 26
+\BOOKMARK [2][-]{subsection.5.7.1}{Analytical Result}{section.5.7}% 27
+\BOOKMARK [2][-]{subsection.5.7.2}{Numerical Result}{section.5.7}% 28
+\BOOKMARK [0][-]{chapter.6}{Results}{}% 29
+\BOOKMARK [1][-]{section.6.1}{Test Environment}{chapter.6}% 30
+\BOOKMARK [1][-]{section.6.2}{Performance Metrics}{chapter.6}% 31
+\BOOKMARK [1][-]{section.6.3}{Optimization and Enhancements}{chapter.6}% 32
+\BOOKMARK [0][-]{chapter.7}{Conclusions}{}% 33
+\BOOKMARK [1][-]{section.7.1}{Usability}{chapter.7}% 34
+\BOOKMARK [1][-]{section.7.2}{Future Work}{chapter.7}% 35
+\BOOKMARK [2][-]{subsection.7.2.1}{GoLightly Improvements}{section.7.2}% 36
+\BOOKMARK [2][-]{subsection.7.2.2}{Genetic Algorithms}{section.7.2}% 37
+\BOOKMARK [2][-]{subsection.7.2.3}{Arbitrary Domain Shape and PML Sinks}{section.7.2}% 38
+\BOOKMARK [2][-]{subsection.7.2.4}{Load Balancing}{section.7.2}% 39
+\BOOKMARK [1][-]{section.7.3}{Final Words}{chapter.7}% 40
+\BOOKMARK [0][-]{appendix.A}{APPENDIX}{}% 41
+\BOOKMARK [1][-]{section.A.1}{Meep scripts}{appendix.A}% 42
+\BOOKMARK [0][-]{appendix.B}{REFERENCES}{}% 43

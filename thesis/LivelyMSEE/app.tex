@@ -14,6 +14,17 @@
 %    \caption{Distribution of $u_i$. This plot displays the quasi-periodic nature of Run 3 %for shell 10 (eps file).} \label{fig: circ symtrc}
 %\end{figure}
 
-\section{Meep CTL Test Script}
 
-Benchmarking Meep was performed using the CTL script:
+
+\section{Meep scripts}
+
+The shell script shown in listing \ref{meeptestsh} calls Meep in a loop, increasing the domain size from 128x64 cells (not including PML layers) to 8192x4096 cells in increments of 128x64 cells. 
+
+\lstinputlisting[label=meeptestsh, language=bash,caption=Meep shell script]{meep-test.sh}
+
+
+The Meep CTL code in listing \ref{benchmarkctl} defines a simulation with a dielectric block with $epsilon_{max}$ = 9. The simulation is run for 5000 frames. During testing, the simulation is timed and the results are written to a CSV file for later analysis. 
+
+\lstinputlisting[label=benchmarkctl,caption=Meep simulation configuration]{benchmark.ctl}
+
+
