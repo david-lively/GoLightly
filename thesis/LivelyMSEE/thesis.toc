@@ -42,4 +42,5 @@
 \noindent APPENDIX \hfill \vskip 0.05in
 \contentsline {chapter}{\numberline {\hfill A.\hbox {\hskip 0.8em}\ignorespaces }APPENDIX}{47}{appendix.A}
 \contentsline {section}{\numberline {A.1.}Meep scripts}{47}{section.A.1}
-\contentsline {chapter}{REFERENCES}{49}{appendix.B}
+\contentsline {section}{\numberline {A.2.}GoLightly configuration}{48}{section.A.2}
+\contentsline {chapter}{REFERENCES}{50}{appendix.B}

@@ -4,7 +4,8 @@ In order to determine the effectiveness of the GPU-based FDTD implementation, we
 
 \section{Test Environment}
 
-Tests were performed on a 2015 Dell XPS 9550 with 32GB of RAM, Intel i7 2600 CPU and NVIDIA 960M GPU. GoLightly GPU tests were executed under Microsoft Windows 10, while Meep CPU tests were run under Ubuntu Desktop version 16.04.   
+Tests were performed on a 2015 Dell XPS 9550 with 32GB of RAM, Intel i7 2600 CPU and NVIDIA 960M GPU with 640 cores and 1GB of VRAM. GoLightly GPU tests were executed under Microsoft Windows 10, while Meep CPU tests were run under Ubuntu Desktop version 16.04.
+ 
 
 \section{Performance Metrics}
 
@@ -40,7 +41,6 @@ Note that GPU throughput (represented in \autoref{fig:gridSizeVsComputeTime} as 
 	\label{fig:gpuVsMeep}
 \end{figure}
 
-\autoref{fig:gpuVsMeep} 
 In \autoref{fig:gpuVsMeep}, note some CPU performance variance near the middle and end of the graph. Multiple runs consistently exhibited this behavior. While the cause of these variances is not clear, it has been reproduced on different hardware and operating system versions. 
 This may be caused by several factors, including:
 

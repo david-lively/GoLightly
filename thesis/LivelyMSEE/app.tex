@@ -18,13 +18,56 @@
 
 \section{Meep scripts}
 
-The shell script shown in listing \ref{meeptestsh} calls Meep in a loop, increasing the domain size from 128x64 cells (not including PML layers) to 8192x4096 cells in increments of 128x64 cells. 
+The shell script shown in \autoref{meeptestsh} calls Meep in a loop, increasing the domain size from 128x64 cells (not including PML layers) to 8192x4096 cells in increments of 128x64 cells. 
 
 \lstinputlisting[label=meeptestsh, language=bash,caption=Meep shell script]{meep-test.sh}
 
 
-The Meep CTL code in listing \ref{benchmarkctl} defines a simulation with a dielectric block with $epsilon_{max}$ = 9. The simulation is run for 5000 frames. During testing, the simulation is timed and the results are written to a CSV file for later analysis. 
+The Meep CTL code in \autoref{benchmarkctl} defines a simulation with a dielectric block with $epsilon_{max}$ = 9. The simulation is run for 5000 frames for each domain size calculated in \autoref{meeptestsh}. During testing, the simulation is timed and the results are written to a CSV file for later analysis. 
 
-\lstinputlisting[label=benchmarkctl,caption=Meep simulation configuration]{benchmark.ctl}
+\lstinputlisting[label=benchmarkctl,caption={Meep simulation CTL script}]{benchmark.ctl}
+
+\section{GoLightly configuration}
+
+Unlike Meep, GoLightly encodes most simulation parameters in an image file, typically generated in an image editing tool such as Adobe Photoshop or Microsoft Paint. That process is detailed in \autoref{sec:modelProcessor}. 
+
+Additional parameters may be specified on the command line or in a text file. Valid options in the configuration text file are:
+
+\begin{table}[h!]
+	\label{golightlyConfig}
+	\centering
+	\caption{GoLightly Configuration}
+	\label{tab:golightlyConfigTerms}
+	\begin{tabular}{l | l}
+		Option	& Description \\
+		\hline
+			model     & image file with encoded dielectric, source and monitor properties \\
+			nogl      & disable OpenGL visualizer										  \\
+			lambda    & source wavelength												  \\
+			runlength & number of frames to run the simulation							  \\
+			media     & $epsilon_{max}$  for visualizer scaling								  \\
+			output    & output path for images and numerical data						  \\
+			paused    & start simulation paused, for debugging and timing				  \\
+			width     & domain width if scaling model									  \\
+			height    & domain height if scaling model									  \\
+			benchmark & on / off to enable benchmarking									  \\
+	\end{tabular}
+\end{table}
+
+For instance, one of the configuration files used while validating the simulator's functionality is shown below.
+
+\begin{lstlisting}[caption={Samply GoLightly Configuration File},label={listing:sampleGolightlyConfig}]
+model=coupler.psd
+nogl
+runlength=5000
+benchmark=true
+width=8192
+height=4096
+runlength=5000
+lambda=10
+media=9
+\end{lstlisting}
+
+
 
 

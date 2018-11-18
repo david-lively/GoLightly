@@ -60,7 +60,7 @@ For each element:
 
 Source code for the image processor is shown in listing \autoref{listing:modelFromImage}.
 
-\lstinputlisting[language=c++,caption=Generating a model from an image]{model-from-image.cpp}\label{listing:modelFromImage}
+\lstinputlisting[language=c++,caption=Generating a model from an image,label={listing:modelFromImage}]{model-from-image.cpp}
 
 Once the dielectric, sources and monitors are derived from the model image, the model processor transfers control to the simulator.
 
@@ -68,17 +68,17 @@ Once the dielectric, sources and monitors are derived from the model image, the 
 
 The simulator block implements the FDTD algorithm. Given the dielectric, source and monitor configurations from the model processor, the simulator initializes the GPU, transfers required data from host memory to the GPU, and begins the simulation loop.
 
-In addition to the dielectric and field arrays, the simulator generates a  descriptor (\autoref{listing:fieldDescriptor}) for each field that will be updated. This structure is used by the kernels to assist in handling boundary conditions (PML) and other housekeeping duties. A similar, more compact  descriptor (\autoref{listing:deviceFieldDescriptor}) is generated from the host descriptor and passed to the kernels.
+In addition to the dielectric and field arrays, the simulator generates a  descriptor (\ref{listing:fieldDescriptor}) for each field that will be updated. This structure is used by the kernels to assist in handling boundary conditions (PML) and other housekeeping duties. A similar, more compact  descriptor (\ref{listing:deviceFieldDescriptor}) is generated from the host descriptor and passed to the kernels.
 
-\lstinputlisting[language=c++,caption=Host Field Descriptor structure]{fieldDescriptor.cpp}\label{listing:fieldDescriptor}
+\lstinputlisting[language=c++,caption=Host Field Descriptor structure,label={listing:fieldDescriptor}]{fieldDescriptor.cpp}
 
-\lstinputlisting[language=c++,caption=Device Field Descriptor]{deviceFieldDescriptor.cpp}\label{listing:deviceFieldDescriptor}
+\lstinputlisting[label={listing:deviceFieldDescriptor},language=c++,caption=Device Field Descriptor]{deviceFieldDescriptor.cpp}
 
 For each loop iteration, the simulator launches a CUDA kernel to update all $E$ fields. Once the $E$ update is complete, the simulator launches kernels to update all $H$ fields.
 
 The three kernels required for a $TM_Z$ simulation are detailed below:
 
-\lstinputlisting[language=c++,caption=CUDA kernel for updating $E_Z$]{cu_update_ez.cpp}\label{listing:updateEzCpp}
+\lstinputlisting[label={listing:updateEzCpp},language=c++,caption={CUDA kernel for updating $E_Z$}]{cu_update_ez.cpp}
 
 The majority of each kernel's source performs setup and bounds checking tasks. In each kernel, the FDTD equation implementation can be isolated to one or two lines of code.
 
