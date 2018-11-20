@@ -19,7 +19,7 @@
 \contentsline {section}{\numberline {4.3.}Popularity}{12}{section.4.3}
 \contentsline {chapter}{\numberline {\hfill 5.\hbox {\hskip 0.8em}\ignorespaces }GoLightly}{13}{chapter.5}
 \contentsline {section}{\numberline {5.1.}Goals}{13}{section.5.1}
-\contentsline {section}{\numberline {5.2.}Architecture}{14}{section.5.2}
+\contentsline {section}{\numberline {5.2.}Architecture}{13}{section.5.2}
 \contentsline {section}{\numberline {5.3.}Model Processor}{14}{section.5.3}
 \contentsline {section}{\numberline {5.4.}Simulator}{16}{section.5.4}
 \contentsline {section}{\numberline {5.5.}Visualizer}{23}{section.5.5}
@@ -29,7 +29,7 @@
 \contentsline {subsection}{\numberline {5.7.2.}Numerical Result}{32}{subsection.5.7.2}
 \contentsline {chapter}{\numberline {\hfill 6.\hbox {\hskip 0.8em}\ignorespaces }Results}{38}{chapter.6}
 \contentsline {section}{\numberline {6.1.}Test Environment}{38}{section.6.1}
-\contentsline {section}{\numberline {6.2.}Performance Metrics}{38}{section.6.2}
+\contentsline {section}{\numberline {6.2.}Performance Metrics}{39}{section.6.2}
 \contentsline {section}{\numberline {6.3.}Optimization and Enhancements}{42}{section.6.3}
 \contentsline {chapter}{\numberline {\hfill 7.\hbox {\hskip 0.8em}\ignorespaces }Conclusions}{44}{chapter.7}
 \contentsline {section}{\numberline {7.1.}Usability}{44}{section.7.1}

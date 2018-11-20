@@ -1,6 +1,13 @@
 \chapter{Results} \label{ch:conclusions}
 
-In order to determine the effectiveness of the GPU-based FDTD implementation, we compare performance of GPU and CPU implementations. We measure performance as a function of total execution time for a given domain size and number of time steps, as well as number of cell operations completed per second. 
+In order to gauge the practical benefit of the GPU-based FDTD implementation, we compare execution time  of GPU and CPU implementations. We measure performance as a function of total execution time for a given domain size and number of time steps or frames, as well as number of cell operations completed per second. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth,keepaspectratio]{point-source-comparison-split.jpg}
+	\caption{GoLightly (left) vs Meep (right) output for ${TM}_Z$ simulation with Dirichlet boundary}
+	\label{fig:pointSourceComparison}
+\end{figure}
 
 \section{Test Environment}
 
