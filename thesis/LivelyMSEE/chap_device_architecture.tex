@@ -4,7 +4,7 @@ CPUs and GPUs each offer advantages for different computational tasks. Multi-cor
 
 \section{CPU}
 
-Users typically run many different applications in parallel: a web browser, music player, word processor and email client are a common combination. Multicore CPUs facilitate this by providing separate ALUs, register files and cache, minimizing dependencies between cores on the same physical device. 
+Most desktop PC users typically run many different applications in parallel: a web browser, music player, word processor and email client are a common combination. Multicore CPUs facilitate this by providing separate ALUs, register files and cache, minimizing dependencies between cores on the same physical device. 
 
 \section{GPU}
 
@@ -12,20 +12,21 @@ Unlike CPUs, GPUs are capable of running thousands of threads in parallel using 
 
 \subsection{SIMD}\label{sec:simd}
 
-In a SIMD\cite{Massingill:2007:SAP:1772070.1772078} architecture, a core may consist of a single ALU with multiple register files. Separate threads load different data into dedicated register banks. The ALU executes identitical operations on each lane's registers simultaneously. In this way, each register bank is analagous to a CPU "thread." However, since the same instruction must be executed on all register sets at every step, this design is less flexible than a system where each core is truly independent. 
+In a SIMD\cite{Massingill:2007:SAP:1772070.1772078} architecture, a core may consist of a single ALU with multiple register files. Separate threads load distinct data into thread-specific register banks. The ALU executes identitical operations on each thread's registers simultaneously. In this way, each register bank is analagous to a CPU thread. Where a CPU thread comprises potentially-distinct code and data, concurrent SIMD threads differ only in the data that they manipulate.  However, since the same SIMD instruction must be executed on all register sets at every step, this design is less flexible than a typical CPU architecture where each core is truly independent. 
 
-That said, the SIMD approach provides some benefits, including:
+That said, the SIMD approach provides signifcant benefits, including:
 
 \begin{itemize}
-	\item Fewer components are required per core since fewer ALUs are required. Leads to reduced die space requirements.
+	\item Fewer components are required per core since fewer ALUs are required.
+	\item Smaller die area due to reduced component count.
 	\item Better code caching. A single ALU, and corresponding cache, are used for many threads. This simplifies cache controller architecture.
 \end{itemize}
 
 \section{Resource Limitations}
 
-When comparing CPUs and GPUs, it is important to consider available resources. Modern GPUs may provide as much as 16GB (or more) of onboard RAM. However, if a simulation requires more RAM than is available on the device, the simulator will be responsible for swapping data between the GPU and the host system over the PCIe bus. Due to the relatively slow speed of the PCIe bus versus the speed of onboard RAM, this incurs a severe performance penalty which can negate the speedup provided by the GPU. 
+When comparing CPUs and GPUs, it is important to consider available resources. Modern GPUs may provide 32GB (or more) of RAM.  High-end devices provide on-board solid-state FLASH storage in excess of 1TB. However, if a simulation requires more RAM than is available on the device, the simulator will be responsible for swapping data between the GPU and the host system over the PCIe bus. Due to the relatively slow speed of the PCIe bus versus the speed of onboard RAM, this incurs a severe performance penalty which can negate the speedup provided by the GPU. 
 
-In contrast, CPUs potentially have much more memory available. A modern consumer desktop may have 32GB or 64GB of host RAM. Operating systems such as Microsoft Windows, Linus and Apple MacOS offer the ability to swap RAM contents to disk when an application's requirements exceed available RAM. While this incurs its own performance penalty, it makes it possible to simulate very large domains that would not fit on a GPU. 
+In contrast, CPUs potentially have much more memory available. A modern desktop computer may be equipped with up to 128GB of RAM. Operating systems such as Microsoft Windows, Linux and MacOS offer the ability to swap RAM contents to disk when an application's requirements exceed available RAM. While this process incurs its own performance penalty, it makes possible simulation of domains that exceed GPU memory constraints.
 
 
 
