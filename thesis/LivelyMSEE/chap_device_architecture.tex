@@ -24,7 +24,7 @@ That said, the SIMD approach provides signifcant benefits, including:
 
 \section{Resource Limitations}
 
-When comparing CPUs and GPUs, it is important to consider available resources. Modern GPUs may provide 32GB (or more) of RAM.  High-end devices provide on-board solid-state FLASH storage in excess of 1TB. However, if a simulation requires more RAM than is available on the device, the simulator will be responsible for swapping data between the GPU and the host system over the PCIe bus. Due to the relatively slow speed of the PCIe bus versus the speed of onboard RAM, this incurs a severe performance penalty which can negate the speedup provided by the GPU. 
+When comparing CPUs and GPUs, it is important to consider available resources. Modern GPUs may provide 32GB (or more) of RAM.  High-end devices provide on-board solid-state FLASH storage in excess of 1TB. However, if a simulation requires more RAM than is available on the device, the application will be responsible for swapping data between the GPU and the host system over the PCIe bus. Due to the relatively slow speed of the PCIe bus versus the speed of onboard RAM, this incurs a severe performance penalty which can negate the speedup provided by the GPU. 
 
 In contrast, CPUs potentially have much more memory available. A modern desktop computer may be equipped with up to 128GB of RAM. Operating systems such as Microsoft Windows, Linux and MacOS offer the ability to swap RAM contents to disk when an application's requirements exceed available RAM. While this process incurs its own performance penalty, it makes possible simulation of domains that exceed GPU memory constraints.
 
