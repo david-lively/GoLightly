@@ -28,6 +28,13 @@ When comparing CPUs and GPUs, it is important to consider available resources. M
 
 In contrast, CPUs potentially have much more memory available. A modern desktop computer may be equipped with up to 128GB of RAM. Operating systems such as Microsoft Windows, Linux and MacOS offer the ability to swap RAM contents to disk when an application's requirements exceed available RAM. While this process incurs its own performance penalty, it makes possible simulation of domains that exceed GPU memory constraints.
 
+\iffalse
+I'd like a wrapping up paragraph here to say that for the problem you are looking at GPU's make sense as a choice and why (likely get enough of them that cache memory isn't swapped often...) or some other tie back to the work.
+\fi
+
+For FDTD, multiple GPUs may be leveraged to overcome these limitations. In the case where a simulation requires more memory than is available on the GPU, the domain may be divided into subdomains which are assigned to dedicated devices. At the end of each $E$ or $H$ field calculation, field values lying on the border between subdomains may be copied from the GPU to the host, and then sent to the GPU responsible for the adjacent subdomain. This approach significantly reduces the quantity of data that must be transferred over the PCIe bus and therefore reduces any performance loss due to data transfer. 
+
+
 
 
 

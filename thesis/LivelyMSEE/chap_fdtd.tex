@@ -1,6 +1,11 @@
 
 \chapter{FDTD} \label{ch:fdtd}
 
+\iffalse
+
+MPC: Here I think you need a short paragraph to tie to the work.  This work models optical fields.  FDTD is one accepted way of doing this.  Is is attractive because ...  Then what you have already says what it is.
+\fi
+This work models optical fields using the FDTD algorithm. FDTD eliminates any data dependence between adjacent field components, allowing them to be updated in parallel. This maps well to the SIMD GPU architecture described in the previous section. 
 
 FDTD expresses Maxwell's equations as a set of discretized time-domain equations\cite{Yee}. These equations describe each electric field component in terms of its orthogonal, coupled magnetic fields, and each magnetic field component as a function of its coupled electric fields.
 
@@ -117,9 +122,17 @@ This arrangement reflects the manner in which a wave will propagate through the 
 
 \section{Boundary Conditions}
 
-Recall the $H_Y$ update equation \autoref{eq:hyupdate}, and note that it depends on two adjacent $E_Z$ values on the $X$ axis. The finite grid does not contain enough information to update the $H$ values that lie on the edge of the domain. For instance, ${H_Y}_{0,\frac{1}{2}}$ requires ${E_Z}_{\frac{1}{2},\frac{1}{2}}$ and \bm{${E_Z}_{-\frac{1}{2},\frac{1}{2}}$}.
+\iffalse
+MPC: I don't think I'd say enough information, I think I'd say does not contain the required information...
+\fi
+
+Recall the $H_Y$ update equation \autoref{eq:hyupdate}, and note that it depends on two adjacent $E_Z$ values on the $X$ axis. The finite grid does not contain the required information to update the $H$ values that lie on the edge of the domain. For instance, ${H_Y}_{0,\frac{1}{2}}$ requires ${E_Z}_{\frac{1}{2},\frac{1}{2}}$ and ${E_Z}_{-\frac{1}{2},\frac{1}{2}}$.
 
 Since the position $(-\frac{1}{2},\frac{1}{2})$ does not exist, the simulator cannot update this value. The simulator must take this case into account by implementing a boundary condition, or the wave will reflect from the boundaries. 
+
+\iffalse
+Are you aware of any rule of thumb here.  What makes you think 10 is enough (I do, but you might want to justify).
+\fi
 
 We implement the Perfectly Matched Layer (PML) as described in \cite{BERENGER1994185}. A detailed explanation of PML is beyond the scope of this thesis. In practice, PML adds imaginary hyperplanes orthogonal to each field in the simulation. In the boundary regions, power couples between $E$ and $H$ as expected, but \emph{also} couples into those hyperplanes. Unlike the $E$ and $H$ interdependence, the transfer is one-way. Dielectric values in the cells in the PML describe non-physically realizable materials which force the coupled power to decay over a number of layers. In our implementation, we use 10 PML layers as experimentation showed this to provide the most satisfactory results.
 
