@@ -7,40 +7,40 @@
 \contentsline {section}{\numberline {2.2.}GPU}{3}{section.2.2}
 \contentsline {subsection}{\numberline {2.2.1.}SIMD}{3}{subsection.2.2.1}
 \contentsline {section}{\numberline {2.3.}Resource Limitations}{4}{section.2.3}
-\contentsline {chapter}{\numberline {\hfill 3.\hbox {\hskip 0.8em}\ignorespaces }FDTD}{5}{chapter.3}
-\contentsline {section}{\numberline {3.1.}Wave equation}{5}{section.3.1}
-\contentsline {section}{\numberline {3.2.}Yee Cell}{5}{section.3.2}
-\contentsline {section}{\numberline {3.3.}Leap Frog: Stepping in Space and Time}{8}{section.3.3}
-\contentsline {section}{\numberline {3.4.}Boundary Conditions}{9}{section.3.4}
-\contentsline {section}{\numberline {3.5.}FDTD in SIMD}{9}{section.3.5}
-\contentsline {chapter}{\numberline {\hfill 4.\hbox {\hskip 0.8em}\ignorespaces }Meep}{11}{chapter.4}
-\contentsline {section}{\numberline {4.1.}Modeling}{11}{section.4.1}
-\contentsline {section}{\numberline {4.2.}Performance}{11}{section.4.2}
-\contentsline {section}{\numberline {4.3.}Popularity}{12}{section.4.3}
-\contentsline {chapter}{\numberline {\hfill 5.\hbox {\hskip 0.8em}\ignorespaces }GoLightly}{13}{chapter.5}
-\contentsline {section}{\numberline {5.1.}Goals}{13}{section.5.1}
-\contentsline {section}{\numberline {5.2.}Architecture}{13}{section.5.2}
-\contentsline {section}{\numberline {5.3.}Model Processor}{14}{section.5.3}
-\contentsline {section}{\numberline {5.4.}Simulator}{16}{section.5.4}
-\contentsline {section}{\numberline {5.5.}Visualizer}{23}{section.5.5}
-\contentsline {section}{\numberline {5.6.}Modeling approach}{28}{section.5.6}
-\contentsline {section}{\numberline {5.7.}Testing and Validation Methodology}{30}{section.5.7}
-\contentsline {subsection}{\numberline {5.7.1.}Analytical Result}{30}{subsection.5.7.1}
-\contentsline {subsection}{\numberline {5.7.2.}Numerical Result}{32}{subsection.5.7.2}
-\contentsline {chapter}{\numberline {\hfill 6.\hbox {\hskip 0.8em}\ignorespaces }Results}{38}{chapter.6}
-\contentsline {section}{\numberline {6.1.}Test Environment}{38}{section.6.1}
-\contentsline {section}{\numberline {6.2.}Performance Metrics}{39}{section.6.2}
-\contentsline {section}{\numberline {6.3.}Optimization and Enhancements}{42}{section.6.3}
-\contentsline {chapter}{\numberline {\hfill 7.\hbox {\hskip 0.8em}\ignorespaces }Conclusions}{44}{chapter.7}
-\contentsline {section}{\numberline {7.1.}Usability}{44}{section.7.1}
-\contentsline {section}{\numberline {7.2.}Future Work}{44}{section.7.2}
-\contentsline {subsection}{\numberline {7.2.1.}GoLightly Improvements}{44}{subsection.7.2.1}
-\contentsline {subsection}{\numberline {7.2.2.}Genetic Algorithms}{45}{subsection.7.2.2}
-\contentsline {subsection}{\numberline {7.2.3.}Arbitrary Domain Shape and PML Sinks}{45}{subsection.7.2.3}
-\contentsline {subsection}{\numberline {7.2.4.}Load Balancing}{46}{subsection.7.2.4}
-\contentsline {section}{\numberline {7.3.}Final Words}{46}{section.7.3}
+\contentsline {chapter}{\numberline {\hfill 3.\hbox {\hskip 0.8em}\ignorespaces }FDTD}{6}{chapter.3}
+\contentsline {section}{\numberline {3.1.}Wave equation}{6}{section.3.1}
+\contentsline {section}{\numberline {3.2.}Yee Cell}{7}{section.3.2}
+\contentsline {section}{\numberline {3.3.}Leap Frog: Stepping in Space and Time}{9}{section.3.3}
+\contentsline {section}{\numberline {3.4.}Boundary Conditions}{10}{section.3.4}
+\contentsline {section}{\numberline {3.5.}FDTD in SIMD}{10}{section.3.5}
+\contentsline {chapter}{\numberline {\hfill 4.\hbox {\hskip 0.8em}\ignorespaces }Meep}{12}{chapter.4}
+\contentsline {section}{\numberline {4.1.}Modeling}{12}{section.4.1}
+\contentsline {section}{\numberline {4.2.}Performance}{12}{section.4.2}
+\contentsline {section}{\numberline {4.3.}Popularity}{13}{section.4.3}
+\contentsline {chapter}{\numberline {\hfill 5.\hbox {\hskip 0.8em}\ignorespaces }GoLightly}{14}{chapter.5}
+\contentsline {section}{\numberline {5.1.}Goals}{14}{section.5.1}
+\contentsline {section}{\numberline {5.2.}Architecture}{15}{section.5.2}
+\contentsline {section}{\numberline {5.3.}Model Processor}{15}{section.5.3}
+\contentsline {section}{\numberline {5.4.}Simulator}{17}{section.5.4}
+\contentsline {section}{\numberline {5.5.}Visualizer}{24}{section.5.5}
+\contentsline {section}{\numberline {5.6.}Modeling approach}{29}{section.5.6}
+\contentsline {section}{\numberline {5.7.}Testing and Validation Methodology}{31}{section.5.7}
+\contentsline {subsection}{\numberline {5.7.1.}Analytical Result}{31}{subsection.5.7.1}
+\contentsline {subsection}{\numberline {5.7.2.}Numerical Result}{33}{subsection.5.7.2}
+\contentsline {chapter}{\numberline {\hfill 6.\hbox {\hskip 0.8em}\ignorespaces }Results}{39}{chapter.6}
+\contentsline {section}{\numberline {6.1.}Test Environment}{39}{section.6.1}
+\contentsline {section}{\numberline {6.2.}Performance Metrics}{40}{section.6.2}
+\contentsline {section}{\numberline {6.3.}Optimization and Enhancements}{43}{section.6.3}
+\contentsline {chapter}{\numberline {\hfill 7.\hbox {\hskip 0.8em}\ignorespaces }Conclusions}{45}{chapter.7}
+\contentsline {section}{\numberline {7.1.}Usability}{45}{section.7.1}
+\contentsline {section}{\numberline {7.2.}Future Work}{45}{section.7.2}
+\contentsline {subsection}{\numberline {7.2.1.}GoLightly Improvements}{45}{subsection.7.2.1}
+\contentsline {subsection}{\numberline {7.2.2.}Genetic Algorithms}{46}{subsection.7.2.2}
+\contentsline {subsection}{\numberline {7.2.3.}Arbitrary Domain Shape and PML Sinks}{46}{subsection.7.2.3}
+\contentsline {subsection}{\numberline {7.2.4.}Load Balancing}{47}{subsection.7.2.4}
+\contentsline {section}{\numberline {7.3.}Final Words}{47}{section.7.3}
 \noindent APPENDIX \hfill \vskip 0.05in
-\contentsline {chapter}{\numberline {\hfill A.\hbox {\hskip 0.8em}\ignorespaces }APPENDIX}{47}{appendix.A}
-\contentsline {section}{\numberline {A.1.}Meep scripts}{47}{section.A.1}
-\contentsline {section}{\numberline {A.2.}GoLightly configuration}{48}{section.A.2}
-\contentsline {chapter}{REFERENCES}{50}{appendix.B}
+\contentsline {chapter}{\numberline {\hfill A.\hbox {\hskip 0.8em}\ignorespaces }APPENDIX}{48}{appendix.A}
+\contentsline {section}{\numberline {A.1.}Meep scripts}{48}{section.A.1}
+\contentsline {section}{\numberline {A.2.}GoLightly configuration}{49}{section.A.2}
+\contentsline {chapter}{REFERENCES}{51}{appendix.B}
