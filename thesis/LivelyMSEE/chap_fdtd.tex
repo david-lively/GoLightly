@@ -127,5 +127,5 @@ We implement the Perfectly Matched Layer (PML) as described in \cite{BERENGER199
 
 \section{FDTD in SIMD}
 
-FDTD's leap-frog update method, whereby E fields and H fields are successively calculated, is well-suited to a GPU implementation. E field values depend on adjacent H field values, and visa-versa. Since the E-field update equation requires knowledge only of the H field state and previous E field state, each field component can be calculated independently with no opportunity for a pipeline stall or race condition. 
+FDTD's leap-frog update method, whereby $E$ fields and $H$ fields are successively calculated, is well-suited to a GPU implementation. $E$ field values depend on adjacent $H$ field values, and visa-versa. Since the $E$-field update equation requires knowledge only of the $H$ field state and previous $E$ field state, each field component can be calculated independently with no opportunity for a pipeline stall or race condition. 
 

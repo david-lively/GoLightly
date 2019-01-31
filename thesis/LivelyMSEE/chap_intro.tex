@@ -30,7 +30,7 @@ In this thesis, we explore an implementation of FDTD utilizing graphics processi
 
 Multi-core CPUs excel at quickly performing disparate operations on potentially-unrelated data. This is a requirement in traditional desktop computing. However, the flexible architecture that provides this capability can be a liability when repeatedly executing large batches of identical operations. 
 
-GPUs trade this flexibility for increased throughput. Modern consumer-grade GPUs offer thousands or tens of thousands of processing units ("cores"). Some algorithms, such as FDTD, require little or no data interdependence, no branching logic (a severe performance impediment on GPUs) and consist of short cycles of simple operations. The power of the GPU lies in performing these simple operations at large scale, with thousands of threads running in parallel. 
+GPUs trade this flexibility for increased throughput. Modern consumer-grade GPUs with many ALU cores are able to process thousands of threads very quickly. Some algorithms, such as FDTD, require little or no data interdependence, no branching logic (a severe performance impediment on GPUs) and consist of short cycles of simple operations. The power of the GPU lies in performing these simple operations at large scale, with thousands of threads executed in parallel. 
 
-The following sections detail the FDTD algorithm. Later sections describe a CPU-based implementation (MIT's  Meep), and our GPU-based GoLightly simulator. We verify the GPU solution numerically, and compare performance between CPU- and GPU-based implementations. Finally, we consider future applications and enhancements. 
+The following sections detail the FDTD algorithm. Later sections describe a CPU-based implementation (MIT's  Meep) and our GPU-based GoLightly simulator. We verify the GPU solution numerically, and compare performance between CPU- and GPU-based implementations. Finally, we consider future applications and enhancements. 
 
