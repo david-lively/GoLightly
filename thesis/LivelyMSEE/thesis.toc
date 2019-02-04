@@ -12,7 +12,7 @@
 \contentsline {section}{\numberline {3.2.}Yee Cell}{7}{section.3.2}
 \contentsline {section}{\numberline {3.3.}Leap Frog: Stepping in Space and Time}{9}{section.3.3}
 \contentsline {section}{\numberline {3.4.}Boundary Conditions}{10}{section.3.4}
-\contentsline {section}{\numberline {3.5.}FDTD in SIMD}{10}{section.3.5}
+\contentsline {section}{\numberline {3.5.}FDTD in SIMD}{11}{section.3.5}
 \contentsline {chapter}{\numberline {\hfill 4.\hbox {\hskip 0.8em}\ignorespaces }Meep}{12}{chapter.4}
 \contentsline {section}{\numberline {4.1.}Modeling}{12}{section.4.1}
 \contentsline {section}{\numberline {4.2.}Performance}{12}{section.4.2}

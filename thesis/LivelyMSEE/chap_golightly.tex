@@ -58,6 +58,12 @@ For each element:
 	\item If $B > 0$, this texel is part of a monitor. Add its position to the monitor definition with ID = $B$
 \end{enumerate}
 
+\iffalse
+
+MPC: At some point did you abandon the non solid rectangular grid work?  I thought the doughnut simulation domain for a ring resonator was really cool and potentially solved a lot of memory issues.  Is that gone?  If it is, then ok.  If it is still possible you need to make a bigger deal out of it.
+
+\fi
+
 Source code for the image processor is shown in listing \autoref{listing:modelFromImage}.
 
 \lstinputlisting[language=c++,caption=Generating a model from an image,label={listing:modelFromImage}]{model-from-image.cpp}
@@ -134,7 +140,7 @@ A completed PBO is bound to a uniform input for a shader (\autoref{lst:basicvert
 	\centering
 	\includegraphics[  width=15cm,
 	height=6cm,
-	keepaspectratio]{visualizer-wgm.png}
+	keepaspectratio]{visualizer-wgm-adjusted.png}
 	\caption{2D Whispering Gallery Mode Sensor}
 	\label{fig:wgm}
 \end{figure}

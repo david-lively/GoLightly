@@ -134,7 +134,7 @@ Since the position $(-\frac{1}{2},\frac{1}{2})$ does not exist, the simulator ca
 Are you aware of any rule of thumb here.  What makes you think 10 is enough (I do, but you might want to justify).
 \fi
 
-We implement the Perfectly Matched Layer (PML) as described in \cite{BERENGER1994185}. A detailed explanation of PML is beyond the scope of this thesis. In practice, PML adds imaginary hyperplanes orthogonal to each field in the simulation. In the boundary regions, power couples between $E$ and $H$ as expected, but \emph{also} couples into those hyperplanes. Unlike the $E$ and $H$ interdependence, the transfer is one-way. Dielectric values in the cells in the PML describe non-physically realizable materials which force the coupled power to decay over a number of layers. In our implementation, we use 10 PML layers as experimentation showed this to provide the most satisfactory results.
+We implement the Perfectly Matched Layer (PML) as described in \cite{BERENGER1994185}. A detailed explanation of PML is beyond the scope of this thesis. In practice, PML adds imaginary hyperplanes orthogonal to each field in the simulation. In the boundary regions, power couples between $E$ and $H$ as expected, but \emph{also} couples into those hyperplanes. Unlike the $E$ and $H$ interdependence, the transfer is one-way. Dielectric values in the cells in the PML describe non-physically realizable materials which force the coupled power to decay over a number of layers. In our implementation, we use 10 PML layers. Given our spatial discretization interval $dx$ = $\frac{\lambda}{10}$, 10 layers span one wavelength. Experimentation has shown this configuration to provide the most satisfactory results.
 
 
 
