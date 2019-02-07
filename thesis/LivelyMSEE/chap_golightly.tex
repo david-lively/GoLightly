@@ -13,7 +13,7 @@ GoLightly is intended to address deficiencies common to CPU-based solutions. In 
 	\item Portable. Ideally, the simulator should run on a high-end consumer grade laptop and support the most common desktop operating systems (Microsoft Windows and Apple OS X).  
 \end{itemize}
 
-To meet those goals, GoLightly takes advantage of the programmable GPU available in common desktop and laptop computers, resulting in a dramatic speedup. Rather than relying on a proprietary model definition language or obscure, limited scripting system, we use industry-standard image and geometry file formats so that models may be defined using robust, familiar, readily-available tools. 
+To meet those goals, GoLightly takes advantage of the programmable GPU available in common desktop and laptop computers, resulting in a dramatic speedup. Rather than relying on a proprietary model definition language or limited scripting system, we use industry-standard image file formats so that models may be defined using robust, familiar, readily-available tools such as Adobe Photoshop and GIMP.
 
 \section{Architecture}
 
@@ -48,7 +48,7 @@ The MP allocates arrays to hold the dielectric properties for each Yee cell. The
 
 Once the model image is loaded, the MP iterates through each pixel in the image. (See \autoref{listing:modelFromImage}), and parses each pixel to populate data structures describing the dielectric contents of the simulation as well as source and monitor locations and parameters.
 
-For each element:
+For each cell in the domain:
 
 \begin{enumerate}
 	\item Determine the normalized texel coordinate that corresponds to the current cell position	
@@ -75,7 +75,7 @@ Once the dielectric, sources and monitors are derived from the model image, the 
 The simulator block implements the FDTD algorithm. Given the dielectric, source and monitor configurations from the model processor, the simulator initializes the GPU, transfers required data from host memory to the GPU, and begins the simulation loop.
 
 In addition to the dielectric and field arrays, the simulator generates a  descriptor (\ref{listing:fieldDescriptor}) for each field that will be updated. This structure is used by the kernels to assist in handling boundary conditions (PML) and other housekeeping duties. A similar, more compact  descriptor (\ref{listing:deviceFieldDescriptor}) is generated from the host descriptor and passed to the kernels.
-
+\pagebreak
 \lstinputlisting[language=c++,caption=Host Field Descriptor structure,label={listing:fieldDescriptor}]{fieldDescriptor.cpp}
 
 \lstinputlisting[label={listing:deviceFieldDescriptor},language=c++,caption=Device Field Descriptor]{deviceFieldDescriptor.cpp}

@@ -14,15 +14,15 @@ While I may agree, you need to keep they hyperbole and sarcasm out.  You should 
 ************************************************
 \fi
 
-One limitation of Meep is it's CSG\footnote{Constructive Solid Geometry. A method of describing manifolds as a series of boolean operations of convex polyhedra.}-based modeling language. Construction of arbitrarily-shaped or dynamic structures using CSG is a complex process. It is worth noting that Meep provides a "material function" capability. This allows the user to dynamically determine the material properties of any point in space using their own algorithm rather than defining their model using CSG. However, to take advantage of this capability, the user must employ additional software or custom programming. 
+One limitation of Meep is it's CSG\footnote{Constructive Solid Geometry. A method of describing manifolds as a series of boolean operations of convex polyhedra.}-based modeling language. Construction of arbitrarily-shaped or dynamic structures using CSG is a complex process. It is worth noting that Meep provides a "material function" capability. This allows the user to specify the material properties of any point in space using their own algorithm rather than defining their model using CSG. However, to take advantage of this capability, the user must employ additional software or custom programming. 
 
 \section{Performance}
 
-Meep is a mature, highly-optimized suite of tools. It scales well across multiple machines, relying on the MPI protocol to synchronize nodes within the cluster.
+Meep comprises a mature and highly-optimized suite of tools. It scales well across multiple computers, relying on the MPI protocol to synchronize nodes within the cluster.
 
 While performant when compared to other FDTD software, Meep suffers from the same architecture-imposed limitations of all CPU-based implementations. The limited number of processing cores available on a general-purpose CPU restricts the number of data points that can be processed within a given time frame. This problem can be solved by provisioning additional computers which would run in parallel, distributing the computational load across the resulting cluster.
 
-This sort of cluster configuration incurs its own overhead. Although a domain may be divided into discrete parts and distributed across cluster nodes, the state of cells located at the interfaces between subdomains must be communicated between nodes in order to maintain continuity. This exchange must occur for every calculation frame and may necessitate use of a high-speed local network and supporting hardware. 
+This sort of cluster configuration incurs its own overhead. Although a domain may be divided into discrete subdomains and distributed across cluster nodes, the state of cells located at the interfaces between subdomains must be communicated between nodes in order to maintain continuity. This exchange must occur for every calculation frame and may necessitate use of a high-speed local network and supporting hardware to reduce update latency.
 
 \section{Popularity}
 

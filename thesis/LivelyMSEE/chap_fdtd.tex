@@ -97,7 +97,7 @@ This will be important in the discussion between CPU and GPU architectures as yo
 
 Since Maxwell's equations are scale-invariant, GoLightly substitutes 1 for constants such as $C$, $\mu_0$ and $\epsilon_0$. The $\frac{0.9}{\sqrt{2}}$ scalar in $dt$ prevents aliasing, and corrects for simulation dimensionality\footnote{This value should be $\frac{0.9}{\sqrt{n}}$, where $n$ is 3 for a 3D domain, 2 for a 2D domain and 1 for a 1D domain.} 
 
-In equations \ref{eq:ezupdate}, \ref{eq:hxupdate} and \ref{eq:hyupdate}, note that each $E_{i,j}^{t+1}$ field update depends only upon the previous $E$ value ($E_{i,j}^{t}$), and the previous adjacent $H$ values ($H_X^{t+\frac{1}{2}}$ and $H_Y^{t+\frac{1}{2}}$). This independence allows each field component to be updated without regard for any other value in the same field.   
+In equations \ref{eq:ezupdate}, \ref{eq:hxupdate} and \ref{eq:hyupdate}, note that each $E_{i,j}^{t+1}$ field update depends only upon the previous $E$ value ($E_{i,j}^{t}$), and the previous adjacent $H$ values ($H_X^{t+\frac{1}{2}}$ and $H_Y^{t+\frac{1}{2}}$). This independence allows each field component to be updated without regard for any other value in the same field within given time step. 
 
 \clearpage
 
@@ -105,7 +105,7 @@ In equations \ref{eq:ezupdate}, \ref{eq:hxupdate} and \ref{eq:hyupdate}, note th
 
 In equations \ref{eq:ezupdate}, \ref{eq:hxupdate} and \ref{eq:hyupdate}, note the presence of a "half step" in time ($F^{t + \frac{1}{2}}$) and space $F_{i \frac{+}{-}\frac{1}{2},j \frac{-}{+}\frac{1}{2}}$.
 
-This $t\frac{+}{-}\frac{1}{2}$ represents the temporal step size between an $E$-field update and the next $H$-field update,and visa-versa. Similarly, the spatial offset $x\frac{+}{-}\frac{1}{2}$ represents the distance between an $E$-field component and its adjacent, interdependent $H$ values.
+This $t\frac{+}{-}\frac{1}{2}$ represents the temporal step size between an $E$-field update and the next $H$-field update,and visa-versa. Similarly, the spatial offset $x\frac{+}{-}\frac{1}{2}$ represents the distance between an $E$-field component and its adjacent, coupled $H$ values.
 
 
 \begin{figure}[H]
@@ -128,13 +128,13 @@ MPC: I don't think I'd say enough information, I think I'd say does not contain 
 
 Recall the $H_Y$ update equation \autoref{eq:hyupdate}, and note that it depends on two adjacent $E_Z$ values on the $X$ axis. The finite grid does not contain the required information to update the $H$ values that lie on the edge of the domain. For instance, ${H_Y}_{0,\frac{1}{2}}$ requires ${E_Z}_{\frac{1}{2},\frac{1}{2}}$ and ${E_Z}_{-\frac{1}{2},\frac{1}{2}}$.
 
-Since the position $(-\frac{1}{2},\frac{1}{2})$ does not exist, the simulator cannot update this value. The simulator must take this case into account by implementing a boundary condition, or the wave will reflect from the boundaries. 
+Since the position $(-\frac{1}{2},\frac{1}{2})$ is outside of the domain, the simulator cannot update this value. The simulator must take this case into account by implementing a boundary condition, or the wave will reflect from the domain boundaries. 
 
 \iffalse
 Are you aware of any rule of thumb here.  What makes you think 10 is enough (I do, but you might want to justify).
 \fi
 
-We implement the Perfectly Matched Layer (PML) as described in \cite{BERENGER1994185}. A detailed explanation of PML is beyond the scope of this thesis. In practice, PML adds imaginary hyperplanes orthogonal to each field in the simulation. In the boundary regions, power couples between $E$ and $H$ as expected, but \emph{also} couples into those hyperplanes. Unlike the $E$ and $H$ interdependence, the transfer is one-way. Dielectric values in the cells in the PML describe non-physically realizable materials which force the coupled power to decay over a number of layers. In our implementation, we use 10 PML layers. Given our spatial discretization interval $dx$ = $\frac{\lambda}{10}$, 10 layers span one wavelength. Experimentation has shown this configuration to provide the most satisfactory results.
+We implement the Perfectly Matched Layer (PML) as described in \cite{BERENGER1994185}. A detailed explanation of PML is beyond the scope of this thesis. In practice, PML adds imaginary hyperplanes orthogonal to each field in the simulation. In the boundary regions, power couples between $E$ and $H$ as expected, but \emph{also} couples into those hyperplanes. Unlike the $E$ and $H$ interdependence, the transfer is one-way. Dielectric values in the cells in the PML describe non-physically realizable materials which force the coupled power to decay over a number of layers. In our implementation, we use 10 PML layers. Given our spatial discretization interval $dx$ = $\frac{\lambda}{10}$, 10 layers span one wavelength. Experimentation has shown this configuration to provide the most satisfactory results while minimizing memory usage.
 
 
 
