@@ -52,7 +52,7 @@ In \autoref{fig:gpuVsMeep}, note some CPU performance variance near the middle a
 This may be caused by several factors, including:
 
 \begin{itemize}
-	\item Memory alignment. When reading or writing from memory, CPUs perform best when dealing with word-aligned data sizes. The dimensions of the simulation domain affect this alignment.
+	\item Memory alignment. When reading or writing from memory, CPUs perform best when dealing with boundary-aligned data. The dimensions of the simulation domain affect this alignment.
 	\item Multi-tasking preemption. In multitasking operating systems such as Linux or Windows, background tasks may preempt foreground tasks, resulting performance degradation. 
 	\item Memory latency. Relatively slow access to out-of-core memory may cause a pipeline stall.	
 \end{itemize}
