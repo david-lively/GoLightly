@@ -12,7 +12,7 @@ The vastly-improved performance afforded by this system presents some interestin
 
 \subsection{GoLightly Improvements}
 
-Care must be taken during the design process to avoid nonsensical monitor configurations, such as disjoint or outlying pixels, or inconsistent thickness due to shape aliasing. A model validation step could correct model errors. Sub-pixel averaging would increase effective domain resolution near dielectric boundaries, and reduce structure aliasing. 
+Care must be taken during the design process to avoid nonsensical monitor configurations, such as disjoint or outlying pixels, or inconsistent thickness due to shape aliasing. A model validation step could correct model errors. Sub-pixel averaging would increase effective domain resolution near dielectric boundaries and reduce structure aliasing. 
 
 \clearpage
 
@@ -23,7 +23,7 @@ A fast FDTD implementation will facilitate application of this technique to opti
 
 
 \subsection{Arbitrary Domain Shape and PML Sinks}
-Given the more flexible voxel-based model definition used in GoLightly, it becomes possible to create completely arbitrary domain shapes. Non-rectangular domains with PML "sinks" at any desired position within the domain would allow the designer to more tightly fit the computational domain to the circuit in question, and ignore irrelevant or uninteresting areas.
+Given the flexible voxel-based model definition used in GoLightly, it becomes possible to create completely arbitrary domain shapes. Non-rectangular domains with PML "sinks" at any desired position within the domain would allow the designer to more tightly fit the computational domain to the circuit in question while ignoring irrelevant or uninteresting areas.
 
 PML sinks would potentially increase performance by reducing memory requirements. If large sections of a domain could be surrounded by PML, those sections are effectively disjoint from the rest of the domain and therefore may be ignored and, in fact, removed from the simulation. 
 
@@ -32,7 +32,7 @@ Although the current implementation treats the domain as a regular grid of ident
 In addition to non-rectangular domains, non-rectangular cell shapes could improve simulation fidelity. For example, in a $TM_Z$ simulation, each $E_Z$ component could be treated as the center of a hexagonal grid cell. As such, it would be updated using three derivatives instead of two. While this would increase the computation requirement for each $E$ cell by roughly 50\% (in a two-dimensional domain), the improved fidelity may justify the cost in experiments where improved accuracy is valuable. Inclusion of the afore-mentioned PML sink capability could offset this cost. 
 
 \subsection{Load Balancing}
-Although we have shown that a GPU implementation of FDTD can outperform a CPU implementation, CPUs should not be ignored. It is possible to divide computational load between the CPU and GPU, in a manner analagous to that used to distribute load between machines in a cluster. 
+Although we have shown that a GPU implementation of FDTD can outperform a CPU implementation, CPUs should not be ignored. It is possible to divide computational load between the CPU and GPU in a manner analagous to that used to distribute load between machines in a cluster. 
 
 This technique, when combined with load balancing between separate machines, would allow the GPU to act as an additional cluster node, providing a more ideal solution which, rather than trading a CPU for a GPU, provides the power of both. 
 
