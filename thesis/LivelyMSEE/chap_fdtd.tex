@@ -126,9 +126,7 @@ This arrangement reflects the manner in which a wave will propagate through the 
 MPC: I don't think I'd say enough information, I think I'd say does not contain the required information...
 \fi
 
-Recall the $H_Y$ update equation \autoref{eq:hyupdate}, and note that it depends on two adjacent $E_Z$ values on the $X$ axis. The finite grid does not contain the required information to update the $H$ values that lie on the edge of the domain. For instance, ${H_Y}_{0,\frac{1}{2}}$ requires ${E_Z}_{\frac{1}{2},\frac{1}{2}}$ and ${E_Z}_{-\frac{1}{2},\frac{1}{2}}$.
-
-Since the position $(-\frac{1}{2},\frac{1}{2})$ is outside of the domain, the simulator cannot update this value. The simulator must take this case into account by implementing a boundary condition, or the wave will reflect from the domain boundaries. 
+Recall the $H_Y$ update equation \autoref{eq:hyupdate}, and note that it depends on two adjacent $E_Z$ values on the $X$ axis. The finite grid does not contain the required information to update the $H$ values that lie on the edge of the domain. For instance, ${H_Y}_{0,\frac{1}{2}}$ requires ${E_Z}_{\frac{1}{2},\frac{1}{2}}$ and ${E_Z}_{-\frac{1}{2},\frac{1}{2}}$. Since the position $(-\frac{1}{2},\frac{1}{2})$ is outside of the domain, the simulator cannot update this value. The simulator must take this case into account by implementing a boundary condition, or the wave will reflect from the domain boundaries. 
 
 \iffalse
 Are you aware of any rule of thumb here.  What makes you think 10 is enough (I do, but you might want to justify).

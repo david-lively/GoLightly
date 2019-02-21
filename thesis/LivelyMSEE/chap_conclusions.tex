@@ -34,8 +34,12 @@ In addition to non-rectangular domains, non-rectangular cell shapes could improv
 \subsection{Load Balancing}
 Although we have shown that a GPU implementation of FDTD can outperform a CPU implementation, CPUs should not be ignored. It is possible to divide computational load between the CPU and GPU in a manner analagous to that used to distribute load between machines in a cluster. 
 
-This technique, when combined with load balancing between separate machines, would allow the GPU to act as an additional cluster node, providing a more ideal solution which, rather than trading a CPU for a GPU, provides the power of both. 
+When combined with load balancing between separate machines, this technique would allow the GPU to act as an additional cluster node, providing a more ideal solution which, rather than trading a CPU for a GPU, utilizes the power of both. 
 
+\subsection{Machine Learning}
+A high-speed simulator such as GoLightly may facilitate application of machine learning algorithms to accelerate FDTD even more. ML systems excel at identifying complex relationships and patterns. In theory, one could present simulation parameters such as waveguide architecture and composition and source wavelengths as a set of inputs into a multi-layer neural network, while simulation output is used to evaluate the fidelity of the network's predicted output. 
+
+A trained network may be able to predict a simulation's output with a degree of accuracy sufficient to inform the design iteration process.  The ability to rapidly execute simulations should make generation of the large quantities of training data required by ML networks more feasable than traditional CPU-based systems. 
 
 \section{Final Words}
 

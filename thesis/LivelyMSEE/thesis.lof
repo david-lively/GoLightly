@@ -13,7 +13,7 @@
 \contentsline {figure}{\numberline {5.11}{\ignorespaces Raw monitor output with $\epsilon _R = 9$}}{36}{figure.5.11}
 \contentsline {figure}{\numberline {5.12}{\ignorespaces RMS output with $\epsilon _R = 9$}}{37}{figure.5.12}
 \contentsline {figure}{\numberline {5.13}{\ignorespaces Normalized output with $\epsilon _R = 9$}}{38}{figure.5.13}
-\contentsline {figure}{\numberline {6.1}{\ignorespaces GoLightly (left) vs Meep (right) output for ${TM}_Z$ simulation with Dirichlet boundary.}}{40}{figure.6.1}
+\contentsline {figure}{\numberline {6.1}{\ignorespaces GoLightly (left) vs Meep (right) output for a ${TM}_Z$ simulation with a single point source and Dirichlet boundary.}}{40}{figure.6.1}
 \contentsline {figure}{\numberline {6.2}{\ignorespaces GoLightly: seconds for 5000 frames with the given domain size}}{41}{figure.6.2}
 \contentsline {figure}{\numberline {6.3}{\ignorespaces GoLightly: Completed E and H updates per second}}{42}{figure.6.3}
 \contentsline {figure}{\numberline {6.4}{\ignorespaces GoLightly vs Meep}}{43}{figure.6.4}

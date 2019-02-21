@@ -1,5 +1,5 @@
-\contentsline {chapter}{\noindent {LIST OF FIGURES}}{vii}{chapter*.2}
-\contentsline {chapter}{\noindent {LIST OF TABLES}}{viii}{chapter*.3}
+\contentsline {chapter}{\noindent {LIST OF FIGURES}}{viii}{chapter*.2}
+\contentsline {chapter}{\noindent {LIST OF TABLES}}{ix}{chapter*.3}
 \noindent CHAPTER \hfill \vskip 0.05in
 \contentsline {chapter}{\numberline {\hfill 1.\hbox {\hskip 0.8em}\ignorespaces }Introduction}{1}{chapter.1}
 \contentsline {chapter}{\numberline {\hfill 2.\hbox {\hskip 0.8em}\ignorespaces }Device Architecture}{3}{chapter.2}
@@ -38,9 +38,10 @@
 \contentsline {subsection}{\numberline {7.2.2.}Genetic Algorithms}{47}{subsection.7.2.2}
 \contentsline {subsection}{\numberline {7.2.3.}Arbitrary Domain Shape and PML Sinks}{47}{subsection.7.2.3}
 \contentsline {subsection}{\numberline {7.2.4.}Load Balancing}{48}{subsection.7.2.4}
-\contentsline {section}{\numberline {7.3.}Final Words}{48}{section.7.3}
+\contentsline {subsection}{\numberline {7.2.5.}Machine Learning}{48}{subsection.7.2.5}
+\contentsline {section}{\numberline {7.3.}Final Words}{49}{section.7.3}
 \noindent APPENDIX \hfill \vskip 0.05in
-\contentsline {chapter}{\numberline {\hfill A.\hbox {\hskip 0.8em}\ignorespaces }APPENDIX}{49}{appendix.A}
-\contentsline {section}{\numberline {A.1.}Meep scripts}{49}{section.A.1}
-\contentsline {section}{\numberline {A.2.}GoLightly configuration}{50}{section.A.2}
-\contentsline {chapter}{REFERENCES}{52}{appendix.B}
+\contentsline {chapter}{\numberline {\hfill A.\hbox {\hskip 0.8em}\ignorespaces }APPENDIX}{50}{appendix.A}
+\contentsline {section}{\numberline {A.1.}Meep scripts}{50}{section.A.1}
+\contentsline {section}{\numberline {A.2.}GoLightly configuration}{51}{section.A.2}
+\contentsline {chapter}{REFERENCES}{53}{appendix.B}

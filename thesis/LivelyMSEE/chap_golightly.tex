@@ -10,7 +10,7 @@ GoLightly is intended to address deficiencies common to CPU-based solutions. In 
 \begin{itemize}
 	\item Fast. An iterative design process requires rapid feedback from the simulator. Long simulation times necessitated by existing solutions inhibit this process.
 	\item Friendly. Definition of models and other simulation parameters should not require expertise in software development or quasi-proprietary scripting languages. 
-	\item Portable. Ideally, the simulator should run on a high-end consumer grade laptop and support the most common desktop operating systems (Microsoft Windows and Apple OS X).  
+	\item Portable. Ideally, the simulator should run on a high-end consumer grade laptop and support the most common desktop operating systems (Microsoft Windows and Apple OSX).  
 \end{itemize}
 
 To meet those goals, GoLightly takes advantage of the programmable GPU available in common desktop and laptop computers, resulting in a dramatic speedup. Rather than relying on a proprietary model definition language or limited scripting system, we use industry-standard image file formats so that models may be defined using robust, familiar, readily-available tools such as Adobe Photoshop and GIMP.
@@ -74,7 +74,7 @@ Once the dielectric, sources and monitors are derived from the model image, the 
 
 The simulator block implements the FDTD algorithm. Given the dielectric, source and monitor configurations from the model processor, the simulator initializes the GPU, transfers required data from host memory to the GPU, and begins the simulation loop.
 
-In addition to the dielectric and field arrays, the simulator generates a  descriptor (\ref{listing:fieldDescriptor}) for each field that will be updated. This structure is used by the kernels to assist in handling boundary conditions (PML) and other housekeeping duties. A similar, more compact  descriptor (\ref{listing:deviceFieldDescriptor}) is generated from the host descriptor and passed to the kernels.
+In addition to the dielectric and field arrays, the simulator generates a  descriptor (\ref{listing:fieldDescriptor}) for each field that will be updated. This data structure is used by the kernels to assist in handling boundary conditions (PML) and other housekeeping duties. A similar, more compact  descriptor (\ref{listing:deviceFieldDescriptor}) is generated from the host descriptor and passed to the kernels.
 \pagebreak
 \lstinputlisting[language=c++,caption=Host Field Descriptor structure,label={listing:fieldDescriptor}]{fieldDescriptor.cpp}
 
@@ -108,7 +108,7 @@ Finally, the completed field arrays are copied to the host from the GPU, and sav
 
 \section{Visualizer}\label{sec:visualizer}
 
-If enabled \footnote{The visualizer requires some GPU overhead. As such, its use may affect simulator performance.}, the visualizer application block provides interactive display of the simulation. 
+If enabled \footnote{The visualizer requires some GPU overhead. As such, its use may affect simulator performance. }, the visualizer application block provides interactive display of the simulation. 
 
 When running a simulation, the user may optionally specify a visualizer update frequency, indicating the number of simulation frames that should complete between visualizer updates. This aids in reducing the visualizer's performance impact.
 
@@ -134,7 +134,7 @@ After the required number of frames have been completed, the visualizer launches
 
 \lstinputlisting[language=c++,caption=GLSL Fragment Shader, label={lst:basicfrag}]{basicfrag.glsl}
 
-A completed PBO is bound to a uniform input for a shader (\autoref{lst:basicvert}, \autoref{lst:basicfrag}) listing which renders the texture to the visualizer window. This process runs continuously. However, the texture is only updated at the frequency requested by the user when the simulation was launched. 
+A completed PBO is bound to a uniform input for a shader (\autoref{lst:basicvert}, \autoref{lst:basicfrag}) listing which renders the texture to the visualizer window. This process runs continuously. In order to reduce GPU overhead, the texture is only updated at the frequency requested by the user when the simulation was launched.
 
 \begin{figure}[H]
 	\centering
@@ -149,7 +149,7 @@ A completed PBO is bound to a uniform input for a shader (\autoref{lst:basicvert
 
 \section{Modeling approach}
 
-For simplicity, models are defined in any of a number of standard 32-bit color image formats. In a 32-bit per pixel image, each color has 8-bit red, green, blue and alpha values. As mentioned in the model processor (\autoref{sec:modelProcessor}) section, each component is used to indicate some data about a given point in the simulation domain:
+For simplicity, models are defined in any of a number of standard four-channel, 32-bit color image formats. In a 32bpp image, each pixel has 8-bit red, green, blue and alpha values. As mentioned in the model processor (\autoref{sec:modelProcessor}) section, each component is used to indicate some data about a given point in the simulation domain as detailed in \autoref{tab:modelColorComponentUsage}. 
 
 \begin{table}[h!]
 	\centering
@@ -323,7 +323,7 @@ The time-averaged (RMS) numerical output for the incident and transmitted monito
 
 As expected, the incident and transmitted magnitudes equal the source magnitude, offset by the time it takes for the wave to propagate from the source to the monitors.
 
-The observed output of the same simulation, executed with dielectric constant $\epsilon_R = 9$,
+The observed output of the same simulation, executed with dielectric constant $\epsilon_R = 9$ is show in in \autoref{fig:pwEpsilon9}.
 
 \begin{figure}[H]
 	\centering
