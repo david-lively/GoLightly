@@ -36,14 +36,17 @@ Although we have shown that a GPU implementation of FDTD can outperform a CPU im
 
 When combined with load balancing between separate machines, this technique would allow the GPU to act as an additional cluster node, providing a more ideal solution which, rather than trading a CPU for a GPU, utilizes the power of both. 
 
+\iffalse
 \subsection{Machine Learning}
 A high-speed simulator such as GoLightly may facilitate application of machine learning algorithms to accelerate FDTD even more. ML systems excel at identifying complex relationships and patterns. In theory, one could present simulation parameters such as waveguide architecture and composition and source wavelengths as a set of inputs into a multi-layer neural network, while simulation output is used to evaluate the fidelity of the network's predicted output. 
 
 A trained network may be able to predict a simulation's output with a degree of accuracy sufficient to inform the design iteration process.  The ability to rapidly execute simulations should make generation of the large quantities of training data required by ML networks more feasable than traditional CPU-based systems. 
+\fi
 
 \section{Final Words}
 
 The field of general-purpose GPU computing offers potential yet to be realized in many of the areas where it shows the most promise. Leveraging this commonly available, underutilized resource will enable shorter, more robust design cycles, and facilitate exploration of more sophisticated waveguide architectures. 
+
 
 
 
