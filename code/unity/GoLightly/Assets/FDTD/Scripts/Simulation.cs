@@ -9,7 +9,7 @@ using UnityEngine.Assertions;
 /// initializes resources such as field and boundary arrays and sets material properties
 /// </summary>
 /// <remarks>
-/// Example Yee grid: domain size is 4 x 4. 
+/// Yee grid: domain size is 5 x 5. 
 /// Ez @ (0,0), size (5x5)
 /// Hx @ (0,0), size (5x4)
 /// Hy @ (0,0), size (4x5)
@@ -46,7 +46,7 @@ namespace GoLightly
         public int timeStep = 0;
 
         [Range(0, 100)]
-        public float psiContrast = 10000;
+        public float psiContrast = 0;
 
         public int pmlLayers = 10;
 
