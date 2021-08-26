@@ -133,8 +133,9 @@ GameObject:
   m_Component:
   - component: {fileID: 271440181}
   - component: {fileID: 271440180}
+  - component: {fileID: 271440182}
   m_Layer: 0
-  m_Name: Circle
+  m_Name: Source
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -206,6 +207,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &271440182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271440179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e62890cdcb0e04e189e931736945346c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  amplitude: 1
+  wavelength: 1
 --- !u!1 &1148322537
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,20 +318,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   computeShader: {fileID: 7200000, guid: abafb8f15e2fb4be1b5bf13f3950fb0d, type: 3}
-  domainSize: {x: 2048, y: 1024}
+  domainSize: {x: 1025, y: 1025}
+  parameters:
+    dt: 0
+    dx: 0
+    eps0: 1
+    mu0: 1
+    lambda: 0
+    frequency: 0
+    cb: 0
+    db: 0
   contrast: 200
   timeStep: 0
   psiContrast: 0
   pmlLayers: 10
   simulationTimeStepsPerFrame: 2
   sources:
-  - position: {x: 1024, y: 512, z: 0}
+  - position: {x: 512, y: 512, z: 0}
     amplitude: 1
-    wavelength: 9
+    wavelength: 1
     maxLife: 100
-    _enabled: 1
-  - position: {x: 1536, y: 128, z: 0}
-    amplitude: 1
-    wavelength: 3.5
-    maxLife: 50
     _enabled: 1

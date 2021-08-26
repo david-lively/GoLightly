@@ -1,8 +1,5 @@
 /// <remarks>
 /// Example Yee grid: domain size is 4 x 4. 
-/// Ez @ (0,0), size (5x5)
-/// Hx @ (0,0), size (5x4)
-/// Hy @ (0,0), size (4x5)
 /// ez---hy---ez---hy---ez---hy---ez---hy---ez
 /// |         |         |         |         |         
 /// hx        hx        hx        hx        hx
@@ -33,42 +30,8 @@
 #define ENABLE_PML
 // #define MOVING_SOURCE
 
-// Create a RenderTexture with enableRandomWrite flag and set it
-// with cs.SetTexture
 RWTexture2D<float4> result;
 
-struct Source
-{
-    float3 position;
-    float amplitude;
-    float wavelength;
-    float maxLife;
-    uint enabled;
-};
-
-struct SimulationParameters
-{
-    float dt;
-    float dx;
-    float eps0;
-    float mu0;
-
-    float lambda;
-    float frequency;
-
-    float ca;
-    float cbDefault;
-
-    float da;
-    float dbDefault;
-};
-
-uint numSources;
-RWStructuredBuffer<Source> sources;
-
-float time;
-float2 domainSize;
-int pmlLayers;
 
 /*
 Sample values: 
@@ -83,16 +46,37 @@ float dbDefault = dt / (mu0 * dx);
 float ca = 1.0f;
 float da = 1.0f;
 */
+float2 domainSize;
+cbuffer Parameters
+{
+    float Dt;
+    float Dx;
+    float Eps0;
+    float Mu0;
 
-float lambda;
-float eps0;
-float mu0;
-float dx;
-float dt;
-float cbDefault;
-float dbDefault;
-float ca;
-float da;
+    float Lambda;
+
+    float Ca;
+    float CbDefault;
+
+    float Da;
+    float DbDefault;
+
+    int PmlLayers;
+}
+
+struct Source
+{
+    float3 position;
+    float amplitude;
+    float wavelength;
+    float maxLife;
+    uint enabled;
+};
+
+uint numSources;
+StructuredBuffer<Source> sources;
+
 float contrast;
 float psiContrast;
 int timeStep;
@@ -135,9 +119,9 @@ int addr(int3 xy)
 
 float getDecay(int i, RWStructuredBuffer<float> buffer, int bufferLength, int offset=0)
 {
-    if (i < pmlLayers)
+    if (i < PmlLayers)
         return buffer[i];
-    else if (bufferLength-i-1 < pmlLayers)
+    else if (bufferLength-i-1 < PmlLayers)
     {
         return buffer[bufferLength-i-1+offset];
     }
@@ -167,21 +151,23 @@ void CSUpdateVisTex (uint3 id : SV_DispatchThreadID)
             color.rgb = saturate(contrast * abs(ez[center]));
             color.g = contrast * hx[center];
             color.b = contrast * hy[center];
-            if (x < pmlLayers || x >= domainSize.x-pmlLayers)
+            if (x < PmlLayers || x >= domainSize.x-PmlLayers)
                 color.g = psiContrast * (abs(ezx_decay[x] - 1));
-            if (y < pmlLayers || y >= domainSize.y - pmlLayers)
+            if (y < PmlLayers || y >= domainSize.y - PmlLayers)
                 color.b = psiContrast * (abs(ezy_decay[y] - 1));
             color.a = 1;
         }
         break;
+
         case 1:
         {
-            if (x < pmlLayers || x >= domainSize.x-pmlLayers)
+            if (x < PmlLayers || x >= domainSize.x-PmlLayers)
                 color.g = psiContrast * (abs(ezx_decay[x] - 1));
-            if (y < pmlLayers || y >= domainSize.y - pmlLayers)
+            if (y < PmlLayers || y >= domainSize.y - PmlLayers)
                 color.b = psiContrast * (abs(ezy_decay[y] - 1));
         }
         break;
+
         case 2:
         {
             color.g = psiContrast * abs(ezx_decay[x]);
@@ -204,10 +190,10 @@ void CSUpdateSources(uint3 id : SV_DispatchThreadID)
 
     Source source = sources[id.x];
 
-    if (!source.enabled || (source.maxLife > 0) && (dt * timeStep > source.maxLife))
+    if (!source.enabled || (source.maxLife > 0) && (Dt * timeStep > source.maxLife))
         return;
 
-    float t = timeStep * dt;
+    float t = timeStep * Dt;
     /*
      wavelength (lambda): takes 2*pi time steps to complete one wave
      frequency (nu) = c / wavelength
@@ -216,7 +202,8 @@ void CSUpdateSources(uint3 id : SV_DispatchThreadID)
     
      */
     // float s = source.amplitude * sin(t / source.wavelength);
-    float s = source.amplitude * sin(timeStep * (2 * PI) / (1 / dt) / source.wavelength);
+    float s = source.amplitude * sin(timeStep * (2 * PI) / (1 / Dt) / source.wavelength);
+
 #ifdef MOVING_SOURCE
     float range = 1000;
     float theta = t / 1000;
@@ -226,6 +213,7 @@ void CSUpdateSources(uint3 id : SV_DispatchThreadID)
     source.position.x += dx;
     source.position.y += dy;
 #endif
+
 /// ************ WARNING WARNING WARNING WARNING ************ 
 /// WARNING: This is a race condition if multiple sources have the same .position value!
     ez[addr(source.position)] += s;
@@ -285,7 +273,7 @@ void CSUpdateEz(uint3 id : SV_DispatchThreadID)
     float hyLeft = hy[addr(x-1,y)];
     float dHy = hyLeft - hyRight;
     
-    float ezNew = ca * ez[addr(id.xy)] + cbDefault * (dHy - dHx);
+    float ezNew = Ca * ez[addr(id.xy)] + CbDefault * (dHy - dHx);
     float decay;
     float amp;
 
@@ -299,7 +287,7 @@ void CSUpdateEz(uint3 id : SV_DispatchThreadID)
         float ezyPsi = decay * ezy_psi[center] + amp * dHx;
         ezy_psi[center] = ezyPsi;
 
-        ezNew -= cbDefault * ezyPsi;
+        ezNew -= CbDefault * ezyPsi;
     }
 
     decay = getDecay(x,ezx_decay, domainSize.x);
@@ -311,7 +299,7 @@ void CSUpdateEz(uint3 id : SV_DispatchThreadID)
         // ezxPsi = ezx_decay[x] * ezx_psi[center] + ezx_amp[x] * dHy;
         ezx_psi[center] = ezxPsi;
 
-        ezNew += cbDefault * ezxPsi;
+        ezNew += CbDefault * ezxPsi;
     }
 #endif
 
@@ -332,7 +320,7 @@ void CSUpdateHx(uint3 id : SV_DispatchThreadID)
     float ezDown = ez[addr(id.x,id.y+1)];
     float dEz = ezDown - ezUp;
 
-    float newHx = da * hx[center] - dbDefault * dEz;
+    float newHx = Da * hx[center] - DbDefault * dEz;
 
 #ifdef ENABLE_PML
 
@@ -343,9 +331,9 @@ void CSUpdateHx(uint3 id : SV_DispatchThreadID)
         float amp = decay-1; 
         float psi = hxy_psi[center];
 
-        psi = decay * psi + amp * dEz / dx;
+        psi = decay * psi + amp * dEz / Dx;
         hxy_psi[center] = psi;
-        newHx = newHx - dbDefault * dx * psi;
+        newHx = newHx - DbDefault * Dx * psi;
     }
 
 #endif
@@ -368,7 +356,7 @@ void CSUpdateHy(uint3 id : SV_DispatchThreadID)
     float ezRight = ez[addr(x+1,y)];
     float dEz = ezRight - ezLeft;
     
-    float newHy = da * hy[center] - dbDefault * dEz;
+    float newHy = Da * hy[center] - DbDefault * dEz;
 
 #ifdef ENABLE_PML
 
@@ -378,8 +366,8 @@ void CSUpdateHy(uint3 id : SV_DispatchThreadID)
     {
         float psi = hyx_psi[center];
         float amp = decay-1; 
-        psi = decay * psi + amp * dEz / dx;
-        newHy -= dbDefault * dx * psi;
+        psi = decay * psi + amp * dEz / Dx;
+        newHy -= DbDefault * Dx * psi;
         hyx_psi[center] = psi;
     }
 #endif

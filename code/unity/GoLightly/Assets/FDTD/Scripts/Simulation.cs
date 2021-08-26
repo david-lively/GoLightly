@@ -9,10 +9,6 @@ using UnityEngine.Assertions;
 /// initializes resources such as field and boundary arrays and sets material properties
 /// </summary>
 /// <remarks>
-/// Yee grid: domain size is 5 x 5. 
-/// Ez @ (0,0), size (5x5)
-/// Hx @ (0,0), size (5x4)
-/// Hy @ (0,0), size (4x5)
 /// ez---hy---ez---hy---ez---hy---ez---hy---ez
 /// |         |         |         |         |         
 /// hx        hx        hx        hx        hx
@@ -39,7 +35,7 @@ namespace GoLightly
         public ComputeShader computeShader;
         public Vector2Int domainSize = new Vector2Int(2048, 1024);
 
-        public SimulationParameters parameters;
+        public SimulationParameters parameters = SimulationParameters.Create(1.0f);
 
         [Range(1, 200)]
         public float contrast = 80;
@@ -48,16 +44,9 @@ namespace GoLightly
         [Range(0, 100)]
         public float psiContrast = 0;
 
-        public int pmlLayers = 10;
-
         public uint simulationTimeStepsPerFrame = 1;
 
-        private float _dt;
-        private float _dx;
-
-
-
-        private Dictionary<string, ComputeBuffer> _buffers = new Dictionary<string, ComputeBuffer>();
+        private Dictionary<string, ComputeBuffer> _buffers = new Dictionary<string, ComputeBuffer>(StringComparer.OrdinalIgnoreCase);
         private Dictionary<string, int> _kernels = new Dictionary<string, int>();
         private Dictionary<string, Boundary> _boundaries = new Dictionary<string, Boundary>();
 
@@ -117,36 +106,34 @@ namespace GoLightly
 
             {
                 var parameterBuffer = new ComputeBuffer(1, SimulationParameters.GetSize());
-                var p = new SimulationParameters();
-                var pdata = new SimulationParameters[] { p };
+                var pdata = new SimulationParameters[] { parameters };
                 parameterBuffer.SetData(pdata);
-                _buffers["simulationParameters"] = parameterBuffer;
+                _buffers["Parameters"] = parameterBuffer;
             }
 
-            var size = domainSize.x * domainSize.y;
+            var fieldBufferSize = domainSize.x * domainSize.y;
 
             {
-                var buffer = new ComputeBuffer(size, sizeof(float));
+                var buffer = new ComputeBuffer(fieldBufferSize, sizeof(float));
                 Helpers.ClearBuffer(buffer);
                 _buffers["ez"] = buffer;
             }
 
             {
-                var hx = new ComputeBuffer(size, sizeof(float));
+                var hx = new ComputeBuffer(fieldBufferSize, sizeof(float));
                 Helpers.ClearBuffer(hx);
                 _buffers["hx"] = hx;
             }
 
             {
-                var hy = new ComputeBuffer(size, sizeof(float));
+                var hy = new ComputeBuffer(fieldBufferSize, sizeof(float));
                 Helpers.ClearBuffer(hy);
                 _buffers["hy"] = hy;
             }
 
             {
-                var cb = new ComputeBuffer(size, sizeof(float));
-                float cbDefault = _dt / (1 * _dx);
-                Helpers.ClearBuffer(cb, cbDefault);
+                var cb = new ComputeBuffer(fieldBufferSize, sizeof(float));
+                Helpers.ClearBuffer(cb, parameters.cb);
                 _buffers["cb"] = cb;
             }
 
@@ -167,7 +154,7 @@ namespace GoLightly
             }
 
             SetCSGlobals();
-            InitializeBoundaries(pmlLayers);
+            InitializeBoundaries(parameters.pmlLayers);
 
             _isInitialized = true;
         }
@@ -209,6 +196,7 @@ namespace GoLightly
             computeShader.SetBuffer(kernelIndex, "hx", _buffers["hx"]);
             computeShader.SetBuffer(kernelIndex, "hy", _buffers["hy"]);
             computeShader.SetBuffer(kernelIndex, "sources", _buffers["sources"]);
+            computeShader.SetConstantBuffer("Parameters", _buffers["Parameters"], 0, SimulationParameters.GetSize());
             foreach (var kvp in _boundaries)
             {
                 kvp.Value.SetBuffers(computeShader, kernelIndex);
@@ -216,15 +204,15 @@ namespace GoLightly
 
             computeShader.Dispatch(kernelIndex, launchX, launchY, 1);
         }
+
         private void RunSimulationStep(uint steps = 1)
         {
             computeShader.SetVector("domainSize", new Vector2(domainSize.x, domainSize.y));
             computeShader.SetInt("numSources", sources.Count);
-            computeShader.SetInt("pmlLayers", pmlLayers);
 
             var kernelNames = new string[] { "CSUpdateEz", "CSUpdateHx", "CSUpdateHy" };
 
-            if (steps < 1) 
+            if (steps < 1)
                 steps = 1;
 
             for (var j = 0; j < steps; ++j)
@@ -238,7 +226,7 @@ namespace GoLightly
                 for (var i = 0; i < kernelNames.Length; ++i)
                 {
                     RunKernel(_kernels[kernelNames[i]]);
-                    
+
                 }
                 ++timeStep;
             }
@@ -270,37 +258,27 @@ namespace GoLightly
 
         private void SetCSGlobals()
         {
-            float lambda = 1.0f;
-            float eps0 = 1.0f;
-            float mu0 = 1.0f;
-            _dx = lambda / 10.0f;
-            _dt = _dx / Mathf.Sqrt(2.0f) * 0.95f;
+            /*            var globals = new Dictionary<string, float>() {
+                            { "lambda", lambda },
+                            { "eps0", eps0 },
+                            { "mu0", mu0 },
+                            { "dx", _dx },
+                            { "dt", _dt },
+                            { "ca", ca },
+                            { "cbDefault", cbDefault},
+                            { "da", da},
+                            { "dbDefault", dbDefault},
+                        };
 
-            float cbDefault = _dt / (eps0 * _dx);
-            float dbDefault = _dt / (mu0 * _dx);
-            float ca = 1.0f;
-            float da = 1.0f;
+                        foreach (var kvp in globals)
+                        {
+                            computeShader.SetFloat(kvp.Key, kvp.Value);
+                        }*/
 
-            var globals = new Dictionary<string, float>() {
-                { "lambda", lambda },
-                { "eps0", eps0 },
-                { "mu0", mu0 },
-                { "dx", _dx },
-                { "dt", _dt },
-                { "ca", ca },
-                { "cbDefault", cbDefault},
-                { "da", da},
-                { "dbDefault", dbDefault},
-            };
 
-            foreach (var kvp in globals)
-            {
-                computeShader.SetFloat(kvp.Key, kvp.Value);
-            }
+            // computeShader.SetInt("pmlLayers", pmlLayers);
 
-            computeShader.SetInt("pmlLayers", pmlLayers);
-
-            Debug.Log($"dX={_dx} dT = {_dt}");
+            // Debug.Log($"dX={_dx} dT = {_dt}");
         }
 
         private void InitializeBoundaries(int layers = 10)
@@ -309,18 +287,15 @@ namespace GoLightly
                 boundary.Value?.Dispose();
             _boundaries.Clear();
 
-            var eps0 = 1.0f;
-            var epsR = 1.0f;
-            float mu0 = 1.0f;
-
             float sigmaMax = 1.0f;
             float sigmaOrder = 4.0f;
+            float epsR = 1.0f;
 
             // PmlSigmaMax = 0.75f * (0.8f * (PmlSigmaOrder + 1) / (Dx * (float)pow(mu0 / (eps0 * epsR), 0.5f)));
-            sigmaMax = 0.75f * (0.8f * (sigmaOrder + 1) / (_dx * Mathf.Pow(mu0 / (eps0 * epsR), 0.5f)));
-            Debug.Log($"PML layers {layers} sigmaMax {sigmaMax} order {sigmaOrder} dx {_dx} dt {_dt}");
+            sigmaMax = 0.75f * (0.8f * (sigmaOrder + 1) / (parameters.dx * Mathf.Pow(parameters.mu0 / (parameters.eps0 * epsR), 0.5f)));
+            Debug.Log($"PML layers {layers} sigmaMax {sigmaMax} order {sigmaOrder} dx {parameters.dx} dt {parameters.dt}");
 
-            float xmin = layers * _dx;
+            float xmin = layers * parameters.dx;
             float invLayersDx = 1.0f / xmin;
 
             var domainWidth = domainSize.x;
@@ -334,15 +309,15 @@ namespace GoLightly
 
             for (var i = 0; i < layers; ++i)
             {
-                var elength = i * _dx;
-                var hlength = (i + 0.5f) * _dx;
+                var elength = i * parameters.dx;
+                var hlength = (i + 0.5f) * parameters.dx;
 
                 var esigma = sigmaMax * Mathf.Pow(Mathf.Abs(elength - xmin) * invLayersDx, sigmaOrder);
                 var hsigma = sigmaMax * Mathf.Pow(Mathf.Abs(hlength - xmin) * invLayersDx, sigmaOrder);
 
-                var edecay = Mathf.Exp(-1 * (_dt * esigma) / eps0);
+                var edecay = Mathf.Exp(-1 * (parameters.dt * esigma) / parameters.eps0);
                 // var eAmp = edecay - 1;
-                var hdecay = Mathf.Exp(-1 * (_dt * hsigma) / mu0);
+                var hdecay = Mathf.Exp(-1 * (parameters.dt * hsigma) / parameters.mu0);
                 // var hAmp = hdecay - 1;
 
                 ezxDecay[i] = edecay;
@@ -358,25 +333,22 @@ namespace GoLightly
                 hyxDecay[hyxDecay.Length - i - 1] = hdecay;
             }
 
-            var ezx = new Boundary();
-            ezx.name = "ezx";
+            var ezx = new Boundary { name = "ezx" };
+            // ezx.name = "ezx";
             ezx.SetData(domainWidth, domainHeight, ezxDecay);
             _boundaries.Add("ezx", ezx);
 
-            var ezy = new Boundary();
-            ezy.name = "ezy";
+            var ezy = new Boundary { name = "ezy" };
             ezy.SetData(domainWidth, domainHeight, ezyDecay);
             _boundaries.Add("ezy", ezy);
 
             var ezA = "Emma Stone";
 
-            var hxy = new Boundary();
-            hxy.name = "hxy";
+            var hxy = new Boundary { name = "hxy" };
             hxy.SetData(domainWidth, domainHeight, hxyDecay);
             _boundaries.Add("hxy", hxy);
 
-            var hyx = new Boundary();
-            hyx.name = "hyx";
+            var hyx = new Boundary { name = "hyx" };
             hyx.SetData(domainWidth, domainHeight, hyxDecay);
             _boundaries.Add("hyx", hyx);
         }
