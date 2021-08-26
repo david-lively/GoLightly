@@ -30,8 +30,7 @@
 #define ENABLE_PML
 // #define MOVING_SOURCE
 
-RWTexture2D<float4> result;
-
+RWTexture2D<float4> VisualizerTexture;
 
 /*
 Sample values: 
@@ -79,7 +78,7 @@ StructuredBuffer<Source> sources;
 
 float contrast;
 float psiContrast;
-int timeStep;
+int TimeStep;
 
 RWStructuredBuffer<float> ez;
 
@@ -99,8 +98,6 @@ RWStructuredBuffer<float> hy;
 
 RWStructuredBuffer<float> hyx_psi;
 RWStructuredBuffer<float> hyx_decay;
-
-RWTexture2D<float4> visualizerTexture;
 
 int addr(int x, int y)
 {
@@ -176,7 +173,7 @@ void CSUpdateVisTex (uint3 id : SV_DispatchThreadID)
         break;
     }
 
-    result[id.xy] = color;
+    VisualizerTexture[id.xy] = color;
 }
 
 [numthreads(64,1,1)]
@@ -190,10 +187,10 @@ void CSUpdateSources(uint3 id : SV_DispatchThreadID)
 
     Source source = sources[id.x];
 
-    if (!source.enabled || (source.maxLife > 0) && (Dt * timeStep > source.maxLife))
+    if (!source.enabled || (source.maxLife > 0) && (Dt * TimeStep > source.maxLife))
         return;
 
-    float t = timeStep * Dt;
+    float t = TimeStep * Dt;
     /*
      wavelength (lambda): takes 2*pi time steps to complete one wave
      frequency (nu) = c / wavelength
@@ -202,7 +199,7 @@ void CSUpdateSources(uint3 id : SV_DispatchThreadID)
     
      */
     // float s = source.amplitude * sin(t / source.wavelength);
-    float s = source.amplitude * sin(timeStep * (2 * PI) / (1 / Dt) / source.wavelength);
+    float s = source.amplitude * sin(TimeStep * (2 * PI) / (1 / Dt) / source.wavelength);
 
 #ifdef MOVING_SOURCE
     float range = 1000;

@@ -153,7 +153,6 @@ namespace GoLightly
                 _kernels[name] = kernelIndex;
             }
 
-            SetCSGlobals();
             InitializeBoundaries(parameters.pmlLayers);
 
             _isInitialized = true;
@@ -217,9 +216,8 @@ namespace GoLightly
 
             for (var j = 0; j < steps; ++j)
             {
-                // computeShader.SetFloat("timeStep", Time.fixedTime);//timeStep * 0.1f);
                 computeShader.SetFloat("time", Time.fixedTime);
-                computeShader.SetInt("timeStep", timeStep);
+                computeShader.SetInt("TimeStep", timeStep);
 
                 RunKernel(_kernels["CSUpdateSources"], 1, 1);
 
@@ -232,55 +230,29 @@ namespace GoLightly
             }
         }
 
-        private void UpdateVisTex()
+        private void UpdateVisualizerTexture()
         {
-            computeShader.SetTexture(0, "result", _renderTexture);
+            computeShader.SetTexture(0, "VisualizerTexture", _renderTexture);
             computeShader.SetFloat("contrast", contrast);
             computeShader.SetFloat("psiContrast", psiContrast);
             RunKernel(_kernels["CSUpdateVisTex"]);
         }
 
         // Update is called once per frame
-        void Update()
+        public void Update()
         {
             computeShader.SetFloat("time", Time.fixedTime);
             computeShader.SetVector("domainSize", new Vector4(domainSize.x, domainSize.y, 0, 0));
-            computeShader.SetTexture(0, "result", _renderTexture);
+            computeShader.SetTexture(0, "VisualizerTexture", _renderTexture);
 
             RunSimulationStep(simulationTimeStepsPerFrame);
         }
 
-        private void OnRenderImage(RenderTexture source, RenderTexture destination)
+        public void OnRenderImage(RenderTexture source, RenderTexture destination)
         {
-            UpdateVisTex();
+            UpdateVisualizerTexture();
             Graphics.Blit(_renderTexture, destination);
         }
-
-        private void SetCSGlobals()
-        {
-            /*            var globals = new Dictionary<string, float>() {
-                            { "lambda", lambda },
-                            { "eps0", eps0 },
-                            { "mu0", mu0 },
-                            { "dx", _dx },
-                            { "dt", _dt },
-                            { "ca", ca },
-                            { "cbDefault", cbDefault},
-                            { "da", da},
-                            { "dbDefault", dbDefault},
-                        };
-
-                        foreach (var kvp in globals)
-                        {
-                            computeShader.SetFloat(kvp.Key, kvp.Value);
-                        }*/
-
-
-            // computeShader.SetInt("pmlLayers", pmlLayers);
-
-            // Debug.Log($"dX={_dx} dT = {_dt}");
-        }
-
         private void InitializeBoundaries(int layers = 10)
         {
             foreach (var boundary in _boundaries)
