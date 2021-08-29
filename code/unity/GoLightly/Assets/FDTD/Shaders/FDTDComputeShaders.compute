@@ -20,7 +20,7 @@
 /// </remarks>
 // see https://github.com/david-lively/GoLightly/blob/master/code/GoLightly/GoLightly/Simulator.cu
 // Each #kernel tells which function to compile; you can have many kernels
-#pragma kernel CSUpdateVisTex
+#pragma kernel CSUpdateVisualizerTexture
 #pragma kernel CSUpdateEz
 #pragma kernel CSUpdateHx
 #pragma kernel CSUpdateHy
@@ -30,6 +30,8 @@
 #define ENABLE_PML
 // #define MOVING_SOURCE
 
+float4 GameViewTextureSize;
+Texture2D<float4> GameViewTexture;
 RWTexture2D<float4> VisualizerTexture;
 
 /*
@@ -128,7 +130,7 @@ float getDecay(int i, RWStructuredBuffer<float> buffer, int bufferLength, int of
 
 
 [numthreads(8,8,1)]
-void CSUpdateVisTex (uint3 id : SV_DispatchThreadID)
+void CSUpdateVisualizerTexture (uint3 id : SV_DispatchThreadID)
 {
     float4 color = 0;
     int center = addr(id);
@@ -173,7 +175,14 @@ void CSUpdateVisTex (uint3 id : SV_DispatchThreadID)
         break;
     }
 
+
+    {
+        float2 sourcePos = id.xy * GameViewTextureSize.xy / domainSize.xy;
+        float4 sourceColor = GameViewTexture[sourcePos];
+        color = (color + sourceColor) / 2.0f;        
+    }
     VisualizerTexture[id.xy] = color;
+
 }
 
 [numthreads(64,1,1)]

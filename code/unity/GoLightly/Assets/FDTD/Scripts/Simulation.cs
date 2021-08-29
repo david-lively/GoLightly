@@ -138,7 +138,7 @@ namespace GoLightly
             }
 
             var kernelNames = new string[] {
-                "CSUpdateVisTex"
+                "CSUpdateVisualizerTexture"
                 ,"CSUpdateEz"
                 ,"CSUpdateHx"
                 ,"CSUpdateHy"
@@ -230,12 +230,21 @@ namespace GoLightly
             }
         }
 
-        private void UpdateVisualizerTexture()
+        private void UpdateVisualizerTexture(RenderTexture gameView)
         {
-            computeShader.SetTexture(0, "VisualizerTexture", _renderTexture);
-            computeShader.SetFloat("contrast", contrast);
-            computeShader.SetFloat("psiContrast", psiContrast);
-            RunKernel(_kernels["CSUpdateVisTex"]);
+            var kernelName = "CSUpdateVisualizerTexture";
+            if (_kernels.TryGetValue(kernelName, out int kernelIndex))
+            {                
+                var kernel = _kernels["CSUpdateVisualizerTexture"];
+                computeShader.SetTexture(kernel, "GameViewTexture", gameView);
+                computeShader.SetTexture(kernel, "VisualizerTexture", _renderTexture);
+                computeShader.SetFloat("contrast", contrast);
+                computeShader.SetFloat("psiContrast", psiContrast);
+                computeShader.SetVector("GameViewTextureSize", new Vector4(gameView.width, gameView.height, 0, 0));
+                RunKernel(kernelIndex);
+            }
+            else
+                Debug.LogError($"Compute kernel `{kernelName}` not found.");
         }
 
         // Update is called once per frame
@@ -250,7 +259,7 @@ namespace GoLightly
 
         public void OnRenderImage(RenderTexture source, RenderTexture destination)
         {
-            UpdateVisualizerTexture();
+            UpdateVisualizerTexture(source);
             Graphics.Blit(_renderTexture, destination);
         }
         private void InitializeBoundaries(int layers = 10)

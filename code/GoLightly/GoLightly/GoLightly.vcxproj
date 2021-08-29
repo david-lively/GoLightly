@@ -240,7 +240,7 @@ exit 0</Command>
     <None Include="Simulator.cuh" />
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="Simulator.cu">
+    <CudaCompile Include="Simulator.cpp">
       <GenerateLineInfo Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateLineInfo>
       <GenerateLineInfo Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateLineInfo>
       <FastMath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</FastMath>
