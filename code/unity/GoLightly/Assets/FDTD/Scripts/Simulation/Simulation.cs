@@ -34,7 +34,6 @@ namespace GoLightly
         private RenderTexture _renderTexture;
         public ComputeShader computeShader;
         public Vector2Int domainSize = new Vector2Int(2048, 1024);
-
         public SimulationParameters parameters = SimulationParameters.Create(1.0f);
 
         [Range(1, 200)]
@@ -43,9 +42,7 @@ namespace GoLightly
 
         [Range(0, 100)]
         public float psiContrast = 0;
-
         public uint simulationTimeStepsPerFrame = 1;
-
         private Dictionary<string, ComputeBuffer> _buffers = new Dictionary<string, ComputeBuffer>(StringComparer.OrdinalIgnoreCase);
         private Dictionary<string, int> _kernels = new Dictionary<string, int>();
         private Dictionary<string, Boundary> _boundaries = new Dictionary<string, Boundary>();
@@ -57,7 +54,6 @@ namespace GoLightly
             public float amplitude;
             public float wavelength;
             public float maxLife;
-
             public uint _enabled;
 
             public static int GetSize()
@@ -261,6 +257,7 @@ namespace GoLightly
         {
             UpdateVisualizerTexture(source);
             Graphics.Blit(_renderTexture, destination);
+            Debug.Log($"Texture sizes: {_renderTexture.width}x{_renderTexture.height}, {source.width}x{source.height}");
         }
         private void InitializeBoundaries(int layers = 10)
         {

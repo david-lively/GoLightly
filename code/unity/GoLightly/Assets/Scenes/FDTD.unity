@@ -308,10 +308,10 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: -5, y: -5, z: 0}
-  - {x: 5, y: -5, z: 0}
-  - {x: 5, y: 5, z: 0}
-  - {x: -5, y: 5, z: 0}
+  - {x: -0.6666667, y: -1, z: 0}
+  - {x: 0.6666667, y: -1, z: 0}
+  - {x: 0.6666667, y: 1, z: 0}
+  - {x: -0.6666667, y: 1, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.05
@@ -379,7 +379,6 @@ GameObject:
   - component: {fileID: 1148322539}
   - component: {fileID: 1148322538}
   - component: {fileID: 1148322541}
-  - component: {fileID: 1148322542}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -422,8 +421,8 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
-  m_Depth: -1
+  orthographic size: 1
+  m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -465,7 +464,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   computeShader: {fileID: 7200000, guid: abafb8f15e2fb4be1b5bf13f3950fb0d, type: 3}
-  domainSize: {x: 1024, y: 1024}
+  domainSize: {x: 512, y: 768}
   contrast: 200
   timeStep: 0
   psiContrast: 0
@@ -481,23 +480,3 @@ MonoBehaviour:
     wavelength: 3
     maxLife: 0
     _enabled: 1
---- !u!114 &1148322542
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1148322537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a160d838ff8b4b4693ac20007e008c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AssetsPPU: 100
-  m_RefResolutionX: 1024
-  m_RefResolutionY: 512
-  m_UpscaleRT: 0
-  m_PixelSnapping: 1
-  m_CropFrameX: 1
-  m_CropFrameY: 1
-  m_StretchFill: 0
