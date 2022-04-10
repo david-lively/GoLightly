@@ -64,7 +64,7 @@ namespace GoLightly
                     -1,1
                 };
 
-                throw new System.Exception();
+                //throw new System.Exception();
 
                 /*
                 instead of fuzzing about with this, just set the camera orthographic size to whichever the larger dimension is (normalized)
