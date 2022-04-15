@@ -1,6 +1,6 @@
 \chapter{GoLightly} \label{ch:golightly}
 
-GoLightly is the GPU-based FDTD simulator application that is the focus and product of this thesis. Written using a combination of C++, CUDA and OpenGL, it provides a lightweight yet complete FDTD solution.
+GoLightly testing is the GPU-based FDTD simulator application that is the focus and product of this thesis. Written using a combination of C++, CUDA and OpenGL, it provides a lightweight yet complete FDTD solution.
 
 \section{Goals}
 
@@ -44,7 +44,7 @@ The model processor (MP) is responsible for initialization of the simulator. Whe
 	\end{tabular}
 \end{table}
 
-The MP allocates arrays to hold the dielectric properties for each Yee cell. These arrays are of the same dimensions as the domain, which may be different than the dimensions of the model to accomodate boundary cells.
+The MP allocates arrays to hold the dielectric properties for each Yee cell. These arrays are of the same dimensions as the domain, which may be different than the dimensions of the model to accommodate boundary cells.
 
 Once the model image is loaded, the MP iterates through each pixel in the image. (See \autoref{listing:modelFromImage}), and parses each pixel to populate data structures describing the dielectric contents of the simulation as well as source and monitor locations and parameters.
 
@@ -66,7 +66,7 @@ MPC: At some point did you abandon the non solid rectangular grid work?  I thoug
 
 Source code for the image processor is shown in listing \autoref{listing:modelFromImage}.
 
-\lstinputlisting[language=c++,caption=Generating a model from an image,label={listing:modelFromImage}]{model-from-image.cpp}
+\lstinputlisting[language=c++,caption=Generating a model from an image, label={listing:modelFromImage}]{model-from-image.cpp}
 
 Once the dielectric, sources and monitors are derived from the model image, the model processor transfers control to the simulator.
 
@@ -76,7 +76,7 @@ The simulator block implements the FDTD algorithm. Given the dielectric, source 
 
 In addition to the dielectric and field arrays, the simulator generates a  descriptor (\ref{listing:fieldDescriptor}) for each field that will be updated. This data structure is used by the kernels to assist in handling boundary conditions (PML) and other housekeeping duties. A similar, more compact  descriptor (\ref{listing:deviceFieldDescriptor}) is generated from the host descriptor and passed to the kernels.
 \pagebreak
-\lstinputlisting[language=c++,caption=Host Field Descriptor structure,label={listing:fieldDescriptor}]{fieldDescriptor.cpp}
+\lstinputlisting[language=c++,caption=Host Field Descriptor structure, label={listing:fieldDescriptor}]{fieldDescriptor.cpp}
 
 \lstinputlisting[label={listing:deviceFieldDescriptor},language=c++,caption=Device Field Descriptor]{deviceFieldDescriptor.cpp}
 
@@ -112,7 +112,7 @@ If enabled \footnote{The visualizer requires some GPU overhead. As such, its use
 
 When running a simulation, the user may optionally specify a visualizer update frequency, indicating the number of simulation frames that should complete between visualizer updates. This aids in reducing the visualizer's performance impact.
 
-A window and OpenGL context are created using GLFW and the glLoadGen OpenGL extension loader. An OpenGL pixel buffer object (PBO) is allocated to contain a copy\footnote{The PBO may be of different dimensions than the simulation domain. Since the PBO is used only for visualization, it is not necessary for it to contain the full-resolution field.} of the field that the user wishes to observe\footnote{The visualizer provides the ability to dynamically select which field(s) should be displayed}. 
+A window and OpenGL context are created using GLFW and the glLoadGen OpenGL extension loader. An OpenGL pixel buffer object (PBO) is allocated to contain a copy\footnote{The PBO may be of different dimensions than the simulation domain. Since the PBO is used only for visualization, it is not necessary for it to contain the full-resolution field.} of the field that the user wishes to observe.\footnote{The visualizer provides the ability to dynamically select which field(s) should be displayed.} 
 
 The visualizer also creates a screen-aligned quad on which the field texture will be rendered, and allocates a texture object which is then bound to the PBO\autoref{fig:visualizerUpdatePipeline}.
 
@@ -141,7 +141,7 @@ A completed PBO is bound to a uniform input for a shader (\autoref{lst:basicvert
 	\includegraphics[  width=15cm,
 	height=6cm,
 	keepaspectratio]{visualizer-wgm-adjusted.png}
-	\caption{2D Whispering Gallery Mode Sensor}
+	\caption{2D Whispering Gallery Mode Sensor (GoLightly)}
 	\label{fig:wgm}
 \end{figure}
 
@@ -172,7 +172,7 @@ Using a tool such as Adobe Photoshop or Microsoft Paint, the user can specify al
 A significant advantage of this approach over the CSG method used in Meep is that all constructs - sources, monitors and dielectric - can be of any shape that can be drawn in a bitmap. 
 
 \iffalse
-Ifthe simulator was enhanced to support three-dimensional domains, models could be constructed in a similar manner.
+If the simulator was enhanced to support three-dimensional domains, models could be constructed in a similar manner.
 \fi
 
 \begin{figure}[H]
@@ -333,7 +333,7 @@ The observed output of the same simulation, executed with dielectric constant $\
 	\label{fig:pwEpsilon9}
 \end{figure}
 
-Note the difference in $\lambda$ once the wave enters the dielectric (green area). This simulation produces the following raw output:
+Note the difference in $\lambda$ once the wave enters the dielectric (green area).  The raw output from this simulation is shown in \autoref{fig:pwEpsilon9Raw}.
 
 \begin{figure}[H]
 	\centering
@@ -352,7 +352,7 @@ The time-averaged power for the monitors is shown in \autoref{fig:pwEpsilon9RMS}
 	\caption{RMS output with $\epsilon_R = 9$}
 	\label{fig:pwEpsilon9RMS}
 \end{figure}
-
+Note the peak in the source value. This occurs when the reflected wave reaches the source monitor. 
 Subtracting the incident magnitude from the simulation with $\epsilon_R = 1$ from the second simulation with $\epsilon_R = 9$ gives the following result (\autoref{fig:pwEpsilon9Normalized})
 
 \begin{figure}[H]
@@ -411,7 +411,7 @@ T_{error} = |1 - \frac{T_{computed}}{T_{analytical}}| = |1 - \frac{0.507}{0.5}| 
 R_{error} = |1 - \frac{R_{computed}}{R_{analytical}}| = |1 - \frac{0.503}{0.5}| = 0.6\%
 \end{equation}
 
-Careful analysis of different simulation results indicates that this error is due to floating-point precision errors. As every frame output depends on the state of the previous frame, small errors are compounded over time. 
+Careful analysis of different simulation results indicates that this error is due to floating-point precision errors. As every frame output depends on the state of the previous frame, small errors are compounded over time. This error may be minimized through use of fixed-point or double-precision data types. 
 
 
 

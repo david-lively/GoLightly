@@ -28,7 +28,7 @@
 
 #define PI (3.1415926f)
 #define ENABLE_PML
-// #define MOVING_SOURCE
+#define MOVING_SOURCE
 
 float4 GameViewTextureSize;
 Texture2D<float4> GameViewTexture;

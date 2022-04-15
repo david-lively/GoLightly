@@ -221,25 +221,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   computeShader: {fileID: 7200000, guid: abafb8f15e2fb4be1b5bf13f3950fb0d, type: 3}
-  domainSize: {x: 2048, y: 1024}
+  domainSize: {x: 1024, y: 1024}
   contrast: 50
   timeStep: 0
   psiContrast: 0
   simulationTimeStepsPerFrame: 3
   sources:
-  - position: {x: 128, y: 128, z: 0}
+  - position: {x: 512, y: 512, z: 0}
     amplitude: 1
     wavelength: 4
-    maxLife: 0
-    _enabled: 1
-  - position: {x: 1920, y: 768, z: 0}
-    amplitude: 1
-    wavelength: 3
-    maxLife: 0
-    _enabled: 1
-  - position: {x: 1024, y: 11, z: 0}
-    amplitude: 0.5
-    wavelength: 1
     maxLife: 0
     _enabled: 1
 --- !u!114 &1148322542
@@ -256,7 +246,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AssetsPPU: 100
   m_RefResolutionX: 1024
-  m_RefResolutionY: 512
+  m_RefResolutionY: 1024
   m_UpscaleRT: 0
   m_PixelSnapping: 1
   m_CropFrameX: 1
