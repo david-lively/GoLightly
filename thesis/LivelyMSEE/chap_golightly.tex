@@ -108,9 +108,9 @@ Finally, the completed field arrays are copied to the host from the GPU, and sav
 
 \section{Visualizer}\label{sec:visualizer}
 
-If enabled \footnote{The visualizer requires some GPU overhead. As such, its use may affect simulator performance. }, the visualizer application block provides interactive display of the simulation. 
+If enabled\footnote{The visualizer requires some GPU overhead. As such, its use may affect simulator performance. }, the visualizer application block provides interactive display of the simulation. 
 
-When running a simulation, the user may optionally specify a visualizer update frequency, indicating the number of simulation frames that should complete between visualizer updates. This aids in reducing the visualizer's performance impact.
+When running a simulation, the user may optionally specify a visualizer update frequency, indicating the number of simulation frames that should complete between visualizer updates. This reduces the visualizer's performance impact.
 
 A window and OpenGL context are created using GLFW and the glLoadGen OpenGL extension loader. An OpenGL pixel buffer object (PBO) is allocated to contain a copy\footnote{The PBO may be of different dimensions than the simulation domain. Since the PBO is used only for visualization, it is not necessary for it to contain the full-resolution field.} of the field that the user wishes to observe.\footnote{The visualizer provides the ability to dynamically select which field(s) should be displayed.} 
 
@@ -134,7 +134,7 @@ After the required number of frames have been completed, the visualizer launches
 
 \lstinputlisting[language=c++,caption=GLSL Fragment Shader, label={lst:basicfrag}]{basicfrag.glsl}
 
-A completed PBO is bound to a uniform input for a shader (\autoref{lst:basicvert}, \autoref{lst:basicfrag}) listing which renders the texture to the visualizer window. This process runs continuously. In order to reduce GPU overhead, the texture is only updated at the frequency requested by the user when the simulation was launched.
+A completed PBO is bound to a uniform input for a shader (\autoref{lst:basicvert}, \autoref{lst:basicfrag}) listing which renders the texture to the visualizer window. This process runs until canceled. In order to reduce GPU overhead, the texture is updated at the frequency requested by the user when the simulation was launched.
 
 \begin{figure}[H]
 	\centering

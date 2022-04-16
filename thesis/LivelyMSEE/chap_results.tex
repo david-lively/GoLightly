@@ -44,7 +44,7 @@ Note that GPU throughput (represented in \autoref{fig:gridSizeVsComputeTime} as 
 	\centering
 	\includegraphics[width=\textwidth,
 	keepaspectratio]{gpu-vs-meep.png}
-	\caption{GoLightly vs Meep: Seconds for a complete frame with X cells and 10 PML layers}
+	\caption{GoLightly vs Meep: Seconds for 5000 frames with X cells and 10 PML layers}
 	\label{fig:gpuVsMeep}
 \end{figure}
 
@@ -66,19 +66,19 @@ This may be caused by several factors, including:
 	\label{fig:gpuVsMeepSpeedup}
 \end{figure}
 
-\autoref{fig:gpuVsMeepSpeedup} shows a speedup ranging from 1.2 to 12, depending on the domain size. At lower resolutions, the overhead of initializing assets on the GPU can take more time than the simulation. In that case, the CPU may outperform the GPU solution.
+\autoref{fig:gpuVsMeepSpeedup} shows a speedup ranging from 1.2 to 12, depending on the domain size. At lower resolutions, the overhead of initializing assets on the GPU and copying results to the CPU can take more time than the simulation. In that case, the CPU may outperform the GPU solution.
 
 \section{Optimization and Enhancements}
 
-Although a 1200\% speed increase is significant, there is much room for improvement. GPUs provide different memory spaces that vary in size and access speed. In addition to global device memory, each wave\footnote{A wave, wavefront or warp is a group of 32 or 64 threads allocated to a common stream processor unit.} has shared memory\footnote{Shared memory is physically local to the ALU and accessible by all threads within the warp.} and local memory\footnote{Each thread has local memory which is not accessible to any other thread}.
+Although a 1100\% speed increase is significant, there is much room for improvement. GPUs provide different memory spaces that vary in capacity and access speed. In addition to global device memory, each warp\footnote{A wave, wavefront or warp is a group of 32 (NVIDIA) or 64 (AMD) threads allocated to a common stream processor unit.} has shared memory\footnote{Shared memory is physically local to the ALU and accessible by all threads within the warp.} and local memory\footnote{Each thread has local memory which is not accessible to any other thread.}.
 
-While global memory is the most flexible and plentiful - typically on the order of gigabytes on current generation hardware - it is also the slowest. 
+While global memory is the most flexible and plentiful - typically on the order of gigabytes on current generation-hardware - it is also the slowest. 
 
 Shared memory is common to all threads in a wave. It can be used for intra-thread synchronization and resource sharing, and is significantly faster than global memory.
 
 Finally, local memory provides thread-local storage. Local memory provides the lowest latency of all memory spaces.
 
-In its current form, GoLightly makes little use of shared or local memory. Modifying the application to take advantage of those would improve performance.
+In its current form, GoLightly makes little use of shared or local memory. Modifying the application to take advantage of those would likely improve performance.
 
 
 

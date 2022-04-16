@@ -4,7 +4,7 @@ Using the GoLightly simulator, we have shown a speedup potential of up to 12 tim
 
 \section{Usability}
 
-Although the software, in its current state, may not be suitable for production, it is clear that a GPU-based approach promises substantially improved performance. This results in increased productivity and, ultimately, better products. Eliminating the script-only modeling approach enforced by other packages makes utilization of this application significantly easier, and therefore accessible to a wider audience.
+Although the software, in its current state, may not be suitable for production, it is clear that a GPU-based approach offers substantially-improved performance. This results in increased productivity and, ultimately, better products. Eliminating the script-only modeling approach enforced by other packages makes utilization of this application significantly easier, and therefore accessible to a wider audience.
 
 \section{Future Work}
 
@@ -29,10 +29,10 @@ PML sinks would potentially increase performance by reducing memory requirements
 
 Although the current implementation treats the domain as a regular grid of identical blocks, this is a programming convenience and is not dictated by the FDTD algorithm.
 
-In addition to non-rectangular domains, non-rectangular cell shapes could improve simulation fidelity. For example, in a $TM_Z$ simulation, each $E_Z$ component could be treated as the center of a hexagonal grid cell. As such, it would be updated using three derivatives instead of two. While this would increase the computation requirement for each $E$ cell by roughly 50\% (in a two-dimensional domain), the improved fidelity may justify the cost in experiments where improved accuracy is valuable. Inclusion of the afore-mentioned PML sink capability could offset this cost. 
+In addition to non-rectangular domains, non-rectangular cell shapes could improve simulation fidelity. For example, in a $TM_Z$ simulation, each $E_Z$ component could be treated as the center of a hexagonal grid cell. As such, it would be updated using three derivatives instead of two. While this would increase the computation cost for each $E$ cell by roughly 50\% (in a two-dimensional domain), the improved fidelity may justify the cost in experiments where improved accuracy is valuable. Inclusion of the aforementioned PML sink capability could offset this cost. 
 
 \subsection{Load Balancing}
-Although we have shown that a GPU implementation of FDTD can outperform a CPU implementation, CPUs should not be ignored. It is possible to divide computational load between the CPU and GPU in a manner analagous to that used to distribute load between machines in a cluster. 
+Although we have shown that a GPU implementation of FDTD can outperform a CPU implementation, CPUs should not be ignored. It is possible to divide computational load between the CPU and GPU in a manner analogous to that used to distribute load between machines in a cluster. 
 
 When combined with load balancing between separate machines, this technique would allow the GPU to act as an additional cluster node, providing a more ideal solution which, rather than trading a CPU for a GPU, utilizes the power of both. 
 
@@ -40,12 +40,12 @@ When combined with load balancing between separate machines, this technique woul
 \subsection{Machine Learning}
 A high-speed simulator such as GoLightly may facilitate application of machine learning algorithms to accelerate FDTD even more. ML systems excel at identifying complex relationships and patterns. In theory, one could present simulation parameters such as waveguide architecture and composition and source wavelengths as a set of inputs into a multi-layer neural network, while simulation output is used to evaluate the fidelity of the network's predicted output. 
 
-A trained network may be able to predict a simulation's output with a degree of accuracy sufficient to inform the design iteration process.  The ability to rapidly execute simulations should make generation of the large quantities of training data required by ML networks more feasable than traditional CPU-based systems. 
+A trained network may be able to predict a simulation's output with a degree of accuracy sufficient to inform the design iteration process.  The ability to rapidly execute simulations should make generation of the large quantities of training data required by ML networks more feasible than traditional CPU-based systems. 
 \fi
 
 \section{Final Words}
 
-The field of general-purpose GPU computing offers potential yet to be realized in many of the areas where it shows the most promise. Leveraging this commonly available, underutilized resource will enable shorter, more robust design cycles, and facilitate exploration of more sophisticated waveguide architectures. 
+The field of general-purpose GPU computing offers potential yet to be realized in many of the areas where it shows the most promise. Leveraging this underutilized, commonly-available resource may enable more efficient design iteration and facilitate exploration of more sophisticated waveguide architectures. 
 
 
 

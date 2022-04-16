@@ -32,7 +32,7 @@ In order to apply these equations to a computational domain, FDTD defines discre
 
 \section{Yee Cell}
 
-Yee \cite{Yee} defines a computational unit known as a "cell." The cell describes how each field component within a domain is related to it's coupled fields. For instance, each $E_Z$ field component depends on adjacent $H_y$ and $H_x$ components. The cell format in a $TM_Z$ simulation is of the form shown in \autoref{fig:yeecell}.
+Yee\cite{Yee} defines a computational unit known as a "cell." The cell describes how each field component within a domain is related to its coupled fields. For instance, each $E_Z$ field component depends on adjacent $H_X$ and $H_Y$ components. The cell format in a $TM_Z$ simulation is of the form shown in \autoref{fig:yeecell}.
 
 \begin{figure}[H]
 	\centering
@@ -95,7 +95,7 @@ This will be important in the discussion between CPU and GPU architectures as yo
 	\end{tabular}
 \end{table}
 
-Since Maxwell's equations are scale-invariant, GoLightly substitutes 1 for constants such as $c$, $\mu_0$ and $\epsilon_0$. The $\frac{0.9}{\sqrt{2}}$ scalar in $dt$ prevents aliasing, and corrects for simulation dimensionality\footnote{This value should be $\frac{0.9}{\sqrt{n}}$, where $n$ is 3 for a 3D domain, 2 for a 2D domain and 1 for a 1D domain.} 
+Since Maxwell's equations are scale-invariant, GoLightly substitutes 1 for constants such as $c$, $\mu_0$ and $\epsilon_0$. The $\frac{0.9}{\sqrt{2}}$ scalar in $dt$ prevents aliasing, and corrects for simulation dimensionality\footnote{This value should be $\frac{0.9}{\sqrt{n}}$, where $n$ is 3 for a 3D domain, 2 for a 2D domain and 1 for a 1D domain.}. 
 
 In equations \ref{eq:ezupdate}, \ref{eq:hxupdate} and \ref{eq:hyupdate}, note that each $E_{i,j}^{t+1}$ field update depends only upon the previous $E$ value ($E_{i,j}^{t}$), and the previous adjacent $H$ values ($H_X^{t+\frac{1}{2}}$ and $H_Y^{t+\frac{1}{2}}$). This independence allows each field component to be updated without regard for any other value in the same field within given time step. 
 
@@ -117,7 +117,7 @@ This $t\frac{+}{-}\frac{1}{2}$ represents the temporal step size between an $E$-
 
 The spatial relationship between $E$ and $H$ grids is illustrated in the Yee lattice in \autoref{fig:yeeLattice}. Note that each $E_Z$ component is in the middle of a cell, at the $(i + \frac{1}{2}, j + \frac{1}{2})$ position where ($i,j$) is  the upper-left corner of the cell. $H$ components, however, are positioned at integer coordinates.
 
-This arrangement reflects the manner in which a wave will propagate through the domain. In the half time step between $E$ and $H$ updates, the wave moves one half-cell. If the $E$ and $H$ components were coincident, the simulation would degrade to a large collection of individual, disjoint points rather than a discretized, connected domain.
+This arrangement reflects the manner in which a wave will propagate through the domain. In the half time step between $E$ and $H$ updates, the wave moves one half-cell. If the $E$ and $H$ components were coincident, the simulation would degrade to a large collection of individual disjoint points rather than a discretized connected domain.
 
 
 \section{Boundary Conditions}
