@@ -20,6 +20,7 @@
 /// </remarks>
 // see https://github.com/david-lively/GoLightly/blob/master/code/GoLightly/GoLightly/Simulator.cu
 // Each #kernel tells which function to compile; you can have many kernels
+
 #pragma kernel CSUpdateVisualizerTexture
 #pragma kernel CSUpdateEz
 #pragma kernel CSUpdateHx
@@ -28,7 +29,7 @@
 
 #define PI (3.1415926f)
 #define ENABLE_PML
-// #define MOVING_SOURCE
+#define MOVING_SOURCE
 
 float4 GameViewTextureSize;
 Texture2D<float4> GameViewTexture;
@@ -141,13 +142,13 @@ void CSUpdateVisualizerTexture (uint3 id : SV_DispatchThreadID)
     color.rgb = saturate(contrast * ez[center]);
     color.a=1;
 
-    const int visualizerMode = 1;
+    const int visualizerMode = -1;
 
     switch(visualizerMode)
     {
         case 0:
         {
-            color.rgb = saturate(contrast * abs(ez[center]));
+            color.rgb = contrast * abs(ez[center]);
             color.g = contrast * hx[center];
             color.b = contrast * hy[center];
             if (x < PmlLayers || x >= domainSize.x-PmlLayers)
@@ -181,7 +182,7 @@ void CSUpdateVisualizerTexture (uint3 id : SV_DispatchThreadID)
         float4 sourceColor = GameViewTexture[sourcePos];
         color = (color + sourceColor) / 2.0f;        
     }
-    VisualizerTexture[id.xy] = color;
+    VisualizerTexture[id.xy] = saturate(color);
 
 }
 
@@ -207,14 +208,14 @@ void CSUpdateSources(uint3 id : SV_DispatchThreadID)
      freq of 1 == 2*PI in 1/dt time steps 
     
      */
-    // float s = source.amplitude * sin(t / source.wavelength);
-    float s = source.amplitude * sin(TimeStep * (2 * PI) / (1 / Dt) / source.wavelength);
+    float s = source.amplitude * sin(t / source.wavelength);
+    //float s = source.amplitude * sin(TimeStep * (2 * PI) / (1 / Dt) / source.wavelength);
 
 #ifdef MOVING_SOURCE
     float range = 1000;
-    float theta = t / 1000;
-    float dy = (sin(theta) / 2) * range / 2;
+    float theta = t / 50;
     float dx = (cos(theta) / 2) * range;
+    float dy = (sin(theta) / 2) * range / 2;
 
     source.position.x += dx;
     source.position.y += dy;

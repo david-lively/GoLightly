@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &271440180
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -308,10 +308,10 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: -0.6666667, y: -1, z: 0}
-  - {x: 0.6666667, y: -1, z: 0}
-  - {x: 0.6666667, y: 1, z: 0}
-  - {x: -0.6666667, y: 1, z: 0}
+  - {x: -2, y: -1, z: 0}
+  - {x: 2, y: -1, z: 0}
+  - {x: 2, y: 1, z: 0}
+  - {x: -2, y: 1, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.05
@@ -404,7 +404,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -464,19 +464,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   computeShader: {fileID: 7200000, guid: abafb8f15e2fb4be1b5bf13f3950fb0d, type: 3}
-  domainSize: {x: 512, y: 768}
-  contrast: 200
+  domainSize: {x: 2048, y: 1024}
+  contrast: 19.4
   timeStep: 0
   psiContrast: 0
   simulationTimeStepsPerFrame: 2
   sources:
-  - position: {x: 128, y: 128, z: 0}
+  - position: {x: 1024, y: 512, z: 0}
     amplitude: 1
-    wavelength: 4
-    maxLife: 0
-    _enabled: 1
-  - position: {x: 768, y: 768, z: 0}
-    amplitude: 1
-    wavelength: 3
+    wavelength: 1
     maxLife: 0
     _enabled: 1
