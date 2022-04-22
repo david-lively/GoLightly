@@ -1,44 +1,44 @@
-\BOOKMARK [0][-]{chapter*.2}{LIST OF FIGURES}{}% 1
-\BOOKMARK [0][-]{chapter*.3}{LIST OF TABLES}{}% 2
-\BOOKMARK [0][-]{chapter.1}{Introduction}{}% 3
-\BOOKMARK [0][-]{chapter.2}{Device Architecture}{}% 4
-\BOOKMARK [1][-]{section.2.1}{CPU}{chapter.2}% 5
-\BOOKMARK [1][-]{section.2.2}{GPU}{chapter.2}% 6
-\BOOKMARK [2][-]{subsection.2.2.1}{SIMD}{section.2.2}% 7
-\BOOKMARK [1][-]{section.2.3}{Resource Limitations}{chapter.2}% 8
-\BOOKMARK [0][-]{chapter.3}{FDTD}{}% 9
-\BOOKMARK [1][-]{section.3.1}{Wave equation}{chapter.3}% 10
-\BOOKMARK [1][-]{section.3.2}{Yee Cell}{chapter.3}% 11
-\BOOKMARK [1][-]{section.3.3}{Leap Frog: Stepping in Space and Time}{chapter.3}% 12
-\BOOKMARK [1][-]{section.3.4}{Boundary Conditions}{chapter.3}% 13
-\BOOKMARK [1][-]{section.3.5}{FDTD in SIMD}{chapter.3}% 14
-\BOOKMARK [0][-]{chapter.4}{Meep}{}% 15
-\BOOKMARK [1][-]{section.4.1}{Modeling}{chapter.4}% 16
-\BOOKMARK [1][-]{section.4.2}{Performance}{chapter.4}% 17
-\BOOKMARK [1][-]{section.4.3}{Popularity}{chapter.4}% 18
-\BOOKMARK [0][-]{chapter.5}{GoLightly}{}% 19
-\BOOKMARK [1][-]{section.5.1}{Goals}{chapter.5}% 20
-\BOOKMARK [1][-]{section.5.2}{Architecture}{chapter.5}% 21
-\BOOKMARK [1][-]{section.5.3}{Model Processor}{chapter.5}% 22
-\BOOKMARK [1][-]{section.5.4}{Simulator}{chapter.5}% 23
-\BOOKMARK [1][-]{section.5.5}{Visualizer}{chapter.5}% 24
-\BOOKMARK [1][-]{section.5.6}{Modeling approach}{chapter.5}% 25
-\BOOKMARK [1][-]{section.5.7}{Testing and Validation Methodology}{chapter.5}% 26
-\BOOKMARK [2][-]{subsection.5.7.1}{Analytical Result}{section.5.7}% 27
-\BOOKMARK [2][-]{subsection.5.7.2}{Numerical Result}{section.5.7}% 28
-\BOOKMARK [0][-]{chapter.6}{Results}{}% 29
-\BOOKMARK [1][-]{section.6.1}{Test Environment}{chapter.6}% 30
-\BOOKMARK [1][-]{section.6.2}{Performance Metrics}{chapter.6}% 31
-\BOOKMARK [1][-]{section.6.3}{Optimization and Enhancements}{chapter.6}% 32
-\BOOKMARK [0][-]{chapter.7}{Conclusions}{}% 33
-\BOOKMARK [1][-]{section.7.1}{Usability}{chapter.7}% 34
-\BOOKMARK [1][-]{section.7.2}{Future Work}{chapter.7}% 35
-\BOOKMARK [2][-]{subsection.7.2.1}{GoLightly Improvements}{section.7.2}% 36
-\BOOKMARK [2][-]{subsection.7.2.2}{Genetic Algorithms}{section.7.2}% 37
-\BOOKMARK [2][-]{subsection.7.2.3}{Arbitrary Domain Shape and PML Sinks}{section.7.2}% 38
-\BOOKMARK [2][-]{subsection.7.2.4}{Load Balancing}{section.7.2}% 39
-\BOOKMARK [1][-]{section.7.3}{Final Words}{chapter.7}% 40
-\BOOKMARK [0][-]{appendix.A}{APPENDIX}{}% 41
-\BOOKMARK [1][-]{section.A.1}{Meep scripts}{appendix.A}% 42
-\BOOKMARK [1][-]{section.A.2}{GoLightly configuration}{appendix.A}% 43
-\BOOKMARK [0][-]{appendix.B}{REFERENCES}{}% 44
+\BOOKMARK [0][-]{chapter*.2}{\376\377\000L\000I\000S\000T\000\040\000O\000F\000\040\000F\000I\000G\000U\000R\000E\000S}{}% 1
+\BOOKMARK [0][-]{chapter*.3}{\376\377\000L\000I\000S\000T\000\040\000O\000F\000\040\000T\000A\000B\000L\000E\000S}{}% 2
+\BOOKMARK [0][-]{chapter.1}{\376\377\000I\000n\000t\000r\000o\000d\000u\000c\000t\000i\000o\000n}{}% 3
+\BOOKMARK [0][-]{chapter.2}{\376\377\000D\000e\000v\000i\000c\000e\000\040\000A\000r\000c\000h\000i\000t\000e\000c\000t\000u\000r\000e}{}% 4
+\BOOKMARK [1][-]{section.2.1}{\376\377\000C\000P\000U}{chapter.2}% 5
+\BOOKMARK [1][-]{section.2.2}{\376\377\000G\000P\000U}{chapter.2}% 6
+\BOOKMARK [2][-]{subsection.2.2.1}{\376\377\000S\000I\000M\000D}{section.2.2}% 7
+\BOOKMARK [1][-]{section.2.3}{\376\377\000R\000e\000s\000o\000u\000r\000c\000e\000\040\000L\000i\000m\000i\000t\000a\000t\000i\000o\000n\000s}{chapter.2}% 8
+\BOOKMARK [0][-]{chapter.3}{\376\377\000F\000D\000T\000D}{}% 9
+\BOOKMARK [1][-]{section.3.1}{\376\377\000W\000a\000v\000e\000\040\000e\000q\000u\000a\000t\000i\000o\000n}{chapter.3}% 10
+\BOOKMARK [1][-]{section.3.2}{\376\377\000Y\000e\000e\000\040\000C\000e\000l\000l}{chapter.3}% 11
+\BOOKMARK [1][-]{section.3.3}{\376\377\000L\000e\000a\000p\000\040\000F\000r\000o\000g\000:\000\040\000S\000t\000e\000p\000p\000i\000n\000g\000\040\000i\000n\000\040\000S\000p\000a\000c\000e\000\040\000a\000n\000d\000\040\000T\000i\000m\000e}{chapter.3}% 12
+\BOOKMARK [1][-]{section.3.4}{\376\377\000B\000o\000u\000n\000d\000a\000r\000y\000\040\000C\000o\000n\000d\000i\000t\000i\000o\000n\000s}{chapter.3}% 13
+\BOOKMARK [1][-]{section.3.5}{\376\377\000F\000D\000T\000D\000\040\000i\000n\000\040\000S\000I\000M\000D}{chapter.3}% 14
+\BOOKMARK [0][-]{chapter.4}{\376\377\000M\000e\000e\000p}{}% 15
+\BOOKMARK [1][-]{section.4.1}{\376\377\000M\000o\000d\000e\000l\000i\000n\000g}{chapter.4}% 16
+\BOOKMARK [1][-]{section.4.2}{\376\377\000P\000e\000r\000f\000o\000r\000m\000a\000n\000c\000e}{chapter.4}% 17
+\BOOKMARK [1][-]{section.4.3}{\376\377\000P\000o\000p\000u\000l\000a\000r\000i\000t\000y}{chapter.4}% 18
+\BOOKMARK [0][-]{chapter.5}{\376\377\000G\000o\000L\000i\000g\000h\000t\000l\000y}{}% 19
+\BOOKMARK [1][-]{section.5.1}{\376\377\000G\000o\000a\000l\000s}{chapter.5}% 20
+\BOOKMARK [1][-]{section.5.2}{\376\377\000A\000r\000c\000h\000i\000t\000e\000c\000t\000u\000r\000e}{chapter.5}% 21
+\BOOKMARK [1][-]{section.5.3}{\376\377\000M\000o\000d\000e\000l\000\040\000P\000r\000o\000c\000e\000s\000s\000o\000r}{chapter.5}% 22
+\BOOKMARK [1][-]{section.5.4}{\376\377\000S\000i\000m\000u\000l\000a\000t\000o\000r}{chapter.5}% 23
+\BOOKMARK [1][-]{section.5.5}{\376\377\000V\000i\000s\000u\000a\000l\000i\000z\000e\000r}{chapter.5}% 24
+\BOOKMARK [1][-]{section.5.6}{\376\377\000M\000o\000d\000e\000l\000i\000n\000g\000\040\000a\000p\000p\000r\000o\000a\000c\000h}{chapter.5}% 25
+\BOOKMARK [1][-]{section.5.7}{\376\377\000T\000e\000s\000t\000i\000n\000g\000\040\000a\000n\000d\000\040\000V\000a\000l\000i\000d\000a\000t\000i\000o\000n\000\040\000M\000e\000t\000h\000o\000d\000o\000l\000o\000g\000y}{chapter.5}% 26
+\BOOKMARK [2][-]{subsection.5.7.1}{\376\377\000A\000n\000a\000l\000y\000t\000i\000c\000a\000l\000\040\000R\000e\000s\000u\000l\000t}{section.5.7}% 27
+\BOOKMARK [2][-]{subsection.5.7.2}{\376\377\000N\000u\000m\000e\000r\000i\000c\000a\000l\000\040\000R\000e\000s\000u\000l\000t}{section.5.7}% 28
+\BOOKMARK [0][-]{chapter.6}{\376\377\000R\000e\000s\000u\000l\000t\000s}{}% 29
+\BOOKMARK [1][-]{section.6.1}{\376\377\000T\000e\000s\000t\000\040\000E\000n\000v\000i\000r\000o\000n\000m\000e\000n\000t}{chapter.6}% 30
+\BOOKMARK [1][-]{section.6.2}{\376\377\000P\000e\000r\000f\000o\000r\000m\000a\000n\000c\000e\000\040\000M\000e\000t\000r\000i\000c\000s}{chapter.6}% 31
+\BOOKMARK [1][-]{section.6.3}{\376\377\000O\000p\000t\000i\000m\000i\000z\000a\000t\000i\000o\000n\000\040\000a\000n\000d\000\040\000E\000n\000h\000a\000n\000c\000e\000m\000e\000n\000t\000s}{chapter.6}% 32
+\BOOKMARK [0][-]{chapter.7}{\376\377\000C\000o\000n\000c\000l\000u\000s\000i\000o\000n\000s}{}% 33
+\BOOKMARK [1][-]{section.7.1}{\376\377\000U\000s\000a\000b\000i\000l\000i\000t\000y}{chapter.7}% 34
+\BOOKMARK [1][-]{section.7.2}{\376\377\000F\000u\000t\000u\000r\000e\000\040\000W\000o\000r\000k}{chapter.7}% 35
+\BOOKMARK [2][-]{subsection.7.2.1}{\376\377\000G\000o\000L\000i\000g\000h\000t\000l\000y\000\040\000I\000m\000p\000r\000o\000v\000e\000m\000e\000n\000t\000s}{section.7.2}% 36
+\BOOKMARK [2][-]{subsection.7.2.2}{\376\377\000G\000e\000n\000e\000t\000i\000c\000\040\000A\000l\000g\000o\000r\000i\000t\000h\000m\000s}{section.7.2}% 37
+\BOOKMARK [2][-]{subsection.7.2.3}{\376\377\000A\000r\000b\000i\000t\000r\000a\000r\000y\000\040\000D\000o\000m\000a\000i\000n\000\040\000S\000h\000a\000p\000e\000\040\000a\000n\000d\000\040\000P\000M\000L\000\040\000S\000i\000n\000k\000s}{section.7.2}% 38
+\BOOKMARK [2][-]{subsection.7.2.4}{\376\377\000L\000o\000a\000d\000\040\000B\000a\000l\000a\000n\000c\000i\000n\000g}{section.7.2}% 39
+\BOOKMARK [1][-]{section.7.3}{\376\377\000F\000i\000n\000a\000l\000\040\000W\000o\000r\000d\000s}{chapter.7}% 40
+\BOOKMARK [0][-]{appendix.A}{\376\377\000A\000P\000P\000E\000N\000D\000I\000X}{}% 41
+\BOOKMARK [1][-]{section.A.1}{\376\377\000M\000e\000e\000p\000\040\000s\000c\000r\000i\000p\000t\000s}{appendix.A}% 42
+\BOOKMARK [1][-]{section.A.2}{\376\377\000G\000o\000L\000i\000g\000h\000t\000l\000y\000\040\000c\000o\000n\000f\000i\000g\000u\000r\000a\000t\000i\000o\000n}{appendix.A}% 43
+\BOOKMARK [0][-]{appendix.B}{\376\377\000R\000E\000F\000E\000R\000E\000N\000C\000E\000S}{}% 44
