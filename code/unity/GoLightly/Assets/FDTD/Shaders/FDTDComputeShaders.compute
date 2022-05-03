@@ -213,7 +213,7 @@ void CSUpdateSources(uint3 id : SV_DispatchThreadID)
 
 #ifdef MOVING_SOURCE
     float range = 1000;
-    float theta = t / 1000;
+    float theta = t/100;
     float dy = (sin(theta) / 2) * range / 2;
     float dx = (cos(theta) / 2) * range;
 

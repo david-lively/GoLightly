@@ -128,7 +128,6 @@ void ModelProvider::FromImage(
 	for(int j = 0; j < media.Size.y; j++)
 	{
 		int sourceY = j * height / media.Size.y;
-
 		for(int i = 0; i < media.Size.x; i++)
 		{
 			int sourceX = i * width / media.Size.x;
@@ -138,15 +137,10 @@ void ModelProvider::FromImage(
 			unsigned char red =   bytes[sourceOffset + 0];
 			unsigned char green = bytes[sourceOffset + 1];
 			unsigned char blue =  bytes[sourceOffset + 2];
-			//unsigned char alpha = bytes[sourceOffset + 3];
-
 			/// add a new source position if we find a red pixel.
 			/// - only add if the source is NOT inside of a PML region
 			if (red > 128)
-			{
 				sourceOffsets.push_back(mediaOffset);
-			}
-
 			/// fill default waveguide material (parameter n)
 			if (green > 0)
 			{
@@ -154,7 +148,6 @@ void ModelProvider::FromImage(
 				float m = n * green * 1.f / 255;
 				media.HostArray[mediaOffset] = m;
 			}
-
 		}
 	}
 

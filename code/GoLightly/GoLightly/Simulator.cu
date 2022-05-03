@@ -150,31 +150,22 @@ void Simulator::UpdateSource(float simulationTime)
 /// <param name="sourceOffset">Value offset within the EZ field of the source</param>
 /// <param name="hx">change in the source value since the last update</param>
 /// <returns></returns>
-__global__ void UpdateEz(
-	dim3 threadOffset
-	)
+__global__ void UpdateEz(dim3 threadOffset)
 {
-
 	unsigned int x = threadOffset.x + blockIdx.x * blockDim.x + threadIdx.x;
 	unsigned int y = threadOffset.y + blockIdx.y * blockDim.y + threadIdx.y;
-
-	if (y < 1 || x < 1)
-		return;
-
+	if (y < 1 || x < 1)	return;
 	float cb = Cb->Data[y * Cb->Size.x + x];
 
 	unsigned int center = y * Ez->Size.x + x;
 	float hxBottom = Hx->Data[y * Hx->Size.x + x];
 	float hxTop = Hx->Data[(y - 1) * Hx->Size.x + x];
 	float dhx = (hxBottom - hxTop);
-
 	float hyRight = Hy->Data[y * Hy->Size.x + x];
 	float hyLeft = Hy->Data[y * Hy->Size.x + x - 1];
 	float dhy = (hyLeft - hyRight);
-
 	float ezxPsi = 0.f;
 	float ezyPsi = 0.f;
-
 	// PML
 	if (x < 10 || x > Ez->UpdateRangeEnd.x - 10 || y < 10 || y > Ez->UpdateRangeEnd.y - 10)
 	{
@@ -182,9 +173,7 @@ __global__ void UpdateEz(
 		Ezy->Psi[center] = ezyPsi;
 		ezxPsi = Ezx->Decay[x] * Ezx->Psi[center] + Ezx->Amp[x] * dhy;
 		Ezx->Psi[center] = ezxPsi;
-
 	}
-
 	Ez->Data[center] = CA * Ez->Data[center] + cb * (dhy - dhx) + cb * (ezxPsi - ezyPsi);
 }
 
@@ -193,10 +182,7 @@ __global__ void UpdateHx(dim3 threadOffset)
 	unsigned int x = threadOffset.x + blockIdx.x * blockDim.x + threadIdx.x;
 	unsigned int y = threadOffset.y + blockIdx.y * blockDim.y + threadIdx.y;
 
-	if (y >= Ez->Size.y - 1)
-		return;
-
-
+	if (y >= Ez->Size.y - 1) return;
 
 	unsigned int hxOffset = y * Hx->Size.x + x;
 #ifdef USE_MAGNETIC_MATERIALS
@@ -204,14 +190,10 @@ __global__ void UpdateHx(dim3 threadOffset)
 #else
 	const float db = DbDefault;
 #endif
-	//float ezTop = Ez->Data[y * Ez->Size.x + x];
-	//float ezBottom = Ez->Data[(y+1) * Ez->Size.x + x];
-
 	float dEz = Ez->Data[(y + 1) * Ez->Size.x + x] - Ez->Data[y * Ez->Size.x + x];
-
 	float hx = DA * Hx->Data[hxOffset] - db * dEz;
 
-
+	// PML
 	if (y < 10 || y > Hx->UpdateRangeEnd.y - 10 || x < 10 || x > Hx->UpdateRangeEnd.x - 10)
 	{
 		/// update boundaries
@@ -226,7 +208,6 @@ __global__ void UpdateHx(dim3 threadOffset)
 	}
 
 	Hx->Data[hxOffset] = hx;
-
 }
 
 __global__ void UpdateHy(dim3 threadOffset)
@@ -282,7 +263,7 @@ void Simulator::Update(float elapsedSeconds)
 	Check(cudaDeviceSynchronize());
 
 	/*
-	NOTE: using the same grid and block size for all fields effectively shrinks the domain but a small amount (1 cell assuming the domain size is a multiple of the block size),
+	NOTE: using the same grid and block size for all fields effectively shrinks the domain by a small amount (1 cell assuming the domain size is a multiple of the block size),
 	but removes the need to check update bounds in the CUDA kernels.
 	*/
 	auto &ez = *m_fields[FieldType::Ez];
