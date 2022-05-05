@@ -46,9 +46,9 @@ namespace GoLightly
 
         public uint simulationTimeStepsPerFrame = 1;
 
-        private Dictionary<string, ComputeBuffer> _buffers = new Dictionary<string, ComputeBuffer>(StringComparer.OrdinalIgnoreCase);
-        private Dictionary<string, int> _kernels = new Dictionary<string, int>();
-        private Dictionary<string, Boundary> _boundaries = new Dictionary<string, Boundary>();
+        private readonly Dictionary<string, ComputeBuffer> _buffers = new Dictionary<string, ComputeBuffer>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, int> _kernels = new Dictionary<string, int>();
+        private readonly Dictionary<string, Boundary> _boundaries = new Dictionary<string, Boundary>();
 
         [System.Serializable]
         public struct Source
@@ -57,7 +57,6 @@ namespace GoLightly
             public float amplitude;
             public float wavelength;
             public float maxLife;
-
             public uint _enabled;
 
             public static int GetSize()
@@ -77,7 +76,9 @@ namespace GoLightly
                 Debug.Log("Creating render texture");
                 _renderTexture = new RenderTexture(domainSize.x, domainSize.y, 24);
                 _renderTexture.enableRandomWrite = true;
-                _renderTexture.Create();
+
+                var textureWasCreated = _renderTexture.Create();
+                Assert.IsTrue(textureWasCreated, "Could not create visualizer texture.");
             }
             InitComputeResources();
         }
@@ -143,6 +144,7 @@ namespace GoLightly
                 ,"CSUpdateHx"
                 ,"CSUpdateHy"
                 ,"CSUpdateSources"
+                // ,"CSApplyPMLAll"
             };
 
             foreach (var name in kernelNames)
@@ -169,13 +171,14 @@ namespace GoLightly
             _buffers.Clear();
 
             Debug.Log($"Disposing {_boundaries.Count} boundary compute buffers");
+
             foreach (var kvp in _boundaries)
             {
                 kvp.Value?.Dispose();
             }
-            _boundaries.Clear();
 
-            _renderTexture?.Release();
+            _boundaries.Clear();
+            _renderTexture.Release();
             _renderTexture = null;
 
             _isInitialized = false;
@@ -223,9 +226,10 @@ namespace GoLightly
 
                 for (var i = 0; i < kernelNames.Length; ++i)
                 {
+                    Debug.Log($"Run kernel {i} name {kernelNames[i]}");
                     RunKernel(_kernels[kernelNames[i]]);
-
                 }
+
                 ++timeStep;
             }
         }

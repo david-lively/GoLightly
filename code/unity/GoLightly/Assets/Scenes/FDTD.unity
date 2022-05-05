@@ -221,13 +221,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   computeShader: {fileID: 7200000, guid: abafb8f15e2fb4be1b5bf13f3950fb0d, type: 3}
-  domainSize: {x: 1024, y: 1024}
+  domainSize: {x: 2048, y: 2048}
   contrast: 50
   timeStep: 0
   psiContrast: 0
-  simulationTimeStepsPerFrame: 3
+  simulationTimeStepsPerFrame: 2
   sources:
-  - position: {x: 512, y: 512, z: 0}
+  - position: {x: 1024, y: 1024, z: 0}
     amplitude: 1
     wavelength: 4
     maxLife: 0

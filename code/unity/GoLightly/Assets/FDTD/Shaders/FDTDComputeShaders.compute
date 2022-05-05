@@ -25,10 +25,11 @@
 #pragma kernel CSUpdateHx
 #pragma kernel CSUpdateHy
 #pragma kernel CSUpdateSources
+#pragma kernel CSApplyPMLAll
 
 #define PI (3.1415926f)
 #define ENABLE_PML
-#define MOVING_SOURCE
+//#define MOVING_SOURCE
 
 float4 GameViewTextureSize;
 Texture2D<float4> GameViewTexture;
@@ -258,19 +259,14 @@ hx : (0,1) - (domainSize.x, domainSize.y-1)
 hy : (1,0) - (domainSize.x-1, domainSize.y)
 */
 
-[numthreads(8,8,1)]
-void CSUpdateEz(uint3 id : SV_DispatchThreadID)
+void CSApplyPML_Ez(uint3 id : SV_DispatchThreadID)
 {
-    /*
-    Update range: (1,1)-(w-2,h-2)
-    */
+    const int center = addr(id.xy);
     const int x = id.x;
     const int y = id.y;
-    const int test = 100;
-    if (x < 1 || y < 1 || x >= domainSize.x-1 || y >= domainSize.y - 1)
-        return;
 
-    const int center = addr(id.xy);
+    float ezNew = ez[center];
+    float decay = getDecay(y,ezy_decay,domainSize.y);
 
     float hxBottom = hx[center];
     float hxTop= hx[addr(x,y-1)];
@@ -279,13 +275,8 @@ void CSUpdateEz(uint3 id : SV_DispatchThreadID)
     float hyRight = hy[center];
     float hyLeft = hy[addr(x-1,y)];
     float dHy = hyLeft - hyRight;
-    
-    float ezNew = Ca * ez[addr(id.xy)] + CbDefault * (dHy - dHx);
-    float decay;
-    float amp;
 
-#ifdef ENABLE_PML
-    decay = getDecay(y,ezy_decay,domainSize.y);
+    
     if (decay > 0)
     {
         float amp = decay - 1;
@@ -308,13 +299,12 @@ void CSUpdateEz(uint3 id : SV_DispatchThreadID)
 
         ezNew += CbDefault * ezxPsi;
     }
-#endif
 
-    ez[addr(id.xy)] = ezNew;
+    ez[center] = ezNew;
 }
 
-[numthreads(8,8,1)]
-void CSUpdateHx(uint3 id : SV_DispatchThreadID)
+
+void CSApplyPML_Hx(uint3 id : SV_DispatchThreadID)
 {
     const uint y = id.y;
     const uint x = id.x;
@@ -327,26 +317,71 @@ void CSUpdateHx(uint3 id : SV_DispatchThreadID)
     float ezDown = ez[addr(id.x,id.y+1)];
     float dEz = ezDown - ezUp;
 
-    float newHx = Da * hx[center] - DbDefault * dEz;
-
-#ifdef ENABLE_PML
-
     float decay = getDecay(y,hxy_decay,domainSize.y,-1);
 
     if (decay > 0)
     {
+        float newHx = hx[center];
         float amp = decay-1; 
         float psi = hxy_psi[center];
 
         psi = decay * psi + amp * dEz / Dx;
         hxy_psi[center] = psi;
         newHx = newHx - DbDefault * Dx * psi;
+
+        hx[center] = newHx;
     }
 
-#endif
-
-    hx[center] = newHx;
 }
+
+
+// [numthreads(8,8,1)]
+void CSApplyPML_Hy(uint3 id : SV_DispatchThreadID)
+{
+    const uint x = id.x;
+    const uint y = id.y;
+
+    if (x >= domainSize.x-2)
+        return;
+
+    int center = addr(id);
+
+    float decay = getDecay(x, hyx_decay, domainSize.x, -1);
+
+    float ezLeft = ez[center];
+    float ezRight = ez[addr(x+1,y)];
+    float dEz = ezRight - ezLeft;    
+
+    if (decay > 0)
+    {
+        float newHy = hy[center];
+        float psi = hyx_psi[center];
+        float amp = decay - 1;
+        
+        psi = decay * psi + amp * dEz / Dx;
+        newHy -= DbDefault * Dx * psi;
+        hyx_psi[center] = psi;
+
+        hy[center] = newHy;
+    }
+
+}
+
+
+[numthreads(8,8,1)]
+void CSApplyPMLAll(uint3 id : SV_DispatchThreadID)
+{
+    // const int x = id.x;
+    // const int y = id.y;
+    // if (x < 1 || y < 1 || x >= domainSize.x-1 || y >= domainSize.y - 1)
+    //     return;
+
+    CSApplyPML_Ez(id);
+    CSApplyPML_Hx(id);
+    CSApplyPML_Hy(id);
+}
+
+
 
 [numthreads(8,8,1)]
 void CSUpdateHy(uint3 id : SV_DispatchThreadID)
@@ -365,20 +400,55 @@ void CSUpdateHy(uint3 id : SV_DispatchThreadID)
     
     float newHy = Da * hy[center] - DbDefault * dEz;
 
-#ifdef ENABLE_PML
-
-    float decay = getDecay(x, hyx_decay, domainSize.x,-1);
-
-    if (decay > 0)
-    {
-        float psi = hyx_psi[center];
-        float amp = decay-1; 
-        psi = decay * psi + amp * dEz / Dx;
-        newHy -= DbDefault * Dx * psi;
-        hyx_psi[center] = psi;
-    }
-#endif
-
     hy[center] = newHy;
 }
 
+
+[numthreads(8,8,1)]
+void CSUpdateHx(uint3 id : SV_DispatchThreadID)
+{
+    const uint y = id.y;
+    const uint x = id.x;
+
+    if (y >= domainSize.y-2)
+        return;
+
+    uint center = addr(id);
+    float ezUp = ez[center];
+    float ezDown = ez[addr(id.x,id.y+1)];
+    float dEz = ezDown - ezUp;
+
+    float newHx = Da * hx[center] - DbDefault * dEz;
+    hx[center] = newHx;
+}
+
+
+[numthreads(8,8,1)]
+void CSUpdateEz(uint3 id : SV_DispatchThreadID)
+{
+    /*
+    Update range: (1,1)-(w-2,h-2)
+    */
+    const int x = id.x;
+    const int y = id.y;
+    if (x < 1 || y < 1 || x >= domainSize.x-1 || y >= domainSize.y - 1)
+        return;
+
+    const int center = addr(id.xy);
+
+    float hxBottom = hx[center];
+    float hxTop= hx[addr(x,y-1)];
+    float dHx = hxBottom - hxTop;
+
+    float hyRight = hy[center];
+    float hyLeft = hy[addr(x-1,y)];
+    float dHy = hyLeft - hyRight;
+    
+    float ezNew = Ca * ez[addr(id.xy)] + CbDefault * (dHy - dHx);
+    float decay;
+    float amp;
+
+    ez[addr(id.xy)] = ezNew;
+
+    CSApplyPMLAll(id);
+}

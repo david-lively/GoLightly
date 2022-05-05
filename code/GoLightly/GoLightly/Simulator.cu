@@ -263,7 +263,8 @@ void Simulator::Update(float elapsedSeconds)
 	Check(cudaDeviceSynchronize());
 
 	/*
-	NOTE: using the same grid and block size for all fields effectively shrinks the domain by a small amount (1 cell assuming the domain size is a multiple of the block size),
+	NOTE: using the same grid and block size for all fields effectively shrinks the domain by a small amount 
+	(1 cell assuming the domain size is a multiple of the block size),
 	but removes the need to check update bounds in the CUDA kernels.
 	*/
 	auto &ez = *m_fields[FieldType::Ez];
@@ -279,7 +280,6 @@ void Simulator::Update(float elapsedSeconds)
 			);
 
 	}
-
 
 	Check(cudaDeviceSynchronize());
 
