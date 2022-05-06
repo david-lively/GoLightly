@@ -25,7 +25,7 @@
 #pragma kernel CSUpdateHx
 #pragma kernel CSUpdateHy
 #pragma kernel CSUpdateSources
-#pragma kernel CSApplyPMLAll
+// #pragma kernel CSApplyPMLAll
 
 #define PI (3.1415926f)
 #define ENABLE_PML
@@ -265,6 +265,10 @@ void CSApplyPML_Ez(uint3 id : SV_DispatchThreadID)
     const int x = id.x;
     const int y = id.y;
 
+    // if (x < 1 || y < 1 || x >= domainSize.x-1 || y >= domainSize.y - 1)
+    //     return;
+
+
     float ezNew = ez[center];
     float decay = getDecay(y,ezy_decay,domainSize.y);
 
@@ -335,7 +339,6 @@ void CSApplyPML_Hx(uint3 id : SV_DispatchThreadID)
 }
 
 
-// [numthreads(8,8,1)]
 void CSApplyPML_Hy(uint3 id : SV_DispatchThreadID)
 {
     const uint x = id.x;
@@ -368,14 +371,9 @@ void CSApplyPML_Hy(uint3 id : SV_DispatchThreadID)
 }
 
 
-[numthreads(8,8,1)]
-void CSApplyPMLAll(uint3 id : SV_DispatchThreadID)
+// [numthreads(8,8,1)]
+void CSApplyPMLAll(uint3 id)
 {
-    // const int x = id.x;
-    // const int y = id.y;
-    // if (x < 1 || y < 1 || x >= domainSize.x-1 || y >= domainSize.y - 1)
-    //     return;
-
     CSApplyPML_Ez(id);
     CSApplyPML_Hx(id);
     CSApplyPML_Hy(id);
@@ -451,4 +449,5 @@ void CSUpdateEz(uint3 id : SV_DispatchThreadID)
     ez[addr(id.xy)] = ezNew;
 
     CSApplyPMLAll(id);
+
 }
