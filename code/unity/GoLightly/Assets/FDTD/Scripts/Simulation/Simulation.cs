@@ -226,7 +226,6 @@ namespace GoLightly
 
                 for (var i = 0; i < kernelNames.Length; ++i)
                 {
-                    Debug.Log($"Run kernel {i} name {kernelNames[i]}");
                     RunKernel(_kernels[kernelNames[i]]);
                 }
 
@@ -292,6 +291,10 @@ namespace GoLightly
             var hyxDecay = new float[domainWidth+1];
             var hxyDecay = new float[domainHeight+1];
 
+            Helpers.ClearArray(ref ezxDecay,1);
+            Helpers.ClearArray(ref ezyDecay, 1);
+            Helpers.ClearArray(ref hyxDecay, 1);
+            Helpers.ClearArray(ref hxyDecay, 1);
 
             for (var i = 0; i < layers; ++i)
             {
@@ -305,6 +308,9 @@ namespace GoLightly
                 // var eAmp = edecay - 1;
                 var hdecay = Mathf.Exp(-1 * (parameters.dt * hsigma) / parameters.mu0);
                 // var hAmp = hdecay - 1;
+
+                edecay = Mathf.Min(edecay,1);
+                hdecay = Mathf.Min(hdecay,1);
 
                 ezxDecay[i] = edecay;
                 ezxDecay[ezxDecay.Length - i - 1] = edecay;

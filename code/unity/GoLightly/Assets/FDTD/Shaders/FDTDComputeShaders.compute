@@ -119,13 +119,13 @@ int addr(int3 xy)
 float getDecay(int i, RWStructuredBuffer<float> buffer, int bufferLength, int offset=0)
 {
     if (i < PmlLayers)
-        return buffer[i];
+        return buffer[i];        
     else if (bufferLength-i-1 < PmlLayers)
     {
         return buffer[bufferLength-i-1+offset];
     }
     else
-        return 0;
+        return 1;
 }
 
 
@@ -160,10 +160,10 @@ void CSUpdateVisualizerTexture (uint3 id : SV_DispatchThreadID)
 
         case 1:
         {
-            if (x < PmlLayers || x >= domainSize.x-PmlLayers)
-                color.g = psiContrast * (abs(ezx_decay[x] - 1));
-            if (y < PmlLayers || y >= domainSize.y - PmlLayers)
-                color.b = psiContrast * (abs(ezy_decay[y] - 1));
+            // if (x < PmlLayers || x >= domainSize.x-PmlLayers)
+                color.g = psiContrast * (abs(ezx_decay[x]));
+            // if (y < PmlLayers || y >= domainSize.y - PmlLayers)
+                color.b = psiContrast * (abs(ezy_decay[y]));
         }
         break;
 
@@ -266,7 +266,6 @@ void CSUpdateEz(uint3 id : SV_DispatchThreadID)
     */
     const int x = id.x;
     const int y = id.y;
-    const int test = 100;
     if (x < 1 || y < 1 || x >= domainSize.x-1 || y >= domainSize.y - 1)
         return;
 
@@ -285,7 +284,12 @@ void CSUpdateEz(uint3 id : SV_DispatchThreadID)
     float amp;
 
 #ifdef ENABLE_PML
-    decay = getDecay(y,ezy_decay,domainSize.y);
+    // decay = getDecay(y,ezy_decay,domainSize.y);
+    if (y < PmlLayers)
+        decay = ezy_decay[y];
+    else
+        decay = ezy_decay[y+1];
+
     if (decay > 0)
     {
         float amp = decay - 1;
@@ -298,7 +302,8 @@ void CSUpdateEz(uint3 id : SV_DispatchThreadID)
     }
 
     decay = getDecay(x,ezx_decay, domainSize.x);
-    if (decay > 0)
+    decay = abs(decay);
+    // if (decay > 0)
     {
         float amp = decay - 1;
 
