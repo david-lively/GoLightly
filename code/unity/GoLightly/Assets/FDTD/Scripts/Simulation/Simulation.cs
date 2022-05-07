@@ -212,7 +212,7 @@ namespace GoLightly
             computeShader.SetVector("domainSize", new Vector2(domainSize.x, domainSize.y));
             computeShader.SetInt("numSources", sources.Count);
 
-            var kernelNames = new string[] { "CSUpdateEz", "CSUpdateHx", "CSUpdateHy" };
+            var kernelNames = new string[] { "CSUpdateHx", "CSUpdateHy", "CSUpdateEz" };
 
             if (steps < 1)
                 steps = 1;
@@ -229,6 +229,7 @@ namespace GoLightly
                     Debug.Log($"Run kernel {i} name {kernelNames[i]}");
                     RunKernel(_kernels[kernelNames[i]]);
                 }
+
 
                 ++timeStep;
             }
@@ -286,10 +287,10 @@ namespace GoLightly
             var domainWidth = domainSize.x;
             var domainHeight = domainSize.y;
 
-            var ezxDecay = new float[domainWidth];
-            var ezyDecay = new float[domainHeight];
-            var hyxDecay = new float[domainWidth];
-            var hxyDecay = new float[domainHeight];
+            var ezxDecay = new float[domainWidth+1];
+            var ezyDecay = new float[domainHeight+1];
+            var hyxDecay = new float[domainWidth+1];
+            var hxyDecay = new float[domainHeight+1];
 
 
             for (var i = 0; i < layers; ++i)
