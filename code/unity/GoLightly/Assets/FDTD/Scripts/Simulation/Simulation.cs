@@ -142,8 +142,9 @@ namespace GoLightly
             var kernelNames = new string[] {
                 "CSUpdateVisualizerTexture"
                 ,"CSUpdateEz"
-                ,"CSUpdateHx"
-                ,"CSUpdateHy"
+                ,"CSUpdateHFields"
+                // ,"CSUpdateHx"
+                // ,"CSUpdateHy"
                 ,"CSUpdateSources"
                 // ,"CSApplyPMLAll"
             };
@@ -187,8 +188,8 @@ namespace GoLightly
 
         private void RunKernel(int kernelIndex)
         {
-            var launchX = _renderTexture.width / 8;
-            var launchY = _renderTexture.height / 8;
+            var launchX = _renderTexture.width / 32;
+            var launchY = _renderTexture.height / 32;
 
             RunKernel(kernelIndex, launchX, launchY);
         }
@@ -213,7 +214,8 @@ namespace GoLightly
             computeShader.SetVector("domainSize", new Vector2(domainSize.x, domainSize.y));
             computeShader.SetInt("numSources", sources.Count);
 
-            var kernelNames = new string[] { "CSUpdateHx", "CSUpdateHy", "CSUpdateEz" };
+            // var kernelNames = new string[] { "CSUpdateHx", "CSUpdateHy", "CSUpdateEz" };
+            var kernelNames = new string[] { "CSUpdateHFields", "CSUpdateEz" };
 
             if (steps < 1)
                 steps = 1;

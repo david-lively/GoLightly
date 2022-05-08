@@ -22,8 +22,7 @@
 // Each #kernel tells which function to compile; you can have many kernels
 #pragma kernel CSUpdateVisualizerTexture
 #pragma kernel CSUpdateEz
-#pragma kernel CSUpdateHx
-#pragma kernel CSUpdateHy
+#pragma kernel CSUpdateHFields
 #pragma kernel CSUpdateSources
 
 #define PI (3.1415926f)
@@ -85,21 +84,24 @@ int TimeStep;
 RWStructuredBuffer<float> ez;
 
 RWStructuredBuffer<float> ezx_psi;
-RWStructuredBuffer<float> ezx_decay;
+// RWStructuredBuffer<float> ezx_decay;
 
 RWStructuredBuffer<float> ezy_psi;
-RWStructuredBuffer<float> ezy_decay;
+// RWStructuredBuffer<float> ezy_decay;
 
 
 RWStructuredBuffer<float> hx;
 
 RWStructuredBuffer<float> hxy_psi;
-RWStructuredBuffer<float> hxy_decay;
+// RWStructuredBuffer<float> hxy_decay;
 
 RWStructuredBuffer<float> hy;
 
 RWStructuredBuffer<float> hyx_psi;
-RWStructuredBuffer<float> hyx_decay;
+// RWStructuredBuffer<float> hyx_decay;
+
+RWStructuredBuffer<float4> decay_all;
+
 
 int addr(int x, int y)
 {
@@ -116,20 +118,20 @@ int addr(int3 xy)
     return addr(xy.xy);
 }
 
-float getDecay(int i, RWStructuredBuffer<float> buffer, int bufferLength, int offset=0)
-{
-    if (i < PmlLayers)
-        return buffer[i];        
-    else if (bufferLength-i-1 < PmlLayers)
-    {
-        return buffer[bufferLength-i-1+offset];
-    }
-    else
-        return 1;
-}
+// float getDecay(int i, RWStructuredBuffer<float> buffer, int bufferLength, int offset=0)
+// {
+//     if (i < PmlLayers)
+//         return buffer[i];        
+//     else if (bufferLength-i-1 < PmlLayers)
+//     {
+//         return buffer[bufferLength-i-1+offset];
+//     }
+//     else
+//         return 1;
+// }
 
 
-[numthreads(8,8,1)]
+[numthreads(32,32,1)]
 void CSUpdateVisualizerTexture (uint3 id : SV_DispatchThreadID)
 {
     float4 color = 0;
@@ -141,47 +143,14 @@ void CSUpdateVisualizerTexture (uint3 id : SV_DispatchThreadID)
     color.rgb = saturate(contrast * ez[center]);
     color.a=1;
 
-    const int visualizerMode = 1;
+    // color.g = psiContrast * (abs(ezx_decay[x]));
+    // color.b = psiContrast * (abs(ezy_decay[y]));
 
-    switch(visualizerMode)
-    {
-        case 0:
-        {
-            color.rgb = saturate(contrast * abs(ez[center]));
-            color.g = contrast * hx[center];
-            color.b = contrast * hy[center];
-            if (x < PmlLayers || x >= domainSize.x-PmlLayers)
-                color.g = psiContrast * (abs(ezx_decay[x] - 1));
-            if (y < PmlLayers || y >= domainSize.y - PmlLayers)
-                color.b = psiContrast * (abs(ezy_decay[y] - 1));
-            color.a = 1;
-        }
-        break;
+    float2 gameViewPixelPos = id.xy * GameViewTextureSize.xy / domainSize.xy;
+    float4 gameViewColor = GameViewTexture[gameViewPixelPos];
+    // blend Ez field with 
+    color = (color * 4 + gameViewColor) / 5.0f;        
 
-        case 1:
-        {
-            // if (x < PmlLayers || x >= domainSize.x-PmlLayers)
-                color.g = psiContrast * (abs(ezx_decay[x]));
-            // if (y < PmlLayers || y >= domainSize.y - PmlLayers)
-                color.b = psiContrast * (abs(ezy_decay[y]));
-        }
-        break;
-
-        case 2:
-        {
-            color.g = psiContrast * abs(ezx_decay[x]);
-            color.b = psiContrast * abs(ezy_decay[y]);
-        }
-        break;
-    }
-
-
-    {
-        float2 gameViewPixelPos = id.xy * GameViewTextureSize.xy / domainSize.xy;
-        float4 gameViewColor = GameViewTexture[gameViewPixelPos];
-        // blend Ez field with 
-        color = (color * 4 + gameViewColor) / 5.0f;        
-    }
     VisualizerTexture[id.xy] = color;
 
 }
@@ -226,6 +195,7 @@ void CSUpdateSources(uint3 id : SV_DispatchThreadID)
     ez[addr(source.position)] += s;
 }
 
+/// PML envelope Values
 static float e_decay[] = {
     0.133286506,
     0.266546071,
@@ -284,7 +254,33 @@ hx : (0,1) - (domainSize.x, domainSize.y-1)
 hy : (1,0) - (domainSize.x-1, domainSize.y)
 */
 
-[numthreads(8,8,1)]
+float2 getEDecay(uint2 position)
+{
+    float xd = 1, yd = 1;
+    if (position.x < PmlLayers)
+    {
+        xd = e_decay[position.x];
+    }
+    else if (position.x >= domainSize.x - PmlLayers)
+    {
+        xd = e_decay[domainSize.x-position.x-1];
+    }
+
+    if (position.y < PmlLayers)
+    {
+        yd = e_decay[position.y];
+    }
+    else if (position.y >= domainSize.y - PmlLayers)
+    {
+        yd = e_decay[domainSize.y-position.y-1];
+    }
+
+    return float2(xd,yd);
+}
+
+
+
+[numthreads(32,32,1)]
 void CSUpdateEz(uint3 id : SV_DispatchThreadID)
 {
     /*
@@ -292,75 +288,65 @@ void CSUpdateEz(uint3 id : SV_DispatchThreadID)
     */
     const int x = id.x;
     const int y = id.y;
+
     if (x < 1 || y < 1 || x >= domainSize.x-1 || y >= domainSize.y - 1)
         return;
 
     const int center = addr(id.xy);
 
+    // float hxCenter = hx[center];
     float hxBottom = hx[center];
     float hxTop= hx[addr(x,y-1)];
-    float dHx = hxBottom - hxTop;
 
     float hyRight = hy[center];
     float hyLeft = hy[addr(x-1,y)];
-    float dHy = hyLeft - hyRight;
-    
-    float ezNew = Ca * ez[addr(id.xy)] + CbDefault * (dHy - dHx);
-    float decay;
-    float amp;
 
-#ifdef ENABLE_PML
-    if (y < PmlLayers)
-    {
-        decay = e_decay[y];        
-    }
-    else if (y >= (1024-10))
-    {
-        decay = e_decay[1024-y-1];
-    }
-    // else if (y >= 1024-10)
-    // {
-    //     float y2 = 1024-y+1;
-    //     decay = e_decay[y2];
-    // }
-    else
-        decay = 1;
-    
-    // if (y < PmlLayers)
-    //     decay = ezy_decay[y];
-    // else
-    //     decay = ezy_decay[y + 1];
-    //
-    // if (decay > 0)
-    {
-        float amp = decay - 1;
+    float2 dH = float2(hxBottom-hxTop, hyLeft-hyRight);
 
-        // ezyPsi = ezy_decay[y] * ezy_psi[center] + ezy_amp[y] * dHx;
-        float ezyPsi = decay * ezy_psi[center] + amp * dHx;
-        ezy_psi[center] = ezyPsi;
+    float ezNew = Ca * ez[addr(id.xy)] + CbDefault * (dH.y - dH.x);
 
-        ezNew -= CbDefault * ezyPsi;
-    }
 
-    decay = getDecay(x,ezx_decay, domainSize.x);
-    decay = abs(decay);
-    // if (decay > 0)
-    {
-        float amp = decay - 1;
+    float2 decay = getEDecay(id.xy);
+    float2 amp = decay - 1;
 
-        float ezxPsi = decay * ezx_psi[center] + amp * dHy;
-        // ezxPsi = ezx_decay[x] * ezx_psi[center] + ezx_amp[x] * dHy;
-        ezx_psi[center] = ezxPsi;
+    float ezyPsi = decay.y * ezy_psi[center] + amp.y * dH.x;
+    ezy_psi[center] = ezyPsi;
 
-        ezNew += CbDefault * ezxPsi;
-    }
-#endif
+    ezNew -= CbDefault * ezyPsi;
+
+    float ezxPsi = decay.x * ezx_psi[center] + amp.x * dH.y;
+    ezx_psi[center] = ezxPsi;
+
+    ezNew += CbDefault * ezxPsi;
 
     ez[addr(id.xy)] = ezNew;
 }
 
-[numthreads(8,8,1)]
-void CSUpdateHx(uint3 id : SV_DispatchThreadID)
+float2 getHDecay(uint2 p)
+{
+    float xd = 1, yd = 1;
+
+    if (p.y < PmlLayers)
+        yd = h_decay[p.y];
+    else if (p.y >= domainSize.y-PmlLayers)
+    {
+        yd = h_decay[domainSize.y-p.y-2];
+    }
+
+    if (p.x < PmlLayers)
+    {
+        xd = h_decay[p.x];
+    }
+    else if (p.x >= domainSize.x-PmlLayers)
+    {
+        xd = h_decay[domainSize.x-p.x-2];
+    }
+
+    return float2(xd,yd);
+}
+
+[numthreads(32,32,1)]
+void CSUpdateHFields(uint3 id : SV_DispatchThreadID)
 {
     const uint y = id.y;
     const uint x = id.x;
@@ -371,60 +357,39 @@ void CSUpdateHx(uint3 id : SV_DispatchThreadID)
     uint center = addr(id);
     float ezUp = ez[center];
     float ezDown = ez[addr(id.x,id.y+1)];
-    float dEz = ezDown - ezUp;
-
-    float newHx = Da * hx[center] - DbDefault * dEz;
-
-#ifdef ENABLE_PML
-
-    float decay = getDecay(y,hxy_decay,domainSize.y,-1);
-
-    if (decay > 0)
-    {
-        float amp = decay-1; 
-        float psi = hxy_psi[center];
-
-        psi = decay * psi + amp * dEz / Dx;
-        hxy_psi[center] = psi;
-        newHx = newHx - DbDefault * Dx * psi;
-    }
-
-#endif
-
-    hx[center] = newHx;
-}
-
-[numthreads(8,8,1)]
-void CSUpdateHy(uint3 id : SV_DispatchThreadID)
-{
-    const uint x = id.x;
-    const uint y = id.y;
-
-    if (x >= domainSize.x-2)
-        return;
-
-    int center = addr(id);
 
     float ezLeft = ez[center];
     float ezRight = ez[addr(x+1,y)];
-    float dEz = ezRight - ezLeft;
-    
-    float newHy = Da * hy[center] - DbDefault * dEz;
 
-#ifdef ENABLE_PML
+    float2 dEz = float2(ezRight - ezLeft, ezDown - ezUp);
 
-    float decay = getDecay(x, hyx_decay, domainSize.x,-1);
+    float newHx = Da * hx[center] - DbDefault * dEz.y;
+    float newHy = Da * hy[center] - DbDefault * dEz.x;
 
-    if (decay > 0)
+    float2 decay = getHDecay(id.xy);
+    float2 amp = decay - 1;
+
+    {
+        // float amp = decay.y-1; 
+        float psi = hxy_psi[center];
+
+        psi = decay.y * psi + amp.y * dEz.y / Dx;
+        hxy_psi[center] = psi;
+
+        newHx = newHx - DbDefault * Dx * psi;
+    }
+
     {
         float psi = hyx_psi[center];
-        float amp = decay-1; 
-        psi = decay * psi + amp * dEz / Dx;
+
+        psi = decay.x * psi + amp.x * dEz.x / Dx;
         newHy -= DbDefault * Dx * psi;
+
         hyx_psi[center] = psi;
     }
-#endif
 
+    hx[center] = newHx;
     hy[center] = newHy;
 }
+
 
