@@ -118,6 +118,21 @@ int addr(int3 xy)
     return addr(xy.xy);
 }
 
+float getMaterial(uint2 id)
+{
+    return cb[id.y * domainSize.x + id.x];
+/*
+    float epsR = 3;
+    float material = CbDefault;
+
+    if (id.x > 1024)
+        material = Dt / Dx * 1.0 / epsR;
+
+    return material;
+*/
+}
+
+
 [numthreads(32,32,1)]
 void CSUpdateVisualizerTexture (uint3 id : SV_DispatchThreadID)
 {
@@ -130,6 +145,9 @@ void CSUpdateVisualizerTexture (uint3 id : SV_DispatchThreadID)
     color.rgb = saturate(contrast * ez[center]);
     color.a=1;
 
+    float matRelative = getMaterial(id.xy) / CbDefault;
+    if (matRelative != 1)
+        color.g += (1-matRelative) * psiContrast;
     // color.g = psiContrast * (abs(ezx_decay[x]));
     // color.b = psiContrast * (abs(ezy_decay[y]));
 
@@ -259,19 +277,6 @@ float4 getPsi(uint2 position)
     return psi_all[position.y * domainSize.x + position.x];
 }
 
-float getMaterial(uint2 id)
-{
-    return cb[id.y * domainSize.x + id.x];
-/*
-    float epsR = 3;
-    float material = CbDefault;
-
-    if (id.x > 1024)
-        material = Dt / Dx * 1.0 / epsR;
-
-    return material;
-*/
-}
 
 [numthreads(32,32,1)]
 void CSUpdateEz(uint3 id : SV_DispatchThreadID)

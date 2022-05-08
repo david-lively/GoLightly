@@ -156,19 +156,7 @@ namespace GoLightly
             {
                 var cbData = new float[fieldBufferSize];
                 Helpers.ClearArray(ref cbData, parameters.cb);
-                var epsR = 9.0f;
-
-                var matClear = parameters.cb;
-                var material = parameters.dt / parameters.dx * 1.0f / epsR;
-
-                for (var j = domainSize.y / 4; j < domainSize.y * 3 / 4; ++j)
-                {
-                    for (var i=domainSize.x/2; i < domainSize.x; ++i)
-                    {
-                        cbData[j * domainSize.x + i] = material;
-                    }
-                }
-
+                SetMaterials(cbData);
                 var cb = new ComputeBuffer(fieldBufferSize, sizeof(float));
                 cb.SetData(cbData);
                 //Helpers.ClearBuffer(cb, parameters.cb);
@@ -364,6 +352,62 @@ namespace GoLightly
             var decayBuffer = new ComputeBuffer(decayAll.Length, sizeof(float) * 4);
             decayBuffer.SetData(decayAll);
             _buffers["decay_all"] = decayBuffer;
+        }
+
+        void demoLineGuide(float[] cbData)
+        {
+            var epsR = 9.0f;
+
+            var matClear = parameters.cb;
+            var material = parameters.dt / parameters.dx * 1.0f / epsR;
+
+            var middleY = domainSize.y / 2;
+            var width = 20;
+            var top = middleY - width / 2;
+            var bottom = middleY + width / 2;
+            for (var j = top; j <= bottom; ++j)
+            {
+                for (var i = 0; i < domainSize.x; ++i)
+                {
+                    cbData[j * domainSize.x + i] = material;
+                }
+            }
+
+        }
+
+        void demoGuide2(float[] cbData)
+        {
+            var scalar = parameters.dt / parameters.dx;
+            var core = scalar * 1.0f / 1;
+            var clad = scalar * 1.0f / 1000;
+
+            var coreLayers = 20;
+            var cladLayers = 50;
+
+            var top = domainSize.y/2-coreLayers/2-cladLayers;
+            for(var j=0; j < coreLayers + 2 * cladLayers; ++j)
+            {
+                var cb = scalar;
+                if (j < cladLayers)
+                    cb = clad;
+                else if (j < coreLayers + cladLayers)
+                    cb = core;
+                else
+                    cb = clad;
+
+                for(var i=0; i < domainSize.x; ++i)
+                {
+                    cbData[(j + top) * domainSize.x + i] = cb;
+                }
+
+            }
+
+        }
+
+        void SetMaterials(float[] cbData)
+        {
+            //demoLineGuide(cbData);
+            demoGuide2(cbData);
         }
     }
 }
