@@ -143,31 +143,16 @@ namespace GoLightly
 
             var fieldBufferSize = domainSize.x * domainSize.y;
 
-            var fieldBufferNames = new string[] { "ez", "hx", "hy", "cb" };
-
-            foreach(var name in fieldBufferNames)
             {
-                var buffer = new ComputeBuffer(fieldBufferSize, sizeof(float));
-                Helpers.ClearBuffer(buffer);
-                _buffers[name] = buffer;
+                var fieldBufferNames = new string[] { "ez", "hx", "hy" };
+
+                foreach (var name in fieldBufferNames)
+                {
+                    var buffer = new ComputeBuffer(fieldBufferSize, sizeof(float));
+                    Helpers.ClearBuffer(buffer);
+                    _buffers[name] = buffer;
+                }
             }
-            //{
-            //    var buffer = new ComputeBuffer(fieldBufferSize, sizeof(float));
-            //    Helpers.ClearBuffer(buffer);
-            //    _buffers["ez"] = buffer;
-            //}
-
-            //{
-            //    var hx = new ComputeBuffer(fieldBufferSize, sizeof(float));
-            //    Helpers.ClearBuffer(hx);
-            //    _buffers["hx"] = hx;
-            //}
-
-            //{
-            //    var hy = new ComputeBuffer(fieldBufferSize, sizeof(float));
-            //    Helpers.ClearBuffer(hy);
-            //    _buffers["hy"] = hy;
-            //}
 
             {
                 var cb = new ComputeBuffer(fieldBufferSize, sizeof(float));
@@ -179,10 +164,7 @@ namespace GoLightly
                 "CSUpdateVisualizerTexture"
                 ,"CSUpdateEz"
                 ,"CSUpdateHFields"
-                // ,"CSUpdateHx"
-                // ,"CSUpdateHy"
                 ,"CSUpdateSources"
-                // ,"CSApplyPMLAll"
             };
 
             foreach (var name in kernelNames)
@@ -248,7 +230,6 @@ namespace GoLightly
             computeShader.SetVector("domainSize", new Vector2(domainSize.x, domainSize.y));
             computeShader.SetInt("numSources", sources.Count);
 
-            // var kernelNames = new string[] { "CSUpdateHx", "CSUpdateHy", "CSUpdateEz" };
             var kernelNames = new string[] { "CSUpdateHFields", "CSUpdateEz" };
 
             if (steps < 1)
@@ -265,7 +246,6 @@ namespace GoLightly
                 {
                     RunKernel(_kernels[kernelNames[i]]);
                 }
-
 
                 ++timeStep;
             }
@@ -310,6 +290,15 @@ namespace GoLightly
                 boundary.Value?.Dispose();
             _boundaries.Clear();
 
+            var domainWidth = domainSize.x;
+            var domainHeight = domainSize.y;
+
+#if false
+throw new Exception("This is supposed to be #ifdef'd out");
+/*
+PML calculation. This is kept here for reference purposes but the code
+actually uses the readonly e_decay and h_decay arrays which were generated using this code.
+*/
             float sigmaMax = 1.0f;
             float sigmaOrder = 4.0f;
             float epsR = 1.0f;
@@ -321,10 +310,6 @@ namespace GoLightly
             float xmin = layers * parameters.dx;
             float invLayersDx = 1.0f / xmin;
 
-            var domainWidth = domainSize.x;
-            var domainHeight = domainSize.y;
-
-#if false
             var ezxDecay = new float[domainWidth + 1];
             var ezyDecay = new float[domainHeight + 1];
             var hyxDecay = new float[domainWidth + 1];
@@ -396,9 +381,9 @@ namespace GoLightly
             z -> hyx decay
             w -> hxy decay
             */
-            for (var j = 0; j < domainHeight-1; ++j)
+            for (var j = 0; j < domainHeight - 1; ++j)
             {
-                for (var i = 0; i < domainWidth-1; ++i)
+                for (var i = 0; i < domainWidth - 1; ++i)
                 {
                     var v = new float4(1, 1, 1, 1);
 
@@ -430,7 +415,6 @@ namespace GoLightly
                 }
             }
 
-
             /*
             x = ezxDecay
             y = ezyDecay
@@ -440,7 +424,6 @@ namespace GoLightly
             var decayBuffer = new ComputeBuffer(decayAll.Length, sizeof(float) * 4);
             decayBuffer.SetData(decayAll);
             _buffers["decay_all"] = decayBuffer;
-
         }
     }
 }

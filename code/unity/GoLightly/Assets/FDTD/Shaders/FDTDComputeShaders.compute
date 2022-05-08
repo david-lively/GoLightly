@@ -82,27 +82,25 @@ float psiContrast;
 int TimeStep;
 
 RWStructuredBuffer<float> ez;
-
-//RWStructuredBuffer<float> ezx_psi;
-// RWStructuredBuffer<float> ezx_decay;
-
-//RWStructuredBuffer<float> ezy_psi;
-// RWStructuredBuffer<float> ezy_decay;
-
-
 RWStructuredBuffer<float> hx;
-
-//RWStructuredBuffer<float> hxy_psi;
-// RWStructuredBuffer<float> hxy_decay;
-
 RWStructuredBuffer<float> hy;
 
-//RWStructuredBuffer<float> hyx_psi;
-// RWStructuredBuffer<float> hyx_decay;
-
-RWStructuredBuffer<float4> decay_all;
+/*
+Decay:
+    x -> ezx decay
+    y -> ezy decay
+    z -> hyx decay
+    w -> hxy decay
+*/
+StructuredBuffer<float4> decay_all;
+/*
+Psi:
+    x -> ezx psi
+    y -> ezy psi
+    z -> hyx psi
+    w -> hxy psi
+*/
 RWStructuredBuffer<float4> psi_all;
-
 
 int addr(int x, int y)
 {
@@ -118,19 +116,6 @@ int addr(int3 xy)
 {
     return addr(xy.xy);
 }
-
-// float getDecay(int i, RWStructuredBuffer<float> buffer, int bufferLength, int offset=0)
-// {
-//     if (i < PmlLayers)
-//         return buffer[i];        
-//     else if (bufferLength-i-1 < PmlLayers)
-//     {
-//         return buffer[bufferLength-i-1+offset];
-//     }
-//     else
-//         return 1;
-// }
-
 
 [numthreads(32,32,1)]
 void CSUpdateVisualizerTexture (uint3 id : SV_DispatchThreadID)
@@ -196,6 +181,7 @@ void CSUpdateSources(uint3 id : SV_DispatchThreadID)
     ez[addr(source.position)] += s;
 }
 
+/*
 /// PML envelope Values
 static float e_decay[] = {
     0.133286506,
@@ -222,7 +208,7 @@ static float h_decay[] = {
     0.998980284,
     0.999987423     
     };
-
+*/
 
 /// <remarks>
 /// Example Yee grid: domain size is 4 x 4. 
