@@ -261,13 +261,16 @@ float4 getPsi(uint2 position)
 
 float getMaterial(uint2 id)
 {
+    return cb[id.y * domainSize.x + id.x];
+/*
     float epsR = 3;
     float material = CbDefault;
 
     if (id.x > 1024)
         material = Dt / Dx * 1.0 / epsR;
 
-    return material;    
+    return material;
+*/
 }
 
 [numthreads(32,32,1)]
