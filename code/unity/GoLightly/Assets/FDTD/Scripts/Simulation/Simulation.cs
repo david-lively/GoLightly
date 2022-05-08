@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-
+/*
 /// <summary>
 /// initializes resources such as field and boundary arrays and sets material properties
 /// </summary>
@@ -27,6 +27,7 @@ using UnityEngine.Assertions;
 /// |         |         |         |         |         
 /// ez---hy---ez---hy---ez---hy---ez---hy---ez
 /// </remarks>
+*/
 namespace GoLightly
 {
     public partial class Simulation : MonoBehaviour
@@ -266,6 +267,31 @@ namespace GoLightly
             UpdateVisualizerTexture(source);
             Graphics.Blit(_renderTexture, destination);
         }
+        /*
+         * e decay:
+[0] = {float} 0.133286506
+[1] = {float} 0.266546071
+[2] = {float} 0.438038647
+[3] = {float} 0.616397917
+[4] = {float} 0.770144641
+[5] = {float} 0.881655931
+[6] = {float} 0.9497177
+[7] = {float} 0.983808935
+[8] = {float} 0.996780813
+[9] = {float} 0.999798477
+
+        h decay:
+[0] = {float} 0.193701461
+[1] = {float} 0.349247128
+[2] = {float} 0.528538823
+[3] = {float} 0.697860897
+[4] = {float} 0.831596196
+[5] = {float} 0.920684338
+[6] = {float} 0.970211327
+[7] = {float} 0.99215883
+[8] = {float} 0.998980284
+[9] = {float} 0.999987423        
+         */
         private void InitializeBoundaries(int layers = 10)
         {
             foreach (var boundary in _boundaries)
