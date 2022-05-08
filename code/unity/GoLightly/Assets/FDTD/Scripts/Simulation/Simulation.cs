@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Unity.Mathematics;
 
 /*
 /// <summary>
@@ -46,6 +47,8 @@ namespace GoLightly
         public float psiContrast = 0;
 
         public uint simulationTimeStepsPerFrame = 1;
+
+
 
         private readonly Dictionary<string, ComputeBuffer> _buffers = new Dictionary<string, ComputeBuffer>(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, int> _kernels = new Dictionary<string, int>();
@@ -200,6 +203,7 @@ namespace GoLightly
             computeShader.SetBuffer(kernelIndex, "hx", _buffers["hx"]);
             computeShader.SetBuffer(kernelIndex, "hy", _buffers["hy"]);
             computeShader.SetBuffer(kernelIndex, "sources", _buffers["sources"]);
+            computeShader.SetBuffer(kernelIndex, "decay_all", _buffers["decay_all"]);
             computeShader.SetConstantBuffer("Parameters", _buffers["Parameters"], 0, SimulationParameters.GetSize());
             foreach (var kvp in _boundaries)
             {
@@ -241,7 +245,7 @@ namespace GoLightly
         {
             var kernelName = "CSUpdateVisualizerTexture";
             if (_kernels.TryGetValue(kernelName, out int kernelIndex))
-            {                
+            {
                 var kernel = _kernels["CSUpdateVisualizerTexture"];
                 computeShader.SetTexture(kernel, "GameViewTexture", gameView);
                 computeShader.SetTexture(kernel, "VisualizerTexture", _renderTexture);
@@ -314,12 +318,12 @@ namespace GoLightly
             var domainWidth = domainSize.x;
             var domainHeight = domainSize.y;
 
-            var ezxDecay = new float[domainWidth+1];
-            var ezyDecay = new float[domainHeight+1];
-            var hyxDecay = new float[domainWidth+1];
-            var hxyDecay = new float[domainHeight+1];
+            var ezxDecay = new float[domainWidth + 1];
+            var ezyDecay = new float[domainHeight + 1];
+            var hyxDecay = new float[domainWidth + 1];
+            var hxyDecay = new float[domainHeight + 1];
 
-            Helpers.ClearArray(ref ezxDecay,1);
+            Helpers.ClearArray(ref ezxDecay, 1);
             Helpers.ClearArray(ref ezyDecay, 1);
             Helpers.ClearArray(ref hyxDecay, 1);
             Helpers.ClearArray(ref hxyDecay, 1);
@@ -337,8 +341,8 @@ namespace GoLightly
                 var hdecay = Mathf.Exp(-1 * (parameters.dt * hsigma) / parameters.mu0);
                 // var hAmp = hdecay - 1;
 
-                edecay = Mathf.Min(edecay,1);
-                hdecay = Mathf.Min(hdecay,1);
+                edecay = Mathf.Min(edecay, 1);
+                hdecay = Mathf.Min(hdecay, 1);
 
                 ezxDecay[i] = edecay;
                 ezxDecay[ezxDecay.Length - i - 1] = edecay;
@@ -371,6 +375,75 @@ namespace GoLightly
             var hyx = new Boundary { name = "hyx" };
             hyx.SetData(domainWidth, domainHeight, hyxDecay);
             _boundaries.Add("hyx", hyx);
+
+
+            var e_decay = new float[] {
+                0.133286506f,
+                0.266546071f,
+                0.438038647f,
+                0.616397917f,
+                0.770144641f,
+                0.881655931f,
+                0.9497177f,
+                0.983808935f,
+                0.996780813f,
+                0.999798477f
+                };
+
+            var h_decay = new float[]  {
+                0.193701461f,
+                0.349247128f,
+                0.528538823f,
+                0.697860897f,
+                0.831596196f,
+                0.920684338f,
+                0.970211327f,
+                0.99215883f,
+                0.998980284f,
+                0.999987423f
+                };
+
+
+            /// unified PML decay buffer.
+            var decayAll = new float4[domainWidth * domainHeight];
+
+            for (var j = 0; j < domainHeight; ++j)
+            {
+                for (var i = 0; i < domainWidth; ++i)
+                {
+                    var v = new float4(1, 1, 1, 1);
+
+                    if (i < layers)
+                        v.x = e_decay[i];
+                    else if (i >= domainWidth - layers)
+                    {
+                        v.x = e_decay[domainWidth - i - 1];
+                    }
+
+                    if (j < layers)
+                    {
+                        v.y = e_decay[j];
+                    }
+                    else if (j >= domainHeight - layers)
+                    {
+                        v.y = e_decay[domainHeight - j - 1];
+                    }
+
+                    decayAll[j * domainWidth + i] = v;
+                }
+            }
+
+
+            /*
+            x = ezxDecay
+            y = ezyDecay
+            z = hxyDecay
+            w = hyxDecay
+            */
+            var decayBuffer = new ComputeBuffer(decayAll.Length, sizeof(float) * 4);
+            decayBuffer.SetData(decayAll);
+            _buffers["decay_all"] = decayBuffer;
+
         }
     }
 }
