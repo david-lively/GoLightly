@@ -254,30 +254,17 @@ hx : (0,1) - (domainSize.x, domainSize.y-1)
 hy : (1,0) - (domainSize.x-1, domainSize.y)
 */
 
-float2 getEDecay(uint2 position)
+/*
+float4 results:
+x -> ezx decay
+y -> ezy decay
+z -> hyx decay
+w -> hxy decay
+*/
+float4 getDecay(uint2 position)
 {
-    float xd = 1, yd = 1;
-    if (position.x < PmlLayers)
-    {
-        xd = e_decay[position.x];
-    }
-    else if (position.x >= domainSize.x - PmlLayers)
-    {
-        xd = e_decay[domainSize.x-position.x-1];
-    }
-
-    if (position.y < PmlLayers)
-    {
-        yd = e_decay[position.y];
-    }
-    else if (position.y >= domainSize.y - PmlLayers)
-    {
-        yd = e_decay[domainSize.y-position.y-1];
-    }
-
-    return float2(xd,yd);
+    return decay_all[position.y * domainSize.x + position.x];
 }
-
 
 
 [numthreads(32,32,1)]
@@ -306,7 +293,7 @@ void CSUpdateEz(uint3 id : SV_DispatchThreadID)
     float ezNew = Ca * ez[addr(id.xy)] + CbDefault * (dH.y - dH.x);
 
 
-    float2 decay = getEDecay(id.xy);
+    float2 decay = getDecay(id.xy).xy;
     float2 amp = decay - 1;
 
     float ezyPsi = decay.y * ezy_psi[center] + amp.y * dH.x;
@@ -320,29 +307,6 @@ void CSUpdateEz(uint3 id : SV_DispatchThreadID)
     ezNew += CbDefault * ezxPsi;
 
     ez[addr(id.xy)] = ezNew;
-}
-
-float2 getHDecay(uint2 p)
-{
-    float xd = 1, yd = 1;
-
-    if (p.y < PmlLayers)
-        yd = h_decay[p.y];
-    else if (p.y >= domainSize.y-PmlLayers)
-    {
-        yd = h_decay[domainSize.y-p.y-2];
-    }
-
-    if (p.x < PmlLayers)
-    {
-        xd = h_decay[p.x];
-    }
-    else if (p.x >= domainSize.x-PmlLayers)
-    {
-        xd = h_decay[domainSize.x-p.x-2];
-    }
-
-    return float2(xd,yd);
 }
 
 [numthreads(32,32,1)]
@@ -366,7 +330,7 @@ void CSUpdateHFields(uint3 id : SV_DispatchThreadID)
     float newHx = Da * hx[center] - DbDefault * dEz.y;
     float newHy = Da * hy[center] - DbDefault * dEz.x;
 
-    float2 decay = getHDecay(id.xy);
+    float2 decay = getDecay(id.xy).zw;
     float2 amp = decay - 1;
 
     {

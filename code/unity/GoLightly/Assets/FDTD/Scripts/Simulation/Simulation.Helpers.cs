@@ -23,6 +23,12 @@ namespace GoLightly
                 buffer.SetData(data);
             }
 
+            public static void SetArray<T>(ref T[] arr, T value)
+            {
+                for (var i = 0; i < arr.Length; ++i)
+                    arr[i] = value;
+            }
+
         }
     }
 }

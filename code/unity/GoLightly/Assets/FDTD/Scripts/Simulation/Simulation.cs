@@ -400,33 +400,42 @@ namespace GoLightly
                 0.970211327f,
                 0.99215883f,
                 0.998980284f,
-                0.999987423f
+                0.999987423f,
+                1.0f
                 };
 
 
             /// unified PML decay buffer.
             var decayAll = new float4[domainWidth * domainHeight];
 
-            for (var j = 0; j < domainHeight; ++j)
+            for (var j = 0; j < domainHeight-1; ++j)
             {
-                for (var i = 0; i < domainWidth; ++i)
+                for (var i = 0; i < domainWidth-1; ++i)
                 {
                     var v = new float4(1, 1, 1, 1);
 
+                    /// ezx
                     if (i < layers)
+                    {
                         v.x = e_decay[i];
+                        v.z = h_decay[i];
+                    }
                     else if (i >= domainWidth - layers)
                     {
                         v.x = e_decay[domainWidth - i - 1];
+                        v.z = h_decay[domainWidth - i - 2];
                     }
 
+                    // ezy
                     if (j < layers)
                     {
                         v.y = e_decay[j];
+                        v.w = h_decay[j];
                     }
                     else if (j >= domainHeight - layers)
                     {
                         v.y = e_decay[domainHeight - j - 1];
+                        v.w = h_decay[domainHeight - j - 2];
                     }
 
                     decayAll[j * domainWidth + i] = v;
