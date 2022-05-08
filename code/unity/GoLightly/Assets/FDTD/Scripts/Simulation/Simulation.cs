@@ -72,7 +72,6 @@ namespace GoLightly
                 0.99215883f,
                 0.998980284f,
                 0.999987423f,
-                1.0f
                 };
 
         private readonly Dictionary<string, ComputeBuffer> _buffers = new Dictionary<string, ComputeBuffer>(StringComparer.OrdinalIgnoreCase);
@@ -219,6 +218,7 @@ namespace GoLightly
             computeShader.SetBuffer(kernelIndex, "hy", _buffers["hy"]);
             computeShader.SetBuffer(kernelIndex, "sources", _buffers["sources"]);
             computeShader.SetBuffer(kernelIndex, "decay_all", _buffers["decay_all"]);
+            computeShader.SetBuffer(kernelIndex, "cb", _buffers["cb"]);
             computeShader.SetConstantBuffer("Parameters", _buffers["Parameters"], 0, SimulationParameters.GetSize());
             computeShader.SetBuffer(kernelIndex, "psi_all", _buffers["psi_all"]);
 
@@ -227,6 +227,10 @@ namespace GoLightly
 
         private void RunSimulationStep(uint steps = 1)
         {
+            computeShader.SetFloat("time", Time.fixedTime);
+            computeShader.SetVector("domainSize", new Vector4(domainSize.x, domainSize.y, 0, 0));
+            computeShader.SetTexture(0, "VisualizerTexture", _renderTexture);
+
             computeShader.SetVector("domainSize", new Vector2(domainSize.x, domainSize.y));
             computeShader.SetInt("numSources", sources.Count);
 
@@ -237,7 +241,7 @@ namespace GoLightly
 
             for (var j = 0; j < steps; ++j)
             {
-                computeShader.SetFloat("time", Time.fixedTime);
+                //computeShader.SetFloat("time", Time.fixedTime);
                 computeShader.SetInt("TimeStep", timeStep);
 
                 RunKernel(_kernels["CSUpdateSources"], 1, 1);
@@ -254,11 +258,10 @@ namespace GoLightly
         private void UpdateVisualizerTexture(RenderTexture gameView)
         {
             var kernelName = "CSUpdateVisualizerTexture";
-            if (_kernels.TryGetValue(kernelName, out int kernelIndex))
+            if (_kernels.TryGetValue(kernelName, out var kernelIndex))
             {
-                var kernel = _kernels["CSUpdateVisualizerTexture"];
-                computeShader.SetTexture(kernel, "GameViewTexture", gameView);
-                computeShader.SetTexture(kernel, "VisualizerTexture", _renderTexture);
+                computeShader.SetTexture(kernelIndex, "GameViewTexture", gameView);
+                computeShader.SetTexture(kernelIndex, "VisualizerTexture", _renderTexture);
                 computeShader.SetFloat("contrast", contrast);
                 computeShader.SetFloat("psiContrast", psiContrast);
                 computeShader.SetVector("GameViewTextureSize", new Vector4(gameView.width, gameView.height, 0, 0));
@@ -271,10 +274,6 @@ namespace GoLightly
         // Update is called once per frame
         public void Update()
         {
-            computeShader.SetFloat("time", Time.fixedTime);
-            computeShader.SetVector("domainSize", new Vector4(domainSize.x, domainSize.y, 0, 0));
-            computeShader.SetTexture(0, "VisualizerTexture", _renderTexture);
-
             RunSimulationStep(simulationTimeStepsPerFrame);
         }
 
@@ -293,81 +292,6 @@ namespace GoLightly
             var domainWidth = domainSize.x;
             var domainHeight = domainSize.y;
 
-#if false
-throw new Exception("This is supposed to be #ifdef'd out");
-/*
-PML calculation. This is kept here for reference purposes but the code
-actually uses the readonly e_decay and h_decay arrays which were generated using this code.
-*/
-            float sigmaMax = 1.0f;
-            float sigmaOrder = 4.0f;
-            float epsR = 1.0f;
-
-            // PmlSigmaMax = 0.75f * (0.8f * (PmlSigmaOrder + 1) / (Dx * (float)pow(mu0 / (eps0 * epsR), 0.5f)));
-            sigmaMax = 0.75f * (0.8f * (sigmaOrder + 1) / (parameters.dx * Mathf.Pow(parameters.mu0 / (parameters.eps0 * epsR), 0.5f)));
-            Debug.Log($"PML layers {layers} sigmaMax {sigmaMax} order {sigmaOrder} dx {parameters.dx} dt {parameters.dt}");
-
-            float xmin = layers * parameters.dx;
-            float invLayersDx = 1.0f / xmin;
-
-            var ezxDecay = new float[domainWidth + 1];
-            var ezyDecay = new float[domainHeight + 1];
-            var hyxDecay = new float[domainWidth + 1];
-            var hxyDecay = new float[domainHeight + 1];
-
-            Helpers.ClearArray(ref ezxDecay, 1);
-            Helpers.ClearArray(ref ezyDecay, 1);
-            Helpers.ClearArray(ref hyxDecay, 1);
-            Helpers.ClearArray(ref hxyDecay, 1);
-
-            for (var i = 0; i < layers; ++i)
-            {
-                var elength = i * parameters.dx;
-                var hlength = (i + 0.5f) * parameters.dx;
-
-                var esigma = sigmaMax * Mathf.Pow(Mathf.Abs(elength - xmin) * invLayersDx, sigmaOrder);
-                var hsigma = sigmaMax * Mathf.Pow(Mathf.Abs(hlength - xmin) * invLayersDx, sigmaOrder);
-
-                var edecay = Mathf.Exp(-1 * (parameters.dt * esigma) / parameters.eps0);
-                // var eAmp = edecay - 1;
-                var hdecay = Mathf.Exp(-1 * (parameters.dt * hsigma) / parameters.mu0);
-                // var hAmp = hdecay - 1;
-
-                edecay = Mathf.Min(edecay, 1);
-                hdecay = Mathf.Min(hdecay, 1);
-
-                ezxDecay[i] = edecay;
-                ezxDecay[ezxDecay.Length - i - 1] = edecay;
-
-                ezyDecay[i] = edecay;
-                ezyDecay[ezyDecay.Length - i - 1] = edecay;
-
-                hxyDecay[i] = hdecay;
-                hxyDecay[hxyDecay.Length - i - 1] = hdecay;
-
-                hyxDecay[i] = hdecay;
-                hyxDecay[hyxDecay.Length - i - 1] = hdecay;
-            }
-
-            var ezx = new Boundary { name = "ezx" };
-            // ezx.name = "ezx";
-            ezx.SetData(domainWidth, domainHeight, ezxDecay);
-            _boundaries.Add("ezx", ezx);
-
-            var ezy = new Boundary { name = "ezy" };
-            ezy.SetData(domainWidth, domainHeight, ezyDecay);
-            _boundaries.Add("ezy", ezy);
-
-            var ezA = "Emma Stone";
-
-            var hxy = new Boundary { name = "hxy" };
-            hxy.SetData(domainWidth, domainHeight, hxyDecay);
-            _boundaries.Add("hxy", hxy);
-
-            var hyx = new Boundary { name = "hyx" };
-            hyx.SetData(domainWidth, domainHeight, hyxDecay);
-            _boundaries.Add("hyx", hyx);
-#endif
             /// unified PML psi buffer
             var psiBuffer = new ComputeBuffer(domainWidth * domainHeight, sizeof(float) * 4);
             _buffers["psi_all"] = psiBuffer;

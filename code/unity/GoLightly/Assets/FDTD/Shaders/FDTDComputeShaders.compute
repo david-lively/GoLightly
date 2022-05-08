@@ -84,6 +84,7 @@ int TimeStep;
 RWStructuredBuffer<float> ez;
 RWStructuredBuffer<float> hx;
 RWStructuredBuffer<float> hy;
+StructuredBuffer<float> cb;
 
 /*
 Decay:
@@ -258,6 +259,16 @@ float4 getPsi(uint2 position)
     return psi_all[position.y * domainSize.x + position.x];
 }
 
+float getMaterial(uint2 id)
+{
+    float epsR = 3;
+    float material = CbDefault;
+
+    if (id.x > 1024)
+        material = Dt / Dx * 1.0 / epsR;
+
+    return material;    
+}
 
 [numthreads(32,32,1)]
 void CSUpdateEz(uint3 id : SV_DispatchThreadID)
@@ -281,7 +292,10 @@ void CSUpdateEz(uint3 id : SV_DispatchThreadID)
 
     float2 dH = float2(hxBottom-hxTop, hyLeft-hyRight);
 
-    float ezNew = Ca * ez[addr(id.xy)] + CbDefault * (dH.y - dH.x);
+    float material = getMaterial(id.xy);
+
+
+    float ezNew = Ca * ez[addr(id.xy)] + material * (dH.y - dH.x);
 
 
     float2 decay = getDecay(id.xy).xy;
@@ -290,13 +304,13 @@ void CSUpdateEz(uint3 id : SV_DispatchThreadID)
 
     psi.y = decay.y * psi.y + amp.y * dH.x;
 
-    ezNew -= CbDefault * psi.y;
+    ezNew -= material * psi.y;
 
     psi.x = decay.x * psi.x + amp.x * dH.y;
 
     psi_all[center] = psi;
 
-    ezNew += CbDefault * psi.x;
+    ezNew += material * psi.x;
 
     ez[addr(id.xy)] = ezNew;
 }
