@@ -48,7 +48,32 @@ namespace GoLightly
 
         public uint simulationTimeStepsPerFrame = 1;
 
+        readonly float[] e_decay = new float[] {
+                0.133286506f,
+                0.266546071f,
+                0.438038647f,
+                0.616397917f,
+                0.770144641f,
+                0.881655931f,
+                0.9497177f,
+                0.983808935f,
+                0.996780813f,
+                0.999798477f
+                };
 
+        readonly float[] h_decay = new float[]  {
+                0.193701461f,
+                0.349247128f,
+                0.528538823f,
+                0.697860897f,
+                0.831596196f,
+                0.920684338f,
+                0.970211327f,
+                0.99215883f,
+                0.998980284f,
+                0.999987423f,
+                1.0f
+                };
 
         private readonly Dictionary<string, ComputeBuffer> _buffers = new Dictionary<string, ComputeBuffer>(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, int> _kernels = new Dictionary<string, int>();
@@ -118,23 +143,31 @@ namespace GoLightly
 
             var fieldBufferSize = domainSize.x * domainSize.y;
 
+            var fieldBufferNames = new string[] { "ez", "hx", "hy", "cb" };
+
+            foreach(var name in fieldBufferNames)
             {
                 var buffer = new ComputeBuffer(fieldBufferSize, sizeof(float));
                 Helpers.ClearBuffer(buffer);
-                _buffers["ez"] = buffer;
+                _buffers[name] = buffer;
             }
+            //{
+            //    var buffer = new ComputeBuffer(fieldBufferSize, sizeof(float));
+            //    Helpers.ClearBuffer(buffer);
+            //    _buffers["ez"] = buffer;
+            //}
 
-            {
-                var hx = new ComputeBuffer(fieldBufferSize, sizeof(float));
-                Helpers.ClearBuffer(hx);
-                _buffers["hx"] = hx;
-            }
+            //{
+            //    var hx = new ComputeBuffer(fieldBufferSize, sizeof(float));
+            //    Helpers.ClearBuffer(hx);
+            //    _buffers["hx"] = hx;
+            //}
 
-            {
-                var hy = new ComputeBuffer(fieldBufferSize, sizeof(float));
-                Helpers.ClearBuffer(hy);
-                _buffers["hy"] = hy;
-            }
+            //{
+            //    var hy = new ComputeBuffer(fieldBufferSize, sizeof(float));
+            //    Helpers.ClearBuffer(hy);
+            //    _buffers["hy"] = hy;
+            //}
 
             {
                 var cb = new ComputeBuffer(fieldBufferSize, sizeof(float));
@@ -205,10 +238,7 @@ namespace GoLightly
             computeShader.SetBuffer(kernelIndex, "sources", _buffers["sources"]);
             computeShader.SetBuffer(kernelIndex, "decay_all", _buffers["decay_all"]);
             computeShader.SetConstantBuffer("Parameters", _buffers["Parameters"], 0, SimulationParameters.GetSize());
-            foreach (var kvp in _boundaries)
-            {
-                kvp.Value.SetBuffers(computeShader, kernelIndex);
-            }
+            computeShader.SetBuffer(kernelIndex, "psi_all", _buffers["psi_all"]);
 
             computeShader.Dispatch(kernelIndex, launchX, launchY, 1);
         }
@@ -273,31 +303,7 @@ namespace GoLightly
             UpdateVisualizerTexture(source);
             Graphics.Blit(_renderTexture, destination);
         }
-        /*
-         * e decay:
-[0] = {float} 0.133286506
-[1] = {float} 0.266546071
-[2] = {float} 0.438038647
-[3] = {float} 0.616397917
-[4] = {float} 0.770144641
-[5] = {float} 0.881655931
-[6] = {float} 0.9497177
-[7] = {float} 0.983808935
-[8] = {float} 0.996780813
-[9] = {float} 0.999798477
 
-        h decay:
-[0] = {float} 0.193701461
-[1] = {float} 0.349247128
-[2] = {float} 0.528538823
-[3] = {float} 0.697860897
-[4] = {float} 0.831596196
-[5] = {float} 0.920684338
-[6] = {float} 0.970211327
-[7] = {float} 0.99215883
-[8] = {float} 0.998980284
-[9] = {float} 0.999987423        
-         */
         private void InitializeBoundaries(int layers = 10)
         {
             foreach (var boundary in _boundaries)
@@ -318,6 +324,7 @@ namespace GoLightly
             var domainWidth = domainSize.x;
             var domainHeight = domainSize.y;
 
+#if false
             var ezxDecay = new float[domainWidth + 1];
             var ezyDecay = new float[domainHeight + 1];
             var hyxDecay = new float[domainWidth + 1];
@@ -375,46 +382,27 @@ namespace GoLightly
             var hyx = new Boundary { name = "hyx" };
             hyx.SetData(domainWidth, domainHeight, hyxDecay);
             _boundaries.Add("hyx", hyx);
-
-
-            var e_decay = new float[] {
-                0.133286506f,
-                0.266546071f,
-                0.438038647f,
-                0.616397917f,
-                0.770144641f,
-                0.881655931f,
-                0.9497177f,
-                0.983808935f,
-                0.996780813f,
-                0.999798477f
-                };
-
-            var h_decay = new float[]  {
-                0.193701461f,
-                0.349247128f,
-                0.528538823f,
-                0.697860897f,
-                0.831596196f,
-                0.920684338f,
-                0.970211327f,
-                0.99215883f,
-                0.998980284f,
-                0.999987423f,
-                1.0f
-                };
-
+#endif
+            /// unified PML psi buffer
+            var psiBuffer = new ComputeBuffer(domainWidth * domainHeight, sizeof(float) * 4);
+            _buffers["psi_all"] = psiBuffer;
 
             /// unified PML decay buffer.
             var decayAll = new float4[domainWidth * domainHeight];
-
+            /*
+            float4 results:
+            x -> ezx decay
+            y -> ezy decay
+            z -> hyx decay
+            w -> hxy decay
+            */
             for (var j = 0; j < domainHeight-1; ++j)
             {
                 for (var i = 0; i < domainWidth-1; ++i)
                 {
                     var v = new float4(1, 1, 1, 1);
 
-                    /// ezx
+                    /// ezx & hyx
                     if (i < layers)
                     {
                         v.x = e_decay[i];
@@ -426,7 +414,7 @@ namespace GoLightly
                         v.z = h_decay[domainWidth - i - 2];
                     }
 
-                    // ezy
+                    // ezy & hxy
                     if (j < layers)
                     {
                         v.y = e_decay[j];

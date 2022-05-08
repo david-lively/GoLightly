@@ -83,24 +83,25 @@ int TimeStep;
 
 RWStructuredBuffer<float> ez;
 
-RWStructuredBuffer<float> ezx_psi;
+//RWStructuredBuffer<float> ezx_psi;
 // RWStructuredBuffer<float> ezx_decay;
 
-RWStructuredBuffer<float> ezy_psi;
+//RWStructuredBuffer<float> ezy_psi;
 // RWStructuredBuffer<float> ezy_decay;
 
 
 RWStructuredBuffer<float> hx;
 
-RWStructuredBuffer<float> hxy_psi;
+//RWStructuredBuffer<float> hxy_psi;
 // RWStructuredBuffer<float> hxy_decay;
 
 RWStructuredBuffer<float> hy;
 
-RWStructuredBuffer<float> hyx_psi;
+//RWStructuredBuffer<float> hyx_psi;
 // RWStructuredBuffer<float> hyx_decay;
 
 RWStructuredBuffer<float4> decay_all;
+RWStructuredBuffer<float4> psi_all;
 
 
 int addr(int x, int y)
@@ -266,6 +267,11 @@ float4 getDecay(uint2 position)
     return decay_all[position.y * domainSize.x + position.x];
 }
 
+float4 getPsi(uint2 position)
+{
+    return psi_all[position.y * domainSize.x + position.x];
+}
+
 
 [numthreads(32,32,1)]
 void CSUpdateEz(uint3 id : SV_DispatchThreadID)
@@ -281,7 +287,6 @@ void CSUpdateEz(uint3 id : SV_DispatchThreadID)
 
     const int center = addr(id.xy);
 
-    // float hxCenter = hx[center];
     float hxBottom = hx[center];
     float hxTop= hx[addr(x,y-1)];
 
@@ -295,16 +300,17 @@ void CSUpdateEz(uint3 id : SV_DispatchThreadID)
 
     float2 decay = getDecay(id.xy).xy;
     float2 amp = decay - 1;
+    float4 psi = psi_all[center];
 
-    float ezyPsi = decay.y * ezy_psi[center] + amp.y * dH.x;
-    ezy_psi[center] = ezyPsi;
+    psi.y = decay.y * psi.y + amp.y * dH.x;
 
-    ezNew -= CbDefault * ezyPsi;
+    ezNew -= CbDefault * psi.y;
 
-    float ezxPsi = decay.x * ezx_psi[center] + amp.x * dH.y;
-    ezx_psi[center] = ezxPsi;
+    psi.x = decay.x * psi.x + amp.x * dH.y;
 
-    ezNew += CbDefault * ezxPsi;
+    psi_all[center] = psi;
+
+    ezNew += CbDefault * psi.x;
 
     ez[addr(id.xy)] = ezNew;
 }
@@ -333,24 +339,14 @@ void CSUpdateHFields(uint3 id : SV_DispatchThreadID)
     float2 decay = getDecay(id.xy).zw;
     float2 amp = decay - 1;
 
-    {
-        // float amp = decay.y-1; 
-        float psi = hxy_psi[center];
+    float4 psi = psi_all[center];
 
-        psi = decay.y * psi + amp.y * dEz.y / Dx;
-        hxy_psi[center] = psi;
+    psi.z = decay.y * psi.z + amp.y * dEz.y / Dx;
+    newHx = newHx - DbDefault * Dx * psi.z;
+    psi.w = decay.x * psi.w + amp.x * dEz.x / Dx;
+    newHy -= DbDefault * Dx * psi.w;
 
-        newHx = newHx - DbDefault * Dx * psi;
-    }
-
-    {
-        float psi = hyx_psi[center];
-
-        psi = decay.x * psi + amp.x * dEz.x / Dx;
-        newHy -= DbDefault * Dx * psi;
-
-        hyx_psi[center] = psi;
-    }
+    psi_all[center] = psi;
 
     hx[center] = newHx;
     hy[center] = newHy;
