@@ -226,20 +226,20 @@ void CSUpdateSources(uint3 id : SV_DispatchThreadID)
     ez[addr(source.position)] += s;
 }
 
-static float e_decay[10] = {
-        0.133286506,
-        0.266546071,
-        0.438038647,
-        0.616397917,
-        0.770144641,
-        0.881655931,
-        0.9497177,
-        0.983808935,
-        0.996780813,
-        0.999798477
+static float e_decay[] = {
+    0.133286506,
+    0.266546071,
+    0.438038647,
+    0.616397917,
+    0.770144641,
+    0.881655931,
+    0.9497177,
+    0.983808935,
+    0.996780813,
+    0.999798477
     };
 
-static float h_decay[10] = {
+static float h_decay[] = {
     0.193701461,
     0.349247128,
     0.528538823,
@@ -310,13 +310,28 @@ void CSUpdateEz(uint3 id : SV_DispatchThreadID)
     float amp;
 
 #ifdef ENABLE_PML
-    // decay = getDecay(y,ezy_decay,domainSize.y);
     if (y < PmlLayers)
-        decay = ezy_decay[y];
+    {
+        decay = e_decay[y];        
+    }
+    else if (y >= (1024-10))
+    {
+        decay = e_decay[1024-y-1];
+    }
+    // else if (y >= 1024-10)
+    // {
+    //     float y2 = 1024-y+1;
+    //     decay = e_decay[y2];
+    // }
     else
-        decay = ezy_decay[y+1];
-
-    if (decay > 0)
+        decay = 1;
+    
+    // if (y < PmlLayers)
+    //     decay = ezy_decay[y];
+    // else
+    //     decay = ezy_decay[y + 1];
+    //
+    // if (decay > 0)
     {
         float amp = decay - 1;
 
