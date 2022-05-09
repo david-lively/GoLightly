@@ -287,6 +287,75 @@ namespace GoLightly
             Graphics.Blit(_renderTexture, destination);
         }
 
+        private void drawPmlBox(uint2 topLeft, uint2 dimensions, float4[] decayAll)
+        {
+            const int layers = 10;
+            foreach (var boundary in _boundaries)
+                boundary.Value?.Dispose();
+            _boundaries.Clear();
+
+            var width = dimensions.x;
+            var height = dimensions.y;
+
+            var ed = new float[10];
+            var hd = new float[10];
+
+            for (var i=0; i < 10; ++i)
+            {
+                ed[i] = e_decay[9 - i];
+                hd[i] = h_decay[9 - i];
+                //ed[i] = e_decay[i];
+                //hd[i] = h_decay[i];
+            }
+
+
+            /*
+            float4 results:
+            x -> ezx decay
+            y -> ezy decay
+            z -> hyx decay
+            w -> hxy decay
+            */
+            for (var j = 0; j < height - 1; ++j)
+            {
+                for (var i = 0; i < width - 1; ++i)
+                {
+                    var v = new float4(1, 1, 1, 1);
+
+                    if (i < layers)
+                    {
+                        v.x = ed[i];
+                        v.z = hd[i];
+                    }
+                    else if (i >= width - layers)
+                    {
+                        v.x = ed[width - i - 1];
+                        v.z = hd[width - i - 2];
+                    }
+
+                    // ezy & hxy
+                    if (j < layers)
+                    {
+                        v.y = ed[j];
+                        v.w = hd[j];
+                    }
+                    else if (j >= height - layers)
+                    {
+                        v.y = ed[height - j - 1];
+                        v.w = hd[height - j - 2];
+                    }
+
+                    {
+                        var x = i + topLeft.x;
+                        var y = j + topLeft.y;
+                        decayAll[y * domainSize.x + x] = v;
+                    }
+
+                }
+            }
+
+        }
+
         private void InitializeBoundaries(int layers = 10)
         {
             foreach (var boundary in _boundaries)
@@ -343,6 +412,9 @@ namespace GoLightly
                 }
             }
 
+            //drawPmlBox(new uint2(100, 600), new uint2(400, 200), decayAll);
+            //drawPmlBox(new uint2(400, 100), new uint2(800, 800), decayAll);
+
             /*
             x = ezxDecay
             y = ezyDecay
@@ -354,22 +426,37 @@ namespace GoLightly
             _buffers["decay_all"] = decayBuffer;
         }
 
-        void demoLineGuide(float[] cbData)
+        void lineGuide(float[] cbData, int top)
         {
-            var epsR = 9.0f;
-
-            var matClear = parameters.cb;
-            var material = parameters.dt / parameters.dx * 1.0f / epsR;
+            var scalar = parameters.dt / parameters.dx;
+            var coreMaterial = scalar * 1.0f / 3;
+            var cladMaterial = parameters.dt / parameters.dx * 1.0f / 9;
 
             var middleY = domainSize.y / 2;
-            var width = 20;
-            var top = middleY - width / 2;
-            var bottom = middleY + width / 2;
-            for (var j = top; j <= bottom; ++j)
+            //var width = 20;
+            //var top = middleY - width / 2;
+
+            var coreLayers = 3;
+            var cladLayers = 6;
+            var bottom = top + coreLayers + 2 * cladLayers;
+
+            for(var i=0; i < domainSize.x; ++i)
             {
-                for (var i = 0; i < domainSize.x; ++i)
+                var y = top;
+                for(var j=0; j < cladLayers; ++j)
                 {
-                    cbData[j * domainSize.x + i] = material;
+                    cbData[y * domainSize.x + i] = cladMaterial;
+                    ++y;
+                }
+                for (var j = 0; j < coreLayers; ++j)
+                {
+                    cbData[y * domainSize.x + i] = coreMaterial;
+                    ++y;
+                }
+                for (var j = 0; j < cladLayers; ++j)
+                {
+                    cbData[y * domainSize.x + i] = cladMaterial;
+                    ++y;
                 }
             }
 
@@ -378,14 +465,14 @@ namespace GoLightly
         void demoGuide2(float[] cbData)
         {
             var scalar = parameters.dt / parameters.dx;
-            var core = scalar * 1.0f / 1;
+            var core = scalar * 1.0f / 9;
             var clad = scalar * 1.0f / 1000;
 
-            var coreLayers = 20;
-            var cladLayers = 50;
+            var coreLayers = 3;
+            var cladLayers = 3;
 
-            var top = domainSize.y/2-coreLayers/2-cladLayers;
-            for(var j=0; j < coreLayers + 2 * cladLayers; ++j)
+            var top = domainSize.y / 2 - coreLayers / 2 - cladLayers;
+            for (var j = 0; j < coreLayers + 2 * cladLayers; ++j)
             {
                 var cb = scalar;
                 if (j < cladLayers)
@@ -395,19 +482,28 @@ namespace GoLightly
                 else
                     cb = clad;
 
-                for(var i=0; i < domainSize.x; ++i)
+                for (var i = 0; i < domainSize.x; ++i)
                 {
                     cbData[(j + top) * domainSize.x + i] = cb;
                 }
-
             }
+        }
 
+        void wgm(float[] cbData, float radius, float width)
+        {
+            var center = new uint2((uint)(domainSize.x / 2), (uint)domainSize.y / 2);
+            var m = (parameters.dt / parameters.dx * 1 / 9.0f);
+            ModelProvider.Cylinder(center, radius, width, domainSize.x, m, cbData);
         }
 
         void SetMaterials(float[] cbData)
         {
+            //return;
             //demoLineGuide(cbData);
-            demoGuide2(cbData);
+            //demoGuide2(cbData);
+            lineGuide(cbData, domainSize.y / 2 - 300);
+
+            wgm(cbData, 282, 5);
         }
     }
 }

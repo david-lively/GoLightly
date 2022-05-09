@@ -20,6 +20,7 @@
 /// </remarks>
 // see https://github.com/david-lively/GoLightly/blob/master/code/GoLightly/GoLightly/Simulator.cu
 // Each #kernel tells which function to compile; you can have many kernels
+
 #pragma kernel CSUpdateVisualizerTexture
 #pragma kernel CSUpdateEz
 #pragma kernel CSUpdateHFields
