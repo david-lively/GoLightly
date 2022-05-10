@@ -225,11 +225,11 @@ MonoBehaviour:
   contrast: 29.5
   timeStep: 0
   psiContrast: 1
-  simulationTimeStepsPerFrame: 5
+  simulationTimeStepsPerFrame: 2
   sources:
-  - position: {x: 512, y: 512, z: 0}
+  - position: {x: 1000, y: 511, z: 0}
     amplitude: 1
-    wavelength: 2
+    wavelength: 10
     maxLife: 0
     _enabled: 1
 --- !u!114 &1148322542

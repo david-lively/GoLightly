@@ -49,6 +49,7 @@ namespace GoLightly
         public uint simulationTimeStepsPerFrame = 1;
 
         readonly float[] e_decay = new float[] {
+                0,
                 0.133286506f,
                 0.266546071f,
                 0.438038647f,
@@ -58,10 +59,12 @@ namespace GoLightly
                 0.9497177f,
                 0.983808935f,
                 0.996780813f,
-                0.999798477f
+                0.999798477f,
+                1
                 };
 
         readonly float[] h_decay = new float[]  {
+                0,
                 0.193701461f,
                 0.349247128f,
                 0.528538823f,
@@ -72,6 +75,7 @@ namespace GoLightly
                 0.99215883f,
                 0.998980284f,
                 0.999987423f,
+                1
                 };
 
         private readonly Dictionary<string, ComputeBuffer> _buffers = new Dictionary<string, ComputeBuffer>(StringComparer.OrdinalIgnoreCase);
@@ -289,25 +293,22 @@ namespace GoLightly
 
         private void drawPmlBox(uint2 topLeft, uint2 dimensions, float4[] decayAll)
         {
-            const int layers = 10;
-            foreach (var boundary in _boundaries)
-                boundary.Value?.Dispose();
-            _boundaries.Clear();
+            const int layers = 12;
 
             var width = dimensions.x;
             var height = dimensions.y;
 
-            var ed = new float[10];
-            var hd = new float[10];
+            var ed = new float[layers];
+            var hd = new float[layers];
 
-            for (var i=0; i < 10; ++i)
+            // reverse the e and h decay arrays
+            for (var i = 0; i < e_decay.Length; ++i)
             {
-                ed[i] = e_decay[9 - i];
-                hd[i] = h_decay[9 - i];
+                ed[i] = e_decay[e_decay.Length - 1 - i];
+                hd[i] = h_decay[h_decay.Length - 1 - i];
                 //ed[i] = e_decay[i];
                 //hd[i] = h_decay[i];
             }
-
 
             /*
             float4 results:
@@ -320,7 +321,8 @@ namespace GoLightly
             {
                 for (var i = 0; i < width - 1; ++i)
                 {
-                    var v = new float4(1, 1, 1, 1);
+                    //var v = new float4(1, 1, 1, 1);
+                    var v = new float4(0, 0, 0, 0);
 
                     if (i < layers)
                     {
@@ -330,7 +332,7 @@ namespace GoLightly
                     else if (i >= width - layers)
                     {
                         v.x = ed[width - i - 1];
-                        v.z = hd[width - i - 2];
+                        v.z = hd[width - i - 1];
                     }
 
                     // ezy & hxy
@@ -342,7 +344,7 @@ namespace GoLightly
                     else if (j >= height - layers)
                     {
                         v.y = ed[height - j - 1];
-                        v.w = hd[height - j - 2];
+                        v.w = hd[height - j - 1];
                     }
 
                     {
@@ -356,8 +358,10 @@ namespace GoLightly
 
         }
 
-        private void InitializeBoundaries(int layers = 10)
+        private void InitializeBoundaries(int _)
         {
+            const int layers = 12;
+            
             foreach (var boundary in _boundaries)
                 boundary.Value?.Dispose();
             _boundaries.Clear();
@@ -412,8 +416,9 @@ namespace GoLightly
                 }
             }
 
-            //drawPmlBox(new uint2(100, 600), new uint2(400, 200), decayAll);
-            //drawPmlBox(new uint2(400, 100), new uint2(800, 800), decayAll);
+            drawPmlBox(new uint2(1024-190, 512-190), new uint2(380, 380), decayAll);
+            drawPmlBox(new uint2(20, 240), new uint2(800, 700), decayAll);
+            //drawPmlBox(new uint2(100, 100), new uint2(1900, 100), decayAll);
 
             /*
             x = ezxDecay
@@ -440,10 +445,10 @@ namespace GoLightly
             var cladLayers = 6;
             var bottom = top + coreLayers + 2 * cladLayers;
 
-            for(var i=0; i < domainSize.x; ++i)
+            for (var i = 0; i < domainSize.x; ++i)
             {
                 var y = top;
-                for(var j=0; j < cladLayers; ++j)
+                for (var j = 0; j < cladLayers; ++j)
                 {
                     cbData[y * domainSize.x + i] = cladMaterial;
                     ++y;
@@ -501,6 +506,8 @@ namespace GoLightly
             //return;
             //demoLineGuide(cbData);
             //demoGuide2(cbData);
+
+            // set source position to 256,219
             lineGuide(cbData, domainSize.y / 2 - 300);
 
             wgm(cbData, 282, 5);

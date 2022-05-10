@@ -146,17 +146,23 @@ void CSUpdateVisualizerTexture (uint3 id : SV_DispatchThreadID)
     color.rgb = saturate(contrast * ez[center]);
     color.a=1;
 
+    float4 d = decay_all[center];
+    
+
     float matRelative = getMaterial(id.xy) / CbDefault;
     if (matRelative != 1)
         color.g += (1-matRelative) * psiContrast;
     // color.g = psiContrast * (abs(ezx_decay[x]));
     // color.b = psiContrast * (abs(ezy_decay[y]));
 
-    float2 gameViewPixelPos = id.xy * GameViewTextureSize.xy / domainSize.xy;
-    float4 gameViewColor = GameViewTexture[gameViewPixelPos];
+//    float2 gameViewPixelPos = id.xy * GameViewTextureSize.xy / domainSize.xy;
+  //  float4 gameViewColor = GameViewTexture[gameViewPixelPos];
     // blend Ez field with 
-    color = (color * 4 + gameViewColor) / 5.0f;        
 
+    //color = (color * 4 + gameViewColor) / 5.0f;        
+
+    if (any(d > 0))
+        color += (1-d);
     VisualizerTexture[id.xy] = color;
 
 }
