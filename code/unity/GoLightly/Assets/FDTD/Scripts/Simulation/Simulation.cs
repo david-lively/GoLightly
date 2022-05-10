@@ -379,6 +379,65 @@ namespace GoLightly
 
         }
 
+        private void CreateBoundary(float4[] decayAll, int2 topLeft, int2 dimensions)
+        {
+            int offsetOf(int x, int y)
+            {
+                return y * domainSize.x + x;
+            }
+
+            var layers = e_decay.Length;
+            for (var k = 1; k < layers; ++k)
+            {
+                for (var j = 0; j < domainSize.y; ++j)
+                {
+                    {
+                        var o = offsetOf(k, j);
+                        var v = decayAll[o];
+                        v.x = e_decay[k];
+                        v.z = h_decay[k];
+                        decayAll[o] = v;
+                    }
+
+                    {
+
+                        var o = offsetOf(domainSize.x - 1 - k, j);
+                        var v = decayAll[o];
+                        v.x = e_decay[k];
+                        v.z = h_decay[k - 1];
+                        decayAll[o] = v;
+                    }
+
+                }
+
+                for (var i = 0; i < domainSize.x; ++i)
+                {
+                    {                       
+                        //var o = k * domainSize.x + i;
+                        var o = offsetOf(i, k);
+                        var v = decayAll[o];
+                        v.y = e_decay[k];
+                        v.w = h_decay[k];
+                        decayAll[o] = v;
+                    }
+
+                    {
+                        //var y = domainSize.y - k;
+                        //var o = y * domainSize.x + i;
+                        var o = offsetOf(i, domainSize.y - k);
+                        var v = decayAll[o];
+                        v.y = e_decay[k];
+                        v.w = h_decay[k - 1];
+                        decayAll[o] = v;
+                    }
+
+                }
+
+
+            }
+        }
+
+
         private void InitializeBoundaries(int _)
         {
             var layers = e_decay.Length;
@@ -400,12 +459,15 @@ namespace GoLightly
             w -> hxy decay
             */
 
+            Helpers.SetArray(ref decayAll, 1);
+            CreateBoundary(decayAll, 0, new int2(domainSize.x, domainSize.y));
+
             /// draw v.x and v.y (e_decay)
             ///
-            if (false)
+/*            if (true)
             {
-                //Helpers.SetArray(ref decayAll, new float4(1));
-                for (var k = 0; k < layers; ++k)
+                Helpers.SetArray(ref decayAll, new float4(1));
+                for (var k = 1; k < layers; ++k)
                 {
                     for (var j = 0; j < domainSize.y; ++j)
                     {
@@ -421,7 +483,7 @@ namespace GoLightly
                             var o = (j + 1) * domainSize.x - 1 - k;
                             var v = decayAll[o];
                             v.x = e_decay[k];
-                            v.z = h_decay[k];
+                            v.z = h_decay[k - 1];
                             decayAll[o] = v;
                         }
 
@@ -438,11 +500,11 @@ namespace GoLightly
                         }
 
                         {
-                            var y = domainSize.y - k - 40;
+                            var y = domainSize.y - k;
                             var o = y * domainSize.x + i;
                             var v = decayAll[o];
                             v.y = e_decay[k];
-                            v.w = h_decay[k];
+                            v.w = h_decay[k - 1];
                             decayAll[o] = v;
                         }
 
@@ -453,9 +515,9 @@ namespace GoLightly
             else
             {
 
-                for (var j = 0; j < domainSize.y-1; ++j)
+                for (var j = 0; j < domainSize.y - 1; ++j)
                 {
-                    for (var i = 0; i < domainSize.x-1; ++i)
+                    for (var i = 0; i < domainSize.x - 1; ++i)
                     {
                         var v = new float4(1, 1, 1, 1);
 
@@ -487,7 +549,7 @@ namespace GoLightly
                     }
                 }
             }
-
+*/
 
             if (false)
             {
