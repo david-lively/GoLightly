@@ -48,8 +48,37 @@ namespace GoLightly
 
         public uint simulationTimeStepsPerFrame = 1;
 
+
+        /*
+0
+0.133286506
+0.266546071
+0.438038647
+0.616397917
+0.770144641
+0.881655931
+0.9497177
+0.983808935
+0.996780813
+0.999798477
+1
+
+0
+0.193701461
+0.349247128
+0.528538823
+0.697860897
+0.831596196
+0.920684338
+0.970211327
+0.99215883
+0.998980284
+0.999987423
+1
+        */
+
         readonly float[] e_decay = new float[] {
-                0,
+                0.0f,
                 0.133286506f,
                 0.266546071f,
                 0.438038647f,
@@ -60,11 +89,11 @@ namespace GoLightly
                 0.983808935f,
                 0.996780813f,
                 0.999798477f,
-                1
+                1.0f
                 };
 
         readonly float[] h_decay = new float[]  {
-                0,
+                0.0f,
                 0.193701461f,
                 0.349247128f,
                 0.528538823f,
@@ -80,7 +109,7 @@ namespace GoLightly
 
         private readonly Dictionary<string, ComputeBuffer> _buffers = new Dictionary<string, ComputeBuffer>(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, int> _kernels = new Dictionary<string, int>();
-        private readonly Dictionary<string, Boundary> _boundaries = new Dictionary<string, Boundary>();
+        //private readonly Dictionary<string, Boundary> _boundaries = new Dictionary<string, Boundary>();
 
         [System.Serializable]
         public struct Source
@@ -197,14 +226,6 @@ namespace GoLightly
             }
             _buffers.Clear();
 
-            Debug.Log($"Disposing {_boundaries.Count} boundary compute buffers");
-
-            foreach (var kvp in _boundaries)
-            {
-                kvp.Value?.Dispose();
-            }
-
-            _boundaries.Clear();
             _renderTexture.Release();
             _renderTexture = null;
 
@@ -291,9 +312,9 @@ namespace GoLightly
             Graphics.Blit(_renderTexture, destination);
         }
 
-        private void drawPmlBox(uint2 topLeft, uint2 dimensions, float4[] decayAll)
+        private void drawPmlBox(int2 topLeft, int2 dimensions, float4[] decayAll)
         {
-            const int layers = 12;
+            var layers = e_decay.Length;
 
             var width = dimensions.x;
             var height = dimensions.y;
@@ -317,12 +338,16 @@ namespace GoLightly
             z -> hyx decay
             w -> hxy decay
             */
+
             for (var j = 0; j < height - 1; ++j)
             {
                 for (var i = 0; i < width - 1; ++i)
                 {
+                    var x = i + topLeft.x;
+                    var y = j + topLeft.y;
+
                     //var v = new float4(1, 1, 1, 1);
-                    var v = new float4(0, 0, 0, 0);
+                    var v = decayAll[y * domainSize.x + x];
 
                     if (i < layers)
                     {
@@ -347,11 +372,7 @@ namespace GoLightly
                         v.w = hd[height - j - 1];
                     }
 
-                    {
-                        var x = i + topLeft.x;
-                        var y = j + topLeft.y;
-                        decayAll[y * domainSize.x + x] = v;
-                    }
+                    decayAll[y * domainSize.x + x] = v;
 
                 }
             }
@@ -360,11 +381,7 @@ namespace GoLightly
 
         private void InitializeBoundaries(int _)
         {
-            const int layers = 12;
-            
-            foreach (var boundary in _boundaries)
-                boundary.Value?.Dispose();
-            _boundaries.Clear();
+            var layers = e_decay.Length;
 
             var domainWidth = domainSize.x;
             var domainHeight = domainSize.y;
@@ -382,44 +399,127 @@ namespace GoLightly
             z -> hyx decay
             w -> hxy decay
             */
-            for (var j = 0; j < domainHeight - 1; ++j)
+
+            /// draw v.x and v.y (e_decay)
+            ///
+            if (false)
             {
-                for (var i = 0; i < domainWidth - 1; ++i)
+                //Helpers.SetArray(ref decayAll, new float4(1));
+                for (var k = 0; k < layers; ++k)
                 {
-                    var v = new float4(1, 1, 1, 1);
+                    for (var j = 0; j < domainSize.y; ++j)
+                    {
+                        {
+                            var o = j * domainSize.x + k;
+                            var v = decayAll[o];
+                            v.x = e_decay[k];
+                            v.z = h_decay[k];
+                            decayAll[o] = v;
+                        }
 
-                    /// ezx & hyx
-                    if (i < layers)
-                    {
-                        v.x = e_decay[i];
-                        v.z = h_decay[i];
-                    }
-                    else if (i >= domainWidth - layers)
-                    {
-                        v.x = e_decay[domainWidth - i - 1];
-                        v.z = h_decay[domainWidth - i - 2];
-                    }
+                        {
+                            var o = (j + 1) * domainSize.x - 1 - k;
+                            var v = decayAll[o];
+                            v.x = e_decay[k];
+                            v.z = h_decay[k];
+                            decayAll[o] = v;
+                        }
 
-                    // ezy & hxy
-                    if (j < layers)
-                    {
-                        v.y = e_decay[j];
-                        v.w = h_decay[j];
-                    }
-                    else if (j >= domainHeight - layers)
-                    {
-                        v.y = e_decay[domainHeight - j - 1];
-                        v.w = h_decay[domainHeight - j - 2];
                     }
 
-                    decayAll[j * domainWidth + i] = v;
+                    for (var i = 0; i < domainSize.x; ++i)
+                    {
+                        {
+                            var o = k * domainSize.x + i;
+                            var v = decayAll[o];
+                            v.y = e_decay[k];
+                            v.w = h_decay[k];
+                            decayAll[o] = v;
+                        }
+
+                        {
+                            var y = domainSize.y - k - 40;
+                            var o = y * domainSize.x + i;
+                            var v = decayAll[o];
+                            v.y = e_decay[k];
+                            v.w = h_decay[k];
+                            decayAll[o] = v;
+                        }
+
+                    }
+
+                }
+            }
+            else
+            {
+
+                for (var j = 0; j < domainSize.y-1; ++j)
+                {
+                    for (var i = 0; i < domainSize.x-1; ++i)
+                    {
+                        var v = new float4(1, 1, 1, 1);
+
+                        /// ezx & hyx
+                        if (i < layers)
+                        {
+                            v.x = e_decay[i];
+                            v.z = h_decay[i];
+                        }
+                        else if (i >= domainWidth - layers)
+                        {
+                            v.x = e_decay[domainWidth - i - 1];
+                            v.z = h_decay[domainWidth - i - 2];
+                        }
+
+                        // ezy & hxy
+                        if (j < layers)
+                        {
+                            v.y = e_decay[j];
+                            v.w = h_decay[j];
+                        }
+                        else if (j >= domainHeight - layers)
+                        {
+                            v.y = e_decay[domainHeight - j - 1];
+                            v.w = h_decay[domainHeight - j - 2];
+                        }
+
+                        decayAll[j * domainWidth + i] = v;
+                    }
                 }
             }
 
-            drawPmlBox(new uint2(1024-190, 512-190), new uint2(380, 380), decayAll);
-            drawPmlBox(new uint2(20, 240), new uint2(800, 700), decayAll);
-            //drawPmlBox(new uint2(100, 100), new uint2(1900, 100), decayAll);
 
+            if (false)
+            {
+                var boxLength = 150u;
+                //drawPmlBox(new uint2(1024 - boxLength, 512 - boxLength), new uint2(2 * boxLength), decayAll);
+                //drawPmlBox(new uint2(20, 300), new uint2(800, 690), decayAll);
+                //drawPmlBox(new uint2(100, 100), new uint2(1900, 100), decayAll);
+
+                int2 boxDim = new int2(512, 256);
+
+                var pmlMap = new string[]
+                {
+                "0000",
+                "0000",
+                "0000",
+                "1111",
+                };
+
+                for (var j = 0; j < pmlMap.Length; ++j)
+                {
+                    for (var i = 0; i < pmlMap[j].Length; ++i)
+                    {
+                        var mask = pmlMap[j][i];
+                        if (mask == '1')
+                        {
+                            var tl = new int2(i * boxDim.x, j * boxDim.y);
+                            drawPmlBox(tl, boxDim, decayAll);
+                        }
+
+                    }
+                }
+            }
             /*
             x = ezxDecay
             y = ezyDecay
@@ -503,7 +603,7 @@ namespace GoLightly
 
         void SetMaterials(float[] cbData)
         {
-            //return;
+            return;
             //demoLineGuide(cbData);
             //demoGuide2(cbData);
 
