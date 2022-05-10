@@ -379,7 +379,7 @@ namespace GoLightly
 
         }
 
-        private void CreateBoundary(float4[] decayAll, int2 topLeft, int2 dimensions)
+        private void CreateBoundary(float4[] decayAll, int2 minCoord, int2 maxCoord)
         {
             int offsetOf(int x, int y)
             {
@@ -389,10 +389,10 @@ namespace GoLightly
             var layers = e_decay.Length;
             for (var k = 1; k < layers; ++k)
             {
-                for (var j = 0; j < domainSize.y; ++j)
+                for (var j = minCoord.y; j < maxCoord.y; ++j)
                 {
                     {
-                        var o = offsetOf(k, j);
+                        var o = offsetOf(minCoord.x+k-1, j);
                         var v = decayAll[o];
                         v.x = e_decay[k];
                         v.z = h_decay[k];
@@ -401,7 +401,7 @@ namespace GoLightly
 
                     {
 
-                        var o = offsetOf(domainSize.x - 1 - k, j);
+                        var o = offsetOf(maxCoord.x - k, j);
                         var v = decayAll[o];
                         v.x = e_decay[k];
                         v.z = h_decay[k - 1];
@@ -410,11 +410,10 @@ namespace GoLightly
 
                 }
 
-                for (var i = 0; i < domainSize.x; ++i)
+                for (var i = minCoord.x; i < maxCoord.x; ++i)
                 {
                     {                       
-                        //var o = k * domainSize.x + i;
-                        var o = offsetOf(i, k);
+                        var o = offsetOf(i, minCoord.y + k - 1);
                         var v = decayAll[o];
                         v.y = e_decay[k];
                         v.w = h_decay[k];
@@ -422,9 +421,7 @@ namespace GoLightly
                     }
 
                     {
-                        //var y = domainSize.y - k;
-                        //var o = y * domainSize.x + i;
-                        var o = offsetOf(i, domainSize.y - k);
+                        var o = offsetOf(i, maxCoord.y - k);
                         var v = decayAll[o];
                         v.y = e_decay[k];
                         v.w = h_decay[k - 1];
@@ -460,7 +457,7 @@ namespace GoLightly
             */
 
             Helpers.SetArray(ref decayAll, 1);
-            CreateBoundary(decayAll, 0, new int2(domainSize.x, domainSize.y));
+            CreateBoundary(decayAll, new int2(50, 50), new int2(domainSize.x/2, domainSize.y/2));//new int2(400,800));
 
             /// draw v.x and v.y (e_decay)
             ///
