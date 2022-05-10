@@ -379,20 +379,26 @@ namespace GoLightly
 
         }
 
-        private void CreateBoundary(float4[] decayAll, int2 minCoord, int2 maxCoord)
+        private void CreateBoundaryInverted(float4[] decayAll, int2 minCoord, int2 maxCoord)
         {
             int offsetOf(int x, int y)
             {
                 return y * domainSize.x + x;
             }
 
+            /*
+            x -> ezx decay
+            y -> ezy decay
+            z -> hyx decay
+            w -> hxy decay
+            */
             var layers = e_decay.Length;
-            for (var k = 1; k < layers; ++k)
+            for (var k = 1; k < layers - 1; ++k)
             {
                 for (var j = minCoord.y; j < maxCoord.y; ++j)
                 {
                     {
-                        var o = offsetOf(minCoord.x+k-1, j);
+                        var o = offsetOf(minCoord.x + k - 1, j);
                         var v = decayAll[o];
                         v.x = e_decay[k];
                         v.z = h_decay[k];
@@ -412,7 +418,70 @@ namespace GoLightly
 
                 for (var i = minCoord.x; i < maxCoord.x; ++i)
                 {
-                    {                       
+                    {
+                        var o = offsetOf(i, minCoord.y + k - 1);
+                        var v = decayAll[o];
+                        v.y = e_decay[k];
+                        v.w = h_decay[k];
+                        decayAll[o] = v;
+                    }
+
+                    {
+                        var o = offsetOf(i, maxCoord.y - k);
+                        var v = decayAll[o];
+                        v.y = e_decay[k];
+                        v.w = h_decay[k - 1];
+                        decayAll[o] = v;
+                    }
+
+                }
+
+
+            }
+        }
+
+
+
+        private void CreateBoundary(float4[] decayAll, int2 minCoord, int2 maxCoord)
+        {
+            int offsetOf(int x, int y)
+            {
+                return y * domainSize.x + x;
+            }
+
+            /*
+            x -> ezx decay
+            y -> ezy decay
+            z -> hyx decay
+            w -> hxy decay
+            */
+            var layers = e_decay.Length;
+            for (var k = 1; k < layers - 1; ++k)
+            {
+                for (var j = minCoord.y; j < maxCoord.y; ++j)
+                {
+                    {
+                        var o = offsetOf(minCoord.x + k - 1, j);
+                        var v = decayAll[o];
+                        v.x = e_decay[k];
+                        v.z = h_decay[k];
+                        decayAll[o] = v;
+                    }
+
+                    {
+
+                        var o = offsetOf(maxCoord.x - k, j);
+                        var v = decayAll[o];
+                        v.x = e_decay[k];
+                        v.z = h_decay[k - 1];
+                        decayAll[o] = v;
+                    }
+
+                }
+
+                for (var i = minCoord.x; i < maxCoord.x; ++i)
+                {
+                    {
                         var o = offsetOf(i, minCoord.y + k - 1);
                         var v = decayAll[o];
                         v.y = e_decay[k];
@@ -457,96 +526,13 @@ namespace GoLightly
             */
 
             Helpers.SetArray(ref decayAll, 1);
-            CreateBoundary(decayAll, new int2(50, 50), new int2(domainSize.x/2, domainSize.y/2));//new int2(400,800));
+            CreateBoundary(decayAll, new int2(20, 20), new int2(domainSize.x - 20, domainSize.y - 20));//new int2(400,800));
 
-            /// draw v.x and v.y (e_decay)
-            ///
-/*            if (true)
-            {
-                Helpers.SetArray(ref decayAll, new float4(1));
-                for (var k = 1; k < layers; ++k)
-                {
-                    for (var j = 0; j < domainSize.y; ++j)
-                    {
-                        {
-                            var o = j * domainSize.x + k;
-                            var v = decayAll[o];
-                            v.x = e_decay[k];
-                            v.z = h_decay[k];
-                            decayAll[o] = v;
-                        }
+            CreateBoundaryInverted(decayAll, new int2(50, 50), new int2(100, 950));
+            CreateBoundaryInverted(decayAll, new int2(1900, 50), new int2(1950, 950));
+            CreateBoundaryInverted(decayAll, new int2(150, 50), new int2(1800, 100));
 
-                        {
-                            var o = (j + 1) * domainSize.x - 1 - k;
-                            var v = decayAll[o];
-                            v.x = e_decay[k];
-                            v.z = h_decay[k - 1];
-                            decayAll[o] = v;
-                        }
 
-                    }
-
-                    for (var i = 0; i < domainSize.x; ++i)
-                    {
-                        {
-                            var o = k * domainSize.x + i;
-                            var v = decayAll[o];
-                            v.y = e_decay[k];
-                            v.w = h_decay[k];
-                            decayAll[o] = v;
-                        }
-
-                        {
-                            var y = domainSize.y - k;
-                            var o = y * domainSize.x + i;
-                            var v = decayAll[o];
-                            v.y = e_decay[k];
-                            v.w = h_decay[k - 1];
-                            decayAll[o] = v;
-                        }
-
-                    }
-
-                }
-            }
-            else
-            {
-
-                for (var j = 0; j < domainSize.y - 1; ++j)
-                {
-                    for (var i = 0; i < domainSize.x - 1; ++i)
-                    {
-                        var v = new float4(1, 1, 1, 1);
-
-                        /// ezx & hyx
-                        if (i < layers)
-                        {
-                            v.x = e_decay[i];
-                            v.z = h_decay[i];
-                        }
-                        else if (i >= domainWidth - layers)
-                        {
-                            v.x = e_decay[domainWidth - i - 1];
-                            v.z = h_decay[domainWidth - i - 2];
-                        }
-
-                        // ezy & hxy
-                        if (j < layers)
-                        {
-                            v.y = e_decay[j];
-                            v.w = h_decay[j];
-                        }
-                        else if (j >= domainHeight - layers)
-                        {
-                            v.y = e_decay[domainHeight - j - 1];
-                            v.w = h_decay[domainHeight - j - 2];
-                        }
-
-                        decayAll[j * domainWidth + i] = v;
-                    }
-                }
-            }
-*/
 
             if (false)
             {
