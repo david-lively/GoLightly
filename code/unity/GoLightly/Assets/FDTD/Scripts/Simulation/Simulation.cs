@@ -417,7 +417,7 @@ namespace GoLightly
             var layers = e_decay.Length;
             for (var k = 1; k < layers - 1; ++k)
             {
-                /// draw left and right and bottom layers
+                /// draw left and right layers
                 for (var j = minCoord.y; j < maxCoord.y; ++j)
                 {
                     /// left 
@@ -451,7 +451,6 @@ namespace GoLightly
                         var o = offsetOf(i, minCoord.y + k - 1);
                         var v = decayAll[o];
                         v.y = e_decay[k];
-
                         v.w = h_decay[k];
                         decayAll[o] = v;
                     }
@@ -460,7 +459,6 @@ namespace GoLightly
                         var o = offsetOf(i, maxCoord.y - k);
                         var v = decayAll[o];
                         v.y = e_decay[k];
-
                         v.w = h_decay[k - 1];
                         decayAll[o] = v;
                     }
@@ -488,7 +486,7 @@ namespace GoLightly
             var layers = e_decay.Length;
             for (var k = 1; k < layers - 1; ++k)
             {
-                /// draw left and right and bottom layers
+                /// draw left and right layers
                 for (var j = minCoord.y; j < maxCoord.y; ++j)
                 {
                     /// left 
@@ -522,7 +520,6 @@ namespace GoLightly
                         var o = offsetOf(i, minCoord.y + k - 1);
                         var v = decayAll[o];
                         v.y = e_decay[k - 1];
-                        //v.y = e_decay[k];
                         v.w = h_decay[k];
                         decayAll[o] = v;
                     }
@@ -530,8 +527,6 @@ namespace GoLightly
                     {
                         var o = offsetOf(i, maxCoord.y - k);
                         var v = decayAll[o];
-                        //v.y = e_decay[k - 1];
-                        //v.w = h_decay[k - 1];
                         v.y = e_decay[k];
                         v.w = h_decay[k];
                         decayAll[o] = v;
