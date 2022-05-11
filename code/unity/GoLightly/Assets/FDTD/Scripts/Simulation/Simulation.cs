@@ -495,11 +495,8 @@ namespace GoLightly
                     {
                         var o = offsetOf(minCoord.x + k - 1, j);
                         var v = decayAll[o];
-                        v.x = e_decay[k];
-                        //if (!wtf)
-                        //    v.z = h_decay[k - 1];
-                        //else
-                            v.z = h_decay[k];
+                        v.x = e_decay[k - 1];
+                        v.z = h_decay[k];
 
                         decayAll[o] = v;
                     }
@@ -510,10 +507,7 @@ namespace GoLightly
                         var o = offsetOf(maxCoord.x - k, j);
                         var v = decayAll[o];
                         v.x = e_decay[k];
-                        //if (!wtf)
-                        //    v.z = h_decay[k - 1];
-                        //else
-                            v.z = h_decay[k];
+                        v.z = h_decay[k];
 
                         decayAll[o] = v;
                     }
@@ -527,11 +521,8 @@ namespace GoLightly
                     {
                         var o = offsetOf(i, minCoord.y + k - 1);
                         var v = decayAll[o];
-                        //if (wtf)
-                            v.y = e_decay[k - 1];
-                        //else
-                        //    v.y = e_decay[k];
-
+                        v.y = e_decay[k - 1];
+                        //v.y = e_decay[k];
                         v.w = h_decay[k];
                         decayAll[o] = v;
                     }
@@ -539,12 +530,10 @@ namespace GoLightly
                     {
                         var o = offsetOf(i, maxCoord.y - k);
                         var v = decayAll[o];
-                        //if (wtf)
-                            v.y = e_decay[k - 1];
-                        //else
-                        //    v.y = e_decay[k];
-
-                        v.w = h_decay[k - 1];
+                        //v.y = e_decay[k - 1];
+                        //v.w = h_decay[k - 1];
+                        v.y = e_decay[k];
+                        v.w = h_decay[k];
                         decayAll[o] = v;
                     }
 
