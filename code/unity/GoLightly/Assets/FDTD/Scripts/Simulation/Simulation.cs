@@ -78,7 +78,6 @@ namespace GoLightly
         */
 
         readonly float[] e_decay = new float[] {
-            1f,
             0.999798477f,
             0.996780813f,
             0.983808935f,
@@ -89,7 +88,6 @@ namespace GoLightly
             0.438038647f,
             0.266546071f,
             0.133286506f,
-            0f,
             0.133286506f,
             0.266546071f,
             0.438038647f,
@@ -100,11 +98,9 @@ namespace GoLightly
             0.983808935f,
             0.996780813f,
             0.999798477f,
-            1
         };
 
         readonly float[] h_decay = new float[]  {
-                1f,
                 0.999987423f,
                 0.998980284f,
                 0.99215883f,
@@ -115,7 +111,6 @@ namespace GoLightly
                 0.528538823f,
                 0.349247128f,
                 0.193701461f,
-                0f,
                 0.193701461f,
                 0.349247128f,
                 0.528538823f,
@@ -126,7 +121,6 @@ namespace GoLightly
                 0.99215883f,
                 0.998980284f,
                 0.999987423f,
-                1
                };
 
         private readonly Dictionary<string, ComputeBuffer> _buffers = new Dictionary<string, ComputeBuffer>(StringComparer.OrdinalIgnoreCase);
@@ -563,61 +557,13 @@ namespace GoLightly
             Helpers.SetArray(ref decayAll, 1);
             CreateBoundaryOutside(decayAll, new int2(20, 20), new int2(domainSize.x - 20, domainSize.y - 20));//new int2(400,800));
 
-            int2 center = new int2(1024, 512);
+            int2 center = new int2(1400, 512);
             int2 mn = center - 192;
             int2 mx = center + 192;
+            mx.x += 400;
 
             CreateSink(decayAll, mn, mx);
-            /// vertical
-            /// left
-            //CreateBoundary(decayAll, new int2(50, 50), new int2(100, 950), false);
-            ///// right
-            //CreateBoundary(decayAll, new int2(1900, 50), new int2(1950, 950), true);
 
-            ///// horizontal
-            ///// bottom
-            //CreateBoundary(decayAll, new int2(150, 50), new int2(1800, 140), true);
-            ///// top
-            //CreateBoundary(decayAll, new int2(150, 850), new int2(1800, 940), true);
-
-
-            if (false)
-            {
-                var boxLength = 150u;
-                //drawPmlBox(new uint2(1024 - boxLength, 512 - boxLength), new uint2(2 * boxLength), decayAll);
-                //drawPmlBox(new uint2(20, 300), new uint2(800, 690), decayAll);
-                //drawPmlBox(new uint2(100, 100), new uint2(1900, 100), decayAll);
-
-                int2 boxDim = new int2(512, 256);
-
-                var pmlMap = new string[]
-                {
-                "0000",
-                "0000",
-                "0000",
-                "1111",
-                };
-
-                for (var j = 0; j < pmlMap.Length; ++j)
-                {
-                    for (var i = 0; i < pmlMap[j].Length; ++i)
-                    {
-                        var mask = pmlMap[j][i];
-                        if (mask == '1')
-                        {
-                            var tl = new int2(i * boxDim.x, j * boxDim.y);
-                            drawPmlBox(tl, boxDim, decayAll);
-                        }
-
-                    }
-                }
-            }
-            /*
-            x = ezxDecay
-            y = ezyDecay
-            z = hxyDecay
-            w = hyxDecay
-            */
             var decayBuffer = new ComputeBuffer(decayAll.Length, sizeof(float) * 4);
             decayBuffer.SetData(decayAll);
             _buffers["decay_all"] = decayBuffer;
