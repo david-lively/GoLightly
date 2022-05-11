@@ -78,22 +78,44 @@ namespace GoLightly
         */
 
         readonly float[] e_decay = new float[] {
-                0.0f,
-                0.133286506f,
-                0.266546071f,
-                0.438038647f,
-                0.616397917f,
-                0.770144641f,
-                0.881655931f,
-                0.9497177f,
-                0.983808935f,
-                0.996780813f,
-                0.999798477f,
-                1.0f
-                };
+            1f,
+            0.999798477f,
+            0.996780813f,
+            0.983808935f,
+            0.9497177f,
+            0.881655931f,
+            0.770144641f,
+            0.616397917f,
+            0.438038647f,
+            0.266546071f,
+            0.133286506f,
+            0f,
+            0.133286506f,
+            0.266546071f,
+            0.438038647f,
+            0.616397917f,
+            0.770144641f,
+            0.881655931f,
+            0.9497177f,
+            0.983808935f,
+            0.996780813f,
+            0.999798477f,
+            1
+        };
 
         readonly float[] h_decay = new float[]  {
-                0.0f,
+                1f,
+                0.999987423f,
+                0.998980284f,
+                0.99215883f,
+                0.970211327f,
+                0.920684338f,
+                0.831596196f,
+                0.697860897f,
+                0.528538823f,
+                0.349247128f,
+                0.193701461f,
+                0f,
                 0.193701461f,
                 0.349247128f,
                 0.528538823f,
@@ -105,7 +127,7 @@ namespace GoLightly
                 0.998980284f,
                 0.999987423f,
                 1
-                };
+               };
 
         private readonly Dictionary<string, ComputeBuffer> _buffers = new Dictionary<string, ComputeBuffer>(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, int> _kernels = new Dictionary<string, int>();
@@ -379,7 +401,7 @@ namespace GoLightly
 
         }
 
-        private void CreateBoundaryInverted(float4[] decayAll, int2 minCoord, int2 maxCoord)
+        private void CreateBoundaryOutside(float4[] decayAll, int2 minCoord, int2 maxCoord)
         {
             int offsetOf(int x, int y)
             {
@@ -395,41 +417,50 @@ namespace GoLightly
             var layers = e_decay.Length;
             for (var k = 1; k < layers - 1; ++k)
             {
+                /// draw left and right and bottom layers
                 for (var j = minCoord.y; j < maxCoord.y; ++j)
                 {
+                    /// left 
                     {
                         var o = offsetOf(minCoord.x + k - 1, j);
                         var v = decayAll[o];
                         v.x = e_decay[k];
                         v.z = h_decay[k];
+
                         decayAll[o] = v;
                     }
 
+                    /// right
                     {
 
                         var o = offsetOf(maxCoord.x - k, j);
                         var v = decayAll[o];
                         v.x = e_decay[k];
                         v.z = h_decay[k - 1];
+
                         decayAll[o] = v;
                     }
 
                 }
 
+                /// draw left and right layers
                 for (var i = minCoord.x; i < maxCoord.x; ++i)
                 {
+                    /// top
                     {
                         var o = offsetOf(i, minCoord.y + k - 1);
                         var v = decayAll[o];
                         v.y = e_decay[k];
+
                         v.w = h_decay[k];
                         decayAll[o] = v;
                     }
-
+                    /// bottom
                     {
                         var o = offsetOf(i, maxCoord.y - k);
                         var v = decayAll[o];
                         v.y = e_decay[k];
+
                         v.w = h_decay[k - 1];
                         decayAll[o] = v;
                     }
@@ -441,8 +472,7 @@ namespace GoLightly
         }
 
 
-
-        private void CreateBoundary(float4[] decayAll, int2 minCoord, int2 maxCoord)
+        private void CreateSink(float4[] decayAll, int2 minCoord, int2 maxCoord)
         {
             int offsetOf(int x, int y)
             {
@@ -458,41 +488,62 @@ namespace GoLightly
             var layers = e_decay.Length;
             for (var k = 1; k < layers - 1; ++k)
             {
+                /// draw left and right and bottom layers
                 for (var j = minCoord.y; j < maxCoord.y; ++j)
                 {
+                    /// left 
                     {
                         var o = offsetOf(minCoord.x + k - 1, j);
                         var v = decayAll[o];
                         v.x = e_decay[k];
-                        v.z = h_decay[k];
+                        //if (!wtf)
+                        //    v.z = h_decay[k - 1];
+                        //else
+                            v.z = h_decay[k];
+
                         decayAll[o] = v;
                     }
 
+                    /// right
                     {
 
                         var o = offsetOf(maxCoord.x - k, j);
                         var v = decayAll[o];
                         v.x = e_decay[k];
-                        v.z = h_decay[k - 1];
+                        //if (!wtf)
+                        //    v.z = h_decay[k - 1];
+                        //else
+                            v.z = h_decay[k];
+
                         decayAll[o] = v;
                     }
 
                 }
 
+                /// draw top and bottom layers
                 for (var i = minCoord.x; i < maxCoord.x; ++i)
                 {
+                    /// top
                     {
                         var o = offsetOf(i, minCoord.y + k - 1);
                         var v = decayAll[o];
-                        v.y = e_decay[k];
+                        //if (wtf)
+                            v.y = e_decay[k - 1];
+                        //else
+                        //    v.y = e_decay[k];
+
                         v.w = h_decay[k];
                         decayAll[o] = v;
                     }
-
+                    /// bottom
                     {
                         var o = offsetOf(i, maxCoord.y - k);
                         var v = decayAll[o];
-                        v.y = e_decay[k];
+                        //if (wtf)
+                            v.y = e_decay[k - 1];
+                        //else
+                        //    v.y = e_decay[k];
+
                         v.w = h_decay[k - 1];
                         decayAll[o] = v;
                     }
@@ -526,12 +577,24 @@ namespace GoLightly
             */
 
             Helpers.SetArray(ref decayAll, 1);
-            CreateBoundary(decayAll, new int2(20, 20), new int2(domainSize.x - 20, domainSize.y - 20));//new int2(400,800));
+            CreateBoundaryOutside(decayAll, new int2(20, 20), new int2(domainSize.x - 20, domainSize.y - 20));//new int2(400,800));
 
-            CreateBoundaryInverted(decayAll, new int2(50, 50), new int2(100, 950));
-            CreateBoundaryInverted(decayAll, new int2(1900, 50), new int2(1950, 950));
-            CreateBoundaryInverted(decayAll, new int2(150, 50), new int2(1800, 100));
+            int2 center = new int2(1024, 512);
+            int2 mn = center - 192;
+            int2 mx = center + 192;
 
+            CreateSink(decayAll, mn, mx);
+            /// vertical
+            /// left
+            //CreateBoundary(decayAll, new int2(50, 50), new int2(100, 950), false);
+            ///// right
+            //CreateBoundary(decayAll, new int2(1900, 50), new int2(1950, 950), true);
+
+            ///// horizontal
+            ///// bottom
+            //CreateBoundary(decayAll, new int2(150, 50), new int2(1800, 140), true);
+            ///// top
+            //CreateBoundary(decayAll, new int2(150, 850), new int2(1800, 940), true);
 
 
             if (false)
