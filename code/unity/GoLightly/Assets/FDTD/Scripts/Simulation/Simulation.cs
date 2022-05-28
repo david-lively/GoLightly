@@ -50,6 +50,7 @@ namespace GoLightly
 
 
         /*
+// E decay
 0
 0.133286506
 0.266546071
@@ -63,6 +64,7 @@ namespace GoLightly
 0.999798477
 1
 
+// H decay
 0
 0.193701461
 0.349247128
@@ -76,56 +78,115 @@ namespace GoLightly
 0.999987423
 1
         */
+#if false
+              readonly float[] e_decay = new float[] {
+                  0,
+                  0.133286506f,
+                  0.266546071f,
+                  0.438038647f,
+                  0.616397917f,
+                  0.770144641f,
+                  0.881655931f,
+                  0.9497177f,
+                  0.983808935f,
+                  0.996780813f,
+                  0.999798477f,
+                  1f,
+                    1f,
+                    0.999798477f,
+                    0.996780813f,
+                    0.983808935f,
+                    0.9497177f,
+                    0.881655931f,
+                    0.770144641f,
+                    0.616397917f,
+                    0.438038647f,
+                    0.266546071f,
+                    0.133286506f,
+                    0f,      
+              };
+
+              readonly float[] h_decay = new float[] {
+                  0f,
+                  0.193701461f,
+                  0.349247128f,
+                  0.528538823f,
+                  0.697860897f,
+                  0.831596196f,
+                  0.920684338f,
+                  0.970211327f,
+                  0.99215883f,
+                  0.998980284f,
+                  0.999987423f,
+                  1f,
+                    1f,
+                    0.999987423f,
+                    0.998980284f,
+                    0.99215883f,
+                    0.970211327f,
+                    0.920684338f,
+                    0.831596196f,
+                    0.697860897f,
+                    0.528538823f,
+                    0.349247128f,
+                    0.193701461f,
+                    0f,                  
+              };
+#endif
 
         readonly float[] e_decay = new float[] {
-            0.999798477f,
-            0.996780813f,
-            0.983808935f,
-            0.9497177f,
-            0.881655931f,
-            0.770144641f,
-            0.616397917f,
-            0.438038647f,
-            0.266546071f,
-            0.133286506f,
-            0.133286506f,
-            0.266546071f,
-            0.438038647f,
-            0.616397917f,
-            0.770144641f,
-            0.881655931f,
-            0.9497177f,
-            0.983808935f,
-            0.996780813f,
-            0.999798477f,
-        };
+                    1,
+                    0.999798477f,
+                    0.996780813f,
+                    0.983808935f,
+                    0.9497177f,
+                    0.881655931f,
+                    0.770144641f,
+                    0.616397917f,
+                    0.438038647f,
+                    0.266546071f,
+                    0.133286506f,
+                    0,
+                    0.133286506f,
+                    0.266546071f,
+                    0.438038647f,
+                    0.616397917f,
+                    0.770144641f,
+                    0.881655931f,
+                    0.9497177f,
+                    0.983808935f,
+                    0.996780813f,
+                    0.999798477f,
+                    1
+                };
 
         readonly float[] h_decay = new float[]  {
-                0.999987423f,
-                0.998980284f,
-                0.99215883f,
-                0.970211327f,
-                0.920684338f,
-                0.831596196f,
-                0.697860897f,
-                0.528538823f,
-                0.349247128f,
-                0.193701461f,
-                0.193701461f,
-                0.349247128f,
-                0.528538823f,
-                0.697860897f,
-                0.831596196f,
-                0.920684338f,
-                0.970211327f,
-                0.99215883f,
-                0.998980284f,
-                0.999987423f,
-               };
-
+                    1,
+                    0.999987423f,
+                    0.998980284f,
+                    0.99215883f,
+                    0.970211327f,
+                    0.920684338f,
+                    0.831596196f,
+                    0.697860897f,
+                    0.528538823f,
+                    0.349247128f,
+                    0.193701461f,
+                    0,
+                    0.193701461f,
+                    0.349247128f,
+                    0.528538823f,
+                    0.697860897f,
+                    0.831596196f,
+                    0.920684338f,
+                    0.970211327f,
+                    0.99215883f,
+                    0.998980284f,
+                    0.999987423f,
+                    1,
+                       };
         private readonly Dictionary<string, ComputeBuffer> _buffers = new Dictionary<string, ComputeBuffer>(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, int> _kernels = new Dictionary<string, int>();
-        //private readonly Dictionary<string, Boundary> _boundaries = new Dictionary<string, Boundary>();
 
         [System.Serializable]
         public struct Source
@@ -328,80 +389,8 @@ namespace GoLightly
             Graphics.Blit(_renderTexture, destination);
         }
 
-        private void drawPmlBox(int2 topLeft, int2 dimensions, float4[] decayAll)
-        {
-            var layers = e_decay.Length;
-
-            var width = dimensions.x;
-            var height = dimensions.y;
-
-            var ed = new float[layers];
-            var hd = new float[layers];
-
-            // reverse the e and h decay arrays
-            for (var i = 0; i < e_decay.Length; ++i)
-            {
-                ed[i] = e_decay[e_decay.Length - 1 - i];
-                hd[i] = h_decay[h_decay.Length - 1 - i];
-                //ed[i] = e_decay[i];
-                //hd[i] = h_decay[i];
-            }
-
-            /*
-            float4 results:
-            x -> ezx decay
-            y -> ezy decay
-            z -> hyx decay
-            w -> hxy decay
-            */
-
-            for (var j = 0; j < height - 1; ++j)
-            {
-                for (var i = 0; i < width - 1; ++i)
-                {
-                    var x = i + topLeft.x;
-                    var y = j + topLeft.y;
-
-                    //var v = new float4(1, 1, 1, 1);
-                    var v = decayAll[y * domainSize.x + x];
-
-                    if (i < layers)
-                    {
-                        v.x = ed[i];
-                        v.z = hd[i];
-                    }
-                    else if (i >= width - layers)
-                    {
-                        v.x = ed[width - i - 1];
-                        v.z = hd[width - i - 1];
-                    }
-
-                    // ezy & hxy
-                    if (j < layers)
-                    {
-                        v.y = ed[j];
-                        v.w = hd[j];
-                    }
-                    else if (j >= height - layers)
-                    {
-                        v.y = ed[height - j - 1];
-                        v.w = hd[height - j - 1];
-                    }
-
-                    decayAll[y * domainSize.x + x] = v;
-
-                }
-            }
-
-        }
-
         private void CreateBoundaryOutside(float4[] decayAll, int2 minCoord, int2 maxCoord)
         {
-            int offsetOf(int x, int y)
-            {
-                return y * domainSize.x + x;
-            }
-
             /*
             x -> ezx decay
             y -> ezy decay
@@ -463,14 +452,53 @@ namespace GoLightly
             }
         }
 
+        int offsetOf(int x, int y)
+        {
+            return y * domainSize.x + x;
+        }
+
+        int2 clip(int2 v)
+        {
+            v.x = v.x < 0 ? 0 : (v.x >= domainSize.x) ? domainSize.x - 1 : v.x;
+            v.y = v.y < 0 ? 0 : (v.y >= domainSize.y) ? domainSize.y - 1 : v.y;
+
+            return v;
+        }
+
+        private void CreateSink(float4[] decay, int2 center, int radius)
+        {
+            Assert.IsTrue(radius >= e_decay.Length);
+            for (var i = -radius; i <= radius; ++i)
+            {
+                for (var j = -radius; j <= radius; ++j)
+                {
+                    // calculate layer
+                    var d = radius - (int)Mathf.Sqrt(i * i + j * j);
+                    var o = offsetOf(i + center.x, j + center.y);
+                    var v = decay[o];
+
+                    if (d > 0 && d < e_decay.Length - 1)
+                    {
+                        /*
+                        x -> ezx decay
+                        y -> ezy decay
+                        z -> hyx decay
+                        w -> hxy decay
+                        */
+                        v.x = e_decay[d];
+                        v.y = e_decay[d];
+                        v.z = h_decay[d + 1];
+                        v.w = h_decay[d + 1];
+                        decay[o] = v;
+                    }
+                }
+            }
+        }
 
         private void CreateSink(float4[] decayAll, int2 minCoord, int2 maxCoord)
         {
-            int offsetOf(int x, int y)
-            {
-                return y * domainSize.x + x;
-            }
-
+            minCoord = clip(minCoord);
+            maxCoord = clip(maxCoord);
             /*
             x -> ezx decay
             y -> ezy decay
@@ -555,32 +583,70 @@ namespace GoLightly
             */
 
             Helpers.SetArray(ref decayAll, 1);
-            CreateBoundaryOutside(decayAll, new int2(20, 20), new int2(domainSize.x - 20, domainSize.y - 20));//new int2(400,800));
+            CreateBoundaryOutside(decayAll, 0, new int2(domainSize.x - 1, domainSize.y - 1));
 
-            int2 center = new int2(1400, 512);
-            int2 mn = center - 192;
-            int2 mx = center + 192;
-            mx.x += 400;
+            CreateSink(decayAll, new int2(1500, 400), new int2(1900, 1000));
 
-            CreateSink(decayAll, mn, mx);
+            // CreateSink(decayAll, new int2(256 - 200, 212 - 200), new int2(256 + 200, 212 + 200));
+
+
+
+            if (false)
+            {
+
+                var mask = new string[]
+                {
+                "1111111111111111",
+                "1000000000000001",
+                "1000000000000001",
+                "1111111111111111",
+                "1000000000000001",
+                "1000000000000001",
+                "1000000000000001",
+                "1111111111111111",
+                };
+
+                {
+                    int2 cellSize = new int2(domainSize.x / mask[0].Length, domainSize.y / mask.Length);
+                    for (var j = 0; j < mask.Length; ++j)
+                    {
+                        var line = mask[j];
+
+                        for (var i = 0; i < line.Length; ++i)
+                        {
+                            var c = line[i];
+
+                            if (c == '1')
+                            {
+                                var nw = new int2(i * cellSize.x, j * cellSize.y);
+                                var se = nw + cellSize;
+
+                                CreateSink(decayAll, nw, se);
+                            }
+                        }
+                    }
+                }
+            }
 
             var decayBuffer = new ComputeBuffer(decayAll.Length, sizeof(float) * 4);
             decayBuffer.SetData(decayAll);
             _buffers["decay_all"] = decayBuffer;
         }
 
-        void lineGuide(float[] cbData, int top)
+        void lineGuide(float[] cbData, int centerY)
         {
             var scalar = parameters.dt / parameters.dx;
+            var cladMaterial = scalar * 1.0f / 9;//parameters.dt / parameters.dx * 1.0f / 9;
             var coreMaterial = scalar * 1.0f / 3;
-            var cladMaterial = parameters.dt / parameters.dx * 1.0f / 9;
+            // var coreMaterial = cladMaterial;
 
-            var middleY = domainSize.y / 2;
             //var width = 20;
             //var top = middleY - width / 2;
 
-            var coreLayers = 3;
-            var cladLayers = 6;
+            var coreLayers = 4;
+            var cladLayers = 12;
+
+            var top = centerY - (coreLayers/2 + cladLayers);
             var bottom = top + coreLayers + 2 * cladLayers;
 
             for (var i = 0; i < domainSize.x; ++i)
@@ -641,14 +707,14 @@ namespace GoLightly
 
         void SetMaterials(float[] cbData)
         {
-            return;
             //demoLineGuide(cbData);
             //demoGuide2(cbData);
+
 
             // set source position to 256,219
             lineGuide(cbData, domainSize.y / 2 - 300);
 
-            wgm(cbData, 282, 5);
+            wgm(cbData, 282, 20);
         }
     }
 }
