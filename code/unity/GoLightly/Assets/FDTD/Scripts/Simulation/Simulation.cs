@@ -561,77 +561,6 @@ namespace GoLightly
         }
 
 
-        private void InitializeBoundaries(int _)
-        {
-            var layers = e_decay.Length;
-
-            var domainWidth = domainSize.x;
-            var domainHeight = domainSize.y;
-
-            /// unified PML psi buffer
-            var psiBuffer = new ComputeBuffer(domainWidth * domainHeight, sizeof(float) * 4);
-            _buffers["psi_all"] = psiBuffer;
-
-            /// unified PML decay buffer.
-            var decayAll = new float4[domainWidth * domainHeight];
-            /*
-            float4 results:
-            x -> ezx decay
-            y -> ezy decay
-            z -> hyx decay
-            w -> hxy decay
-            */
-
-            Helpers.SetArray(ref decayAll, 1);
-            CreateBoundaryOutside(decayAll, 0, new int2(domainSize.x - 1, domainSize.y - 1));
-
-            CreateSink(decayAll, new int2(1500, 400), new int2(1900, 1000));
-
-            // CreateSink(decayAll, new int2(256 - 200, 212 - 200), new int2(256 + 200, 212 + 200));
-
-
-
-            if (false)
-            {
-
-                var mask = new string[]
-                {
-                "1111111111111111",
-                "1000000000000001",
-                "1000000000000001",
-                "1111111111111111",
-                "1000000000000001",
-                "1000000000000001",
-                "1000000000000001",
-                "1111111111111111",
-                };
-
-                {
-                    int2 cellSize = new int2(domainSize.x / mask[0].Length, domainSize.y / mask.Length);
-                    for (var j = 0; j < mask.Length; ++j)
-                    {
-                        var line = mask[j];
-
-                        for (var i = 0; i < line.Length; ++i)
-                        {
-                            var c = line[i];
-
-                            if (c == '1')
-                            {
-                                var nw = new int2(i * cellSize.x, j * cellSize.y);
-                                var se = nw + cellSize;
-
-                                CreateSink(decayAll, nw, se);
-                            }
-                        }
-                    }
-                }
-            }
-
-            var decayBuffer = new ComputeBuffer(decayAll.Length, sizeof(float) * 4);
-            decayBuffer.SetData(decayAll);
-            _buffers["decay_all"] = decayBuffer;
-        }
 
         void lineGuide(float[] cbData, int centerY)
         {
@@ -646,7 +575,7 @@ namespace GoLightly
             var coreLayers = 4;
             var cladLayers = 12;
 
-            var top = centerY - (coreLayers/2 + cladLayers);
+            var top = centerY - (coreLayers / 2 + cladLayers);
             var bottom = top + coreLayers + 2 * cladLayers;
 
             for (var i = 0; i < domainSize.x; ++i)
@@ -713,8 +642,41 @@ namespace GoLightly
 
             // set source position to 256,219
             lineGuide(cbData, domainSize.y / 2 - 300);
-
             wgm(cbData, 282, 20);
         }
+
+        private void InitializeBoundaries(int _)
+        {
+            var layers = e_decay.Length;
+
+            var domainWidth = domainSize.x;
+            var domainHeight = domainSize.y;
+
+            /// unified PML psi buffer
+            var psiBuffer = new ComputeBuffer(domainWidth * domainHeight, sizeof(float) * 4);
+            _buffers["psi_all"] = psiBuffer;
+
+            /// unified PML decay buffer.
+            var decayAll = new float4[domainWidth * domainHeight];
+
+            Helpers.SetArray(ref decayAll, 1);
+            CreateBoundaryOutside(decayAll, 0, new int2(domainSize.x - 1, domainSize.y - 1));
+
+#if true
+            // CreateSink(decayAll, new int2(1500, 400), new int2(1900, 1000));
+            CreateSink(decayAll, new int2(30, 300), new int2(700, 1000));
+            CreateSink(decayAll, new int2(2048 - 700, 300), new int2(2048 - 30, 1000));
+            // CreateSink(decayAll, new int2(256 - 200, 212 - 200), new int2(256 + 200, 212 + 200));
+            CreateSink(decayAll, new int2(12, 12), new int2(2048 - 12, 150));
+
+            var center = new int2(domainSize.x / 2, domainSize.y / 2);
+            CreateSink(decayAll, center, 200);
+#endif
+
+            var decayBuffer = new ComputeBuffer(decayAll.Length, sizeof(float) * 4);
+            decayBuffer.SetData(decayAll);
+            _buffers["decay_all"] = decayBuffer;
+        }
+
     }
 }
