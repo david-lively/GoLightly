@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Unity.Mathematics;
 
-
+/*
 /// <summary>
 /// initializes resources such as field and boundary arrays and sets material properties
 /// </summary>
@@ -27,6 +28,7 @@ using UnityEngine.Assertions;
 /// |         |         |         |         |         
 /// ez---hy---ez---hy---ez---hy---ez---hy---ez
 /// </remarks>
+*/
 namespace GoLightly
 {
     public partial class Simulation : MonoBehaviour
@@ -46,9 +48,145 @@ namespace GoLightly
 
         public uint simulationTimeStepsPerFrame = 1;
 
-        private Dictionary<string, ComputeBuffer> _buffers = new Dictionary<string, ComputeBuffer>(StringComparer.OrdinalIgnoreCase);
-        private Dictionary<string, int> _kernels = new Dictionary<string, int>();
-        private Dictionary<string, Boundary> _boundaries = new Dictionary<string, Boundary>();
+
+        /*
+// E decay
+0
+0.133286506
+0.266546071
+0.438038647
+0.616397917
+0.770144641
+0.881655931
+0.9497177
+0.983808935
+0.996780813
+0.999798477
+1
+
+// H decay
+0
+0.193701461
+0.349247128
+0.528538823
+0.697860897
+0.831596196
+0.920684338
+0.970211327
+0.99215883
+0.998980284
+0.999987423
+1
+        */
+#if false
+              readonly float[] e_decay = new float[] {
+                  0,
+                  0.133286506f,
+                  0.266546071f,
+                  0.438038647f,
+                  0.616397917f,
+                  0.770144641f,
+                  0.881655931f,
+                  0.9497177f,
+                  0.983808935f,
+                  0.996780813f,
+                  0.999798477f,
+                  1f,
+                    1f,
+                    0.999798477f,
+                    0.996780813f,
+                    0.983808935f,
+                    0.9497177f,
+                    0.881655931f,
+                    0.770144641f,
+                    0.616397917f,
+                    0.438038647f,
+                    0.266546071f,
+                    0.133286506f,
+                    0f,      
+              };
+
+              readonly float[] h_decay = new float[] {
+                  0f,
+                  0.193701461f,
+                  0.349247128f,
+                  0.528538823f,
+                  0.697860897f,
+                  0.831596196f,
+                  0.920684338f,
+                  0.970211327f,
+                  0.99215883f,
+                  0.998980284f,
+                  0.999987423f,
+                  1f,
+                    1f,
+                    0.999987423f,
+                    0.998980284f,
+                    0.99215883f,
+                    0.970211327f,
+                    0.920684338f,
+                    0.831596196f,
+                    0.697860897f,
+                    0.528538823f,
+                    0.349247128f,
+                    0.193701461f,
+                    0f,                  
+              };
+#endif
+
+        readonly float[] e_decay = new float[] {
+                    1,
+                    0.999798477f,
+                    0.996780813f,
+                    0.983808935f,
+                    0.9497177f,
+                    0.881655931f,
+                    0.770144641f,
+                    0.616397917f,
+                    0.438038647f,
+                    0.266546071f,
+                    0.133286506f,
+                    0,
+                    0.133286506f,
+                    0.266546071f,
+                    0.438038647f,
+                    0.616397917f,
+                    0.770144641f,
+                    0.881655931f,
+                    0.9497177f,
+                    0.983808935f,
+                    0.996780813f,
+                    0.999798477f,
+                    1
+                };
+
+        readonly float[] h_decay = new float[]  {
+                    1,
+                    0.999987423f,
+                    0.998980284f,
+                    0.99215883f,
+                    0.970211327f,
+                    0.920684338f,
+                    0.831596196f,
+                    0.697860897f,
+                    0.528538823f,
+                    0.349247128f,
+                    0.193701461f,
+                    0,
+                    0.193701461f,
+                    0.349247128f,
+                    0.528538823f,
+                    0.697860897f,
+                    0.831596196f,
+                    0.920684338f,
+                    0.970211327f,
+                    0.99215883f,
+                    0.998980284f,
+                    0.999987423f,
+                    1,
+                       };
+        private readonly Dictionary<string, ComputeBuffer> _buffers = new Dictionary<string, ComputeBuffer>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, int> _kernels = new Dictionary<string, int>();
 
         [System.Serializable]
         public struct Source
@@ -57,7 +195,6 @@ namespace GoLightly
             public float amplitude;
             public float wavelength;
             public float maxLife;
-
             public uint _enabled;
 
             public static int GetSize()
@@ -77,7 +214,9 @@ namespace GoLightly
                 Debug.Log("Creating render texture");
                 _renderTexture = new RenderTexture(domainSize.x, domainSize.y, 24);
                 _renderTexture.enableRandomWrite = true;
-                _renderTexture.Create();
+
+                var textureWasCreated = _renderTexture.Create();
+                Assert.IsTrue(textureWasCreated, "Could not create visualizer texture.");
             }
             InitComputeResources();
         }
@@ -114,34 +253,30 @@ namespace GoLightly
             var fieldBufferSize = domainSize.x * domainSize.y;
 
             {
-                var buffer = new ComputeBuffer(fieldBufferSize, sizeof(float));
-                Helpers.ClearBuffer(buffer);
-                _buffers["ez"] = buffer;
+                var fieldBufferNames = new string[] { "ez", "hx", "hy" };
+
+                foreach (var name in fieldBufferNames)
+                {
+                    var buffer = new ComputeBuffer(fieldBufferSize, sizeof(float));
+                    Helpers.ClearBuffer(buffer);
+                    _buffers[name] = buffer;
+                }
             }
 
             {
-                var hx = new ComputeBuffer(fieldBufferSize, sizeof(float));
-                Helpers.ClearBuffer(hx);
-                _buffers["hx"] = hx;
-            }
-
-            {
-                var hy = new ComputeBuffer(fieldBufferSize, sizeof(float));
-                Helpers.ClearBuffer(hy);
-                _buffers["hy"] = hy;
-            }
-
-            {
+                var cbData = new float[fieldBufferSize];
+                Helpers.ClearArray(ref cbData, parameters.cb);
+                SetMaterials(cbData);
                 var cb = new ComputeBuffer(fieldBufferSize, sizeof(float));
-                Helpers.ClearBuffer(cb, parameters.cb);
+                cb.SetData(cbData);
+                //Helpers.ClearBuffer(cb, parameters.cb);
                 _buffers["cb"] = cb;
             }
 
             var kernelNames = new string[] {
                 "CSUpdateVisualizerTexture"
                 ,"CSUpdateEz"
-                ,"CSUpdateHx"
-                ,"CSUpdateHy"
+                ,"CSUpdateHFields"
                 ,"CSUpdateSources"
             };
 
@@ -168,14 +303,7 @@ namespace GoLightly
             }
             _buffers.Clear();
 
-            Debug.Log($"Disposing {_boundaries.Count} boundary compute buffers");
-            foreach (var kvp in _boundaries)
-            {
-                kvp.Value?.Dispose();
-            }
-            _boundaries.Clear();
-
-            _renderTexture?.Release();
+            _renderTexture.Release();
             _renderTexture = null;
 
             _isInitialized = false;
@@ -183,40 +311,43 @@ namespace GoLightly
 
         private void RunKernel(int kernelIndex)
         {
-            var launchX = _renderTexture.width / 8;
-            var launchY = _renderTexture.height / 8;
+            var threadGroupsX = _renderTexture.width / 32;
+            var threadGroupsY = _renderTexture.height / 32;
 
-            RunKernel(kernelIndex, launchX, launchY);
+            RunKernel(kernelIndex, threadGroupsX, threadGroupsY);
         }
 
-        private void RunKernel(int kernelIndex, int launchX, int launchY)
+        private void RunKernel(int kernelIndex, int threadGroupsX, int threadGroupsY)
         {
             computeShader.SetBuffer(kernelIndex, "ez", _buffers["ez"]);
             computeShader.SetBuffer(kernelIndex, "hx", _buffers["hx"]);
             computeShader.SetBuffer(kernelIndex, "hy", _buffers["hy"]);
             computeShader.SetBuffer(kernelIndex, "sources", _buffers["sources"]);
+            computeShader.SetBuffer(kernelIndex, "decay_all", _buffers["decay_all"]);
+            computeShader.SetBuffer(kernelIndex, "cb", _buffers["cb"]);
             computeShader.SetConstantBuffer("Parameters", _buffers["Parameters"], 0, SimulationParameters.GetSize());
-            foreach (var kvp in _boundaries)
-            {
-                kvp.Value.SetBuffers(computeShader, kernelIndex);
-            }
+            computeShader.SetBuffer(kernelIndex, "psi_all", _buffers["psi_all"]);
 
-            computeShader.Dispatch(kernelIndex, launchX, launchY, 1);
+            computeShader.Dispatch(kernelIndex, threadGroupsX, threadGroupsY, 1);
         }
 
         private void RunSimulationStep(uint steps = 1)
         {
+            computeShader.SetFloat("time", Time.fixedTime);
+            computeShader.SetVector("domainSize", new Vector4(domainSize.x, domainSize.y, 0, 0));
+            computeShader.SetTexture(0, "VisualizerTexture", _renderTexture);
+
             computeShader.SetVector("domainSize", new Vector2(domainSize.x, domainSize.y));
             computeShader.SetInt("numSources", sources.Count);
 
-            var kernelNames = new string[] { "CSUpdateEz", "CSUpdateHx", "CSUpdateHy" };
+            var kernelNames = new string[] { "CSUpdateHFields", "CSUpdateEz" };
 
             if (steps < 1)
                 steps = 1;
 
             for (var j = 0; j < steps; ++j)
             {
-                computeShader.SetFloat("time", Time.fixedTime);
+                //computeShader.SetFloat("time", Time.fixedTime);
                 computeShader.SetInt("TimeStep", timeStep);
 
                 RunKernel(_kernels["CSUpdateSources"], 1, 1);
@@ -224,8 +355,8 @@ namespace GoLightly
                 for (var i = 0; i < kernelNames.Length; ++i)
                 {
                     RunKernel(_kernels[kernelNames[i]]);
-
                 }
+
                 ++timeStep;
             }
         }
@@ -233,11 +364,10 @@ namespace GoLightly
         private void UpdateVisualizerTexture(RenderTexture gameView)
         {
             var kernelName = "CSUpdateVisualizerTexture";
-            if (_kernels.TryGetValue(kernelName, out int kernelIndex))
-            {                
-                var kernel = _kernels["CSUpdateVisualizerTexture"];
-                computeShader.SetTexture(kernel, "GameViewTexture", gameView);
-                computeShader.SetTexture(kernel, "VisualizerTexture", _renderTexture);
+            if (_kernels.TryGetValue(kernelName, out var kernelIndex))
+            {
+                computeShader.SetTexture(kernelIndex, "GameViewTexture", gameView);
+                computeShader.SetTexture(kernelIndex, "VisualizerTexture", _renderTexture);
                 computeShader.SetFloat("contrast", contrast);
                 computeShader.SetFloat("psiContrast", psiContrast);
                 computeShader.SetVector("GameViewTextureSize", new Vector4(gameView.width, gameView.height, 0, 0));
@@ -250,10 +380,6 @@ namespace GoLightly
         // Update is called once per frame
         public void Update()
         {
-            computeShader.SetFloat("time", Time.fixedTime);
-            computeShader.SetVector("domainSize", new Vector4(domainSize.x, domainSize.y, 0, 0));
-            computeShader.SetTexture(0, "VisualizerTexture", _renderTexture);
-
             RunSimulationStep(simulationTimeStepsPerFrame);
         }
 
@@ -262,76 +388,319 @@ namespace GoLightly
             UpdateVisualizerTexture(source);
             Graphics.Blit(_renderTexture, destination);
         }
-        private void InitializeBoundaries(int layers = 10)
+
+        private void CreateBoundaryOutside(float4[] decayAll, int2 minCoord, int2 maxCoord)
         {
-            foreach (var boundary in _boundaries)
-                boundary.Value?.Dispose();
-            _boundaries.Clear();
+            /*
+            x -> ezx decay
+            y -> ezy decay
+            z -> hyx decay
+            w -> hxy decay
+            */
+            var layers = e_decay.Length;
+            for (var k = 1; k < layers - 1; ++k)
+            {
+                /// draw left and right layers
+                for (var j = minCoord.y; j < maxCoord.y; ++j)
+                {
+                    /// left 
+                    {
+                        var o = offsetOf(minCoord.x + k - 1, j);
+                        var v = decayAll[o];
+                        v.x = e_decay[k];
+                        v.z = h_decay[k];
 
-            float sigmaMax = 1.0f;
-            float sigmaOrder = 4.0f;
-            float epsR = 1.0f;
+                        decayAll[o] = v;
+                    }
 
-            // PmlSigmaMax = 0.75f * (0.8f * (PmlSigmaOrder + 1) / (Dx * (float)pow(mu0 / (eps0 * epsR), 0.5f)));
-            sigmaMax = 0.75f * (0.8f * (sigmaOrder + 1) / (parameters.dx * Mathf.Pow(parameters.mu0 / (parameters.eps0 * epsR), 0.5f)));
-            Debug.Log($"PML layers {layers} sigmaMax {sigmaMax} order {sigmaOrder} dx {parameters.dx} dt {parameters.dt}");
+                    /// right
+                    {
 
-            float xmin = layers * parameters.dx;
-            float invLayersDx = 1.0f / xmin;
+                        var o = offsetOf(maxCoord.x - k, j);
+                        var v = decayAll[o];
+                        v.x = e_decay[k];
+                        v.z = h_decay[k - 1];
+
+                        decayAll[o] = v;
+                    }
+
+                }
+
+                /// draw left and right layers
+                for (var i = minCoord.x; i < maxCoord.x; ++i)
+                {
+                    /// top
+                    {
+                        var o = offsetOf(i, minCoord.y + k - 1);
+                        var v = decayAll[o];
+                        v.y = e_decay[k];
+                        v.w = h_decay[k];
+                        decayAll[o] = v;
+                    }
+                    /// bottom
+                    {
+                        var o = offsetOf(i, maxCoord.y - k);
+                        var v = decayAll[o];
+                        v.y = e_decay[k];
+                        v.w = h_decay[k - 1];
+                        decayAll[o] = v;
+                    }
+
+                }
+
+
+            }
+        }
+
+        int offsetOf(int x, int y)
+        {
+            return y * domainSize.x + x;
+        }
+
+        int2 clip(int2 v)
+        {
+            v.x = v.x < 0 ? 0 : (v.x >= domainSize.x) ? domainSize.x - 1 : v.x;
+            v.y = v.y < 0 ? 0 : (v.y >= domainSize.y) ? domainSize.y - 1 : v.y;
+
+            return v;
+        }
+
+        private void CreateSink(float4[] decay, int2 center, int radius)
+        {
+            Assert.IsTrue(radius >= e_decay.Length);
+            for (var i = -radius; i <= radius; ++i)
+            {
+                for (var j = -radius; j <= radius; ++j)
+                {
+                    // calculate layer
+                    var d = radius - (int)Mathf.Sqrt(i * i + j * j);
+                    var o = offsetOf(i + center.x, j + center.y);
+                    var v = decay[o];
+
+                    if (d > 0 && d < e_decay.Length - 1)
+                    {
+                        /*
+                        x -> ezx decay
+                        y -> ezy decay
+                        z -> hyx decay
+                        w -> hxy decay
+                        */
+                        v.x = e_decay[d];
+                        v.y = e_decay[d];
+                        v.z = h_decay[d + 1];
+                        v.w = h_decay[d + 1];
+                        decay[o] = v;
+                    }
+                }
+            }
+        }
+
+
+        private void CreateSink(float4[] decayAll, int2 minCoord, int2 maxCoord)
+        {
+            minCoord = clip(minCoord);
+            maxCoord = clip(maxCoord);
+            /*
+            x -> ezx decay
+            y -> ezy decay
+            z -> hyx decay
+            w -> hxy decay
+            */
+            var layers = e_decay.Length;
+            for (var k = 1; k < layers - 1; ++k)
+            {
+                /// draw left and right layers
+                for (var j = minCoord.y; j < maxCoord.y; ++j)
+                {
+                    /// left 
+                    {
+                        var o = offsetOf(minCoord.x + k - 1, j);
+                        var v = decayAll[o];
+                        v.x = e_decay[k - 1];
+                        v.z = h_decay[k];
+
+                        decayAll[o] = v;
+
+                    }
+
+                    /// right
+                    {
+
+                        var o = offsetOf(maxCoord.x - k, j);
+                        var v = decayAll[o];
+                        v.x = e_decay[k];
+                        v.z = h_decay[k];
+
+                        decayAll[o] = v;
+                    }
+
+                }
+
+                /// draw top and bottom layers
+                for (var i = minCoord.x; i < maxCoord.x; ++i)
+                {
+                    /// top
+                    {
+                        var o = offsetOf(i, minCoord.y + k - 1);
+                        var v = decayAll[o];
+                        v.y = e_decay[k - 1];
+                        v.w = h_decay[k];
+                        decayAll[o] = v;
+                    }
+                    /// bottom
+                    {
+                        var o = offsetOf(i, maxCoord.y - k);
+                        var v = decayAll[o];
+                        v.y = e_decay[k];
+                        v.w = h_decay[k];
+                        decayAll[o] = v;
+                    }
+
+                }
+
+
+            }
+        }
+
+
+
+        void lineGuide(float[] cbData, int centerY)
+        {
+            var scalar = parameters.dt / parameters.dx;
+            var cladMaterial = scalar * 1.0f / 9;//parameters.dt / parameters.dx * 1.0f / 9;
+            var coreMaterial = scalar * 1.0f / 3;
+            // var coreMaterial = cladMaterial;
+
+            //var width = 20;
+            //var top = middleY - width / 2;
+
+            var coreLayers = 4;
+            var cladLayers = 12;
+
+            var top = centerY - (coreLayers / 2 + cladLayers);
+            var bottom = top + coreLayers + 2 * cladLayers;
+
+            for (var i = 0; i < domainSize.x; ++i)
+            {
+                var y = top;
+                for (var j = 0; j < cladLayers; ++j)
+                {
+                    cbData[y * domainSize.x + i] = cladMaterial;
+                    ++y;
+                }
+                for (var j = 0; j < coreLayers; ++j)
+                {
+                    cbData[y * domainSize.x + i] = coreMaterial;
+                    ++y;
+                }
+                for (var j = 0; j < cladLayers; ++j)
+                {
+                    cbData[y * domainSize.x + i] = cladMaterial;
+                    ++y;
+                }
+            }
+
+        }
+
+        void demoGuide2(float[] cbData)
+        {
+            var scalar = parameters.dt / parameters.dx;
+            var core = scalar * 1.0f / 9;
+            var clad = scalar * 1.0f / 1000;
+
+            var coreLayers = 3;
+            var cladLayers = 3;
+
+            var top = domainSize.y / 2 - coreLayers / 2 - cladLayers;
+            for (var j = 0; j < coreLayers + 2 * cladLayers; ++j)
+            {
+                var cb = scalar;
+                if (j < cladLayers)
+                    cb = clad;
+                else if (j < coreLayers + cladLayers)
+                    cb = core;
+                else
+                    cb = clad;
+
+                for (var i = 0; i < domainSize.x; ++i)
+                {
+                    cbData[(j + top) * domainSize.x + i] = cb;
+                }
+            }
+        }
+
+        void wgm(float[] cbData, float radius, float width)
+        {
+            var center = new uint2((uint)(domainSize.x / 2), (uint)domainSize.y / 2);
+            var m = (parameters.dt / parameters.dx * 1 / 9.0f);
+            ModelProvider.Cylinder(center, radius, width, domainSize.x, m, cbData);
+        }
+
+        void SetMaterials(float[] cbData)
+        {
+            lineGuide(cbData, domainSize.y / 2 - 300);
+            wgm(cbData, 282, 20);
+        }
+
+        private void InitializeBoundaries(int _)
+        {
+            var layers = e_decay.Length;
 
             var domainWidth = domainSize.x;
             var domainHeight = domainSize.y;
 
-            var ezxDecay = new float[domainWidth];
-            var ezyDecay = new float[domainHeight];
-            var hyxDecay = new float[domainWidth];
-            var hxyDecay = new float[domainHeight];
+            /// unified PML psi buffer
+            var psiBuffer = new ComputeBuffer(domainWidth * domainHeight, sizeof(float) * 4);
+            _buffers["psi_all"] = psiBuffer;
+
+            /// unified PML decay buffer.
+            var decayAll = new float4[domainWidth * domainHeight];
+
+            Helpers.SetArray(ref decayAll, 1);
+            CreateBoundaryOutside(decayAll, 0, new int2(domainSize.x - 1, domainSize.y - 1));
 
 
-            for (var i = 0; i < layers; ++i)
+#if true
+            var coords = new int2[] {
+                new int2(30, 300), new int2(700, 1000)
+                ,new int2(2048 - 700, 300), new int2(2048 - 30, 1000)
+                ,new int2(12, 12), new int2(2048 - 12, 150)
+            };
+
+            var pmlArea = 0;
+
+            for (var i = 0; i < coords.Length; i += 2)
             {
-                var elength = i * parameters.dx;
-                var hlength = (i + 0.5f) * parameters.dx;
+                var mn = coords[i];
+                var mx = coords[i + 1];
+                CreateSink(decayAll, mn, mx);
 
-                var esigma = sigmaMax * Mathf.Pow(Mathf.Abs(elength - xmin) * invLayersDx, sigmaOrder);
-                var hsigma = sigmaMax * Mathf.Pow(Mathf.Abs(hlength - xmin) * invLayersDx, sigmaOrder);
+                var size = mx - mn;
 
-                var edecay = Mathf.Exp(-1 * (parameters.dt * esigma) / parameters.eps0);
-                // var eAmp = edecay - 1;
-                var hdecay = Mathf.Exp(-1 * (parameters.dt * hsigma) / parameters.mu0);
-                // var hAmp = hdecay - 1;
-
-                ezxDecay[i] = edecay;
-                ezxDecay[ezxDecay.Length - i - 1] = edecay;
-
-                ezyDecay[i] = edecay;
-                ezyDecay[ezyDecay.Length - i - 1] = edecay;
-
-                hxyDecay[i] = hdecay;
-                hxyDecay[hxyDecay.Length - i - 1] = hdecay;
-
-                hyxDecay[i] = hdecay;
-                hyxDecay[hyxDecay.Length - i - 1] = hdecay;
+                var area = size.x * size.y;
+                pmlArea += area;
             }
 
-            var ezx = new Boundary { name = "ezx" };
-            // ezx.name = "ezx";
-            ezx.SetData(domainWidth, domainHeight, ezxDecay);
-            _boundaries.Add("ezx", ezx);
+            //     CreateSink(decayAll, new int2(30, 300), new int2(700, 1000));
+            // CreateSink(decayAll, new int2(2048 - 700, 300), new int2(2048 - 30, 1000));
+            // CreateSink(decayAll, new int2(12, 12), new int2(2048 - 12, 150));
 
-            var ezy = new Boundary { name = "ezy" };
-            ezy.SetData(domainWidth, domainHeight, ezyDecay);
-            _boundaries.Add("ezy", ezy);
+            var center = new int2(domainSize.x / 2, domainSize.y / 2);
+            var radius = 200;
+            CreateSink(decayAll, center, radius);
+            pmlArea += (int)(Mathf.PI * radius * radius);
 
-            var ezA = "Emma Stone";
 
-            var hxy = new Boundary { name = "hxy" };
-            hxy.SetData(domainWidth, domainHeight, hxyDecay);
-            _boundaries.Add("hxy", hxy);
+#endif
+            var domainArea = domainSize.x * domainSize.y;
+            Debug.Log($"Total area:\ndomain {domainArea}\nPML {pmlArea}\n ratio {pmlArea * 1.0f / domainArea} Saved {domainArea-pmlArea} cells");
 
-            var hyx = new Boundary { name = "hyx" };
-            hyx.SetData(domainWidth, domainHeight, hyxDecay);
-            _boundaries.Add("hyx", hyx);
+
+
+            var decayBuffer = new ComputeBuffer(decayAll.Length, sizeof(float) * 4);
+            decayBuffer.SetData(decayAll);
+            _buffers["decay_all"] = decayBuffer;
         }
+
     }
 }
