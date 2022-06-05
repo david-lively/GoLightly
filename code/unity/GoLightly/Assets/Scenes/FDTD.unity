@@ -224,8 +224,8 @@ MonoBehaviour:
   domainSize: {x: 2048, y: 1024}
   contrast: 50
   timeStep: 0
-  psiContrast: 0
-  simulationTimeStepsPerFrame: 3
+  psiContrast: 0.5
+  simulationTimeStepsPerFrame: 4
   sources:
   - position: {x: 1024, y: 512, z: 0}
     amplitude: 1
