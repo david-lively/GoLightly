@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$PROJECT_DIR$" t="IncludeRecursive">
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assembly-CSharp.Player.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="FDTD" t="Include">
+          <e p="Scripts" t="Include">
+            <e p="Simulation" t="Include">
+              <e p="Boundary.cs" t="Include" />
+              <e p="Simulation.cs" t="Include" />
+              <e p="Simulation.Helpers.cs" t="Include" />
+              <e p="SimulationParameters.cs" t="Include" />
+              <e p="Source.cs" t="Include" />
+            </e>
+            <e p="UI" t="Include">
+              <e p="Domain.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Shaders" t="Include">
+            <e p="FDTDComputeShaders.compute" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="GoLightly.sln" t="IncludeFlat" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Packages" t="ExcludeRecursive" />
+      <e p="Temp/Bin" t="ExcludeRecursive" />
+    </e>
+    <e p="$USER_HOME$/Library/Caches/JetBrains/Rider2020.3/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/Library/Caches/JetBrains/Rider2020.3/resharper-host/local/Transient/Rider/v203/SolutionCaches/_GoLightly.860527298.00" t="ExcludeRecursive" />
+  </component>
+</project>
