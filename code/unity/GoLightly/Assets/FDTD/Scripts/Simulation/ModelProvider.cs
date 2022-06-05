@@ -26,8 +26,9 @@ namespace GoLightly
 
         }
 
-        void generateModels(ComputeBuffer cb)
+        void generateModels(float[] data)
         {
+
             if (null == tile)
             {
                 Debug.Log($"No Tile is set. Cb array will be empty.");
@@ -39,26 +40,47 @@ namespace GoLightly
             {
                 Debug.LogWarning($"Domain size is not evenly divisble by tile size. Truncation may occur");
             }
+            Debug.Log($"Tile dimensions: {tile.width}x{tile.height}");
 
-            using var textureData = tile.GetRawTextureData<Color32>();
+            var textureData = tile.GetRawTextureData<Color32>();
 
+            var dt = _simulation.parameters.dt;
+            var dx = _simulation.parameters.dx;
             var cbDefault = _simulation.parameters.cb;
 
-            var data = new float[size.x * size.y];
+            
+            var epsMax = 9;
+            /*
+             * cb = dt/dx * 1/eps;
+             */
             for (var j = 0; j < size.y; ++j)
             {
                 var tileY = j % tile.height;
                 for (var i = 0; i < size.x; ++i)
                 {
                     var tileX = i % tile.width;
-
                     var textureOffset = j * size.x + i;
 
+                    var color = textureData[tileY * tile.width + tileX];
+
+                    var g = color.g;
 
 
+
+                    if (g > 0)
+                    {
+                        var c = dt / dx * 1.0f / 9;
+
+                        data[textureOffset] = c;
+                    }
+                    else
+                    {
+                        data[textureOffset] = cbDefault;
+                    }
                 }
             }
 
+            //cb.SetData(data);
         }
 
 
@@ -66,6 +88,7 @@ namespace GoLightly
         {
             return Mathf.Sqrt(x * x + y * y);
         }
+
         public static void Cylinder(uint2 center, float radius, float width, int domainWidth, float material, float[] cb)
         {
             var tl = new int2((int)(center.x - radius), (int)(center.y - radius));
@@ -89,46 +112,5 @@ namespace GoLightly
 
         }
 
-
-        /*
-		void ModelProvider::Cylinder(FieldDescriptor &media, float n, float radius, int centerX, int centerY, float width)
-		{
-			dim3 center(centerX, centerY);
-
-			if (center.x < 0)
-			{
-				center.x = media.Size.x / 2;
-			}
-
-			if (center.y < 0)
-			{
-				center.y = media.Size.y / 2;
-			}
-
-			if (radius < 0)
-			{
-				radius = min(center.x, center.y);
-			}
-
-			if (width < 0)
-				width = radius + 1;
-
-			auto topLeft = center - radius;
-			auto bottomRight = center + radius;
-
-			for (unsigned int j = topLeft.y; j < bottomRight.y; j++)
-			{
-				for (unsigned int i = topLeft.x; i < bottomRight.x; i++)
-				{
-					float r = length(dim3(center.x - i, center.y - j));
-					if (r <= radius && r >= radius - width)
-					{
-						media.HostArray[j * media.Size.x + i] = n;
-					}
-
-				}
-			}
-
-		}*/
     }
 }

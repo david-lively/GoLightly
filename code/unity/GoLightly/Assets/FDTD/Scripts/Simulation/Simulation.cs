@@ -40,7 +40,7 @@ namespace GoLightly
 
         public SimulationParameters parameters = SimulationParameters.Create(1.0f);
 
-        public UnityAction<ComputeBuffer> onGenerateModels;
+        public UnityAction<float[]> onGenerateModels;
 
         [Range(1, 200)]
         public float contrast = 80;
@@ -50,92 +50,6 @@ namespace GoLightly
         public float psiContrast = 0;
 
         public uint simulationTimeStepsPerFrame = 1;
-
-
-        /*
-// E decay
-0
-0.133286506
-0.266546071
-0.438038647
-0.616397917
-0.770144641
-0.881655931
-0.9497177
-0.983808935
-0.996780813
-0.999798477
-1
-
-// H decay
-0
-0.193701461
-0.349247128
-0.528538823
-0.697860897
-0.831596196
-0.920684338
-0.970211327
-0.99215883
-0.998980284
-0.999987423
-1
-        */
-#if false
-              readonly float[] e_decay = new float[] {
-                  0,
-                  0.133286506f,
-                  0.266546071f,
-                  0.438038647f,
-                  0.616397917f,
-                  0.770144641f,
-                  0.881655931f,
-                  0.9497177f,
-                  0.983808935f,
-                  0.996780813f,
-                  0.999798477f,
-                  1f,
-                    1f,
-                    0.999798477f,
-                    0.996780813f,
-                    0.983808935f,
-                    0.9497177f,
-                    0.881655931f,
-                    0.770144641f,
-                    0.616397917f,
-                    0.438038647f,
-                    0.266546071f,
-                    0.133286506f,
-                    0f,      
-              };
-
-              readonly float[] h_decay = new float[] {
-                  0f,
-                  0.193701461f,
-                  0.349247128f,
-                  0.528538823f,
-                  0.697860897f,
-                  0.831596196f,
-                  0.920684338f,
-                  0.970211327f,
-                  0.99215883f,
-                  0.998980284f,
-                  0.999987423f,
-                  1f,
-                    1f,
-                    0.999987423f,
-                    0.998980284f,
-                    0.99215883f,
-                    0.970211327f,
-                    0.920684338f,
-                    0.831596196f,
-                    0.697860897f,
-                    0.528538823f,
-                    0.349247128f,
-                    0.193701461f,
-                    0f,                  
-              };
-#endif
 
         readonly float[] e_decay = new float[] {
                     1,
@@ -271,9 +185,11 @@ namespace GoLightly
                 Helpers.ClearArray(ref cbData, parameters.cb);
                 SetMaterials(cbData);
                 var cb = new ComputeBuffer(fieldBufferSize, sizeof(float));
-                Helpers.ClearBuffer(cb, parameters.cb);
-                onGenerateModels?.Invoke(cb);
                 //Helpers.ClearBuffer(cb, parameters.cb);
+                onGenerateModels?.Invoke(cbData);
+                //Helpers.ClearBuffer(cb, parameters.cb);
+
+                cb.SetData(cbData);
                 _buffers["cb"] = cb;
             }
 
@@ -664,7 +580,7 @@ namespace GoLightly
             CreateBoundaryOutside(decayAll, 0, new int2(domainSize.x - 1, domainSize.y - 1));
 
 
-#if true
+#if false
             var coords = new int2[] {
                 new int2(30, 300), new int2(700, 1000)
                 ,new int2(2048 - 700, 300), new int2(2048 - 30, 1000)
@@ -695,10 +611,9 @@ namespace GoLightly
             pmlArea += (int)(Mathf.PI * radius * radius);
 
 
-#endif
             var domainArea = domainSize.x * domainSize.y;
             Debug.Log($"Total area:\ndomain {domainArea}\nPML {pmlArea}\n ratio {pmlArea * 1.0f / domainArea} Saved {domainArea-pmlArea} cells");
-
+#endif
 
 
             var decayBuffer = new ComputeBuffer(decayAll.Length, sizeof(float) * 4);
