@@ -222,31 +222,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   computeShader: {fileID: 7200000, guid: abafb8f15e2fb4be1b5bf13f3950fb0d, type: 3}
   domainSize: {x: 2048, y: 1024}
-  contrast: 200
+  contrast: 35
   timeStep: 0
-  psiContrast: 1
-  simulationTimeStepsPerFrame: 2
+  psiContrast: 0.5
+  simulationTimeStepsPerFrame: 4
   sources:
-  - position: {x: 774, y: 600, z: 0}
+  - position: {x: 256, y: 212, z: 0}
     amplitude: 1
-    wavelength: 8
+    wavelength: 10
     maxLife: 0
     _enabled: 1
-  - position: {x: 1274, y: 512, z: 0}
-    amplitude: 1
-    wavelength: 8
-    maxLife: 0
-    _enabled: 0
-  - position: {x: 1024, y: 768, z: 0}
-    amplitude: 1
-    wavelength: 8
-    maxLife: 0
-    _enabled: 0
-  - position: {x: 1024, y: 256, z: 0}
-    amplitude: 1
-    wavelength: 8
-    maxLife: 0
-    _enabled: 0
 --- !u!114 &1148322542
 MonoBehaviour:
   m_ObjectHideFlags: 0

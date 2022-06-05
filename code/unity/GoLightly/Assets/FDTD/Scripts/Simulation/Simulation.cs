@@ -311,13 +311,13 @@ namespace GoLightly
 
         private void RunKernel(int kernelIndex)
         {
-            var launchX = _renderTexture.width / 32;
-            var launchY = _renderTexture.height / 32;
+            var threadGroupsX = _renderTexture.width / 32;
+            var threadGroupsY = _renderTexture.height / 32;
 
-            RunKernel(kernelIndex, launchX, launchY);
+            RunKernel(kernelIndex, threadGroupsX, threadGroupsY);
         }
 
-        private void RunKernel(int kernelIndex, int launchX, int launchY)
+        private void RunKernel(int kernelIndex, int threadGroupsX, int threadGroupsY)
         {
             computeShader.SetBuffer(kernelIndex, "ez", _buffers["ez"]);
             computeShader.SetBuffer(kernelIndex, "hx", _buffers["hx"]);
@@ -328,7 +328,7 @@ namespace GoLightly
             computeShader.SetConstantBuffer("Parameters", _buffers["Parameters"], 0, SimulationParameters.GetSize());
             computeShader.SetBuffer(kernelIndex, "psi_all", _buffers["psi_all"]);
 
-            computeShader.Dispatch(kernelIndex, launchX, launchY, 1);
+            computeShader.Dispatch(kernelIndex, threadGroupsX, threadGroupsY, 1);
         }
 
         private void RunSimulationStep(uint steps = 1)
@@ -495,6 +495,7 @@ namespace GoLightly
             }
         }
 
+
         private void CreateSink(float4[] decayAll, int2 minCoord, int2 maxCoord)
         {
             minCoord = clip(minCoord);
@@ -519,6 +520,7 @@ namespace GoLightly
                         v.z = h_decay[k];
 
                         decayAll[o] = v;
+
                     }
 
                     /// right
@@ -636,11 +638,6 @@ namespace GoLightly
 
         void SetMaterials(float[] cbData)
         {
-            //demoLineGuide(cbData);
-            //demoGuide2(cbData);
-
-
-            // set source position to 256,219
             lineGuide(cbData, domainSize.y / 2 - 300);
             wgm(cbData, 282, 20);
         }
@@ -662,16 +659,43 @@ namespace GoLightly
             Helpers.SetArray(ref decayAll, 1);
             CreateBoundaryOutside(decayAll, 0, new int2(domainSize.x - 1, domainSize.y - 1));
 
+
 #if true
-            // CreateSink(decayAll, new int2(1500, 400), new int2(1900, 1000));
-            CreateSink(decayAll, new int2(30, 300), new int2(700, 1000));
-            CreateSink(decayAll, new int2(2048 - 700, 300), new int2(2048 - 30, 1000));
-            // CreateSink(decayAll, new int2(256 - 200, 212 - 200), new int2(256 + 200, 212 + 200));
-            CreateSink(decayAll, new int2(12, 12), new int2(2048 - 12, 150));
+            var coords = new int2[] {
+                new int2(30, 300), new int2(700, 1000)
+                ,new int2(2048 - 700, 300), new int2(2048 - 30, 1000)
+                ,new int2(12, 12), new int2(2048 - 12, 150)
+            };
+
+            var pmlArea = 0;
+
+            for (var i = 0; i < coords.Length; i += 2)
+            {
+                var mn = coords[i];
+                var mx = coords[i + 1];
+                CreateSink(decayAll, mn, mx);
+
+                var size = mx - mn;
+
+                var area = size.x * size.y;
+                pmlArea += area;
+            }
+
+            //     CreateSink(decayAll, new int2(30, 300), new int2(700, 1000));
+            // CreateSink(decayAll, new int2(2048 - 700, 300), new int2(2048 - 30, 1000));
+            // CreateSink(decayAll, new int2(12, 12), new int2(2048 - 12, 150));
 
             var center = new int2(domainSize.x / 2, domainSize.y / 2);
-            CreateSink(decayAll, center, 200);
+            var radius = 200;
+            CreateSink(decayAll, center, radius);
+            pmlArea += (int)(Mathf.PI * radius * radius);
+
+
 #endif
+            var domainArea = domainSize.x * domainSize.y;
+            Debug.Log($"Total area:\ndomain {domainArea}\nPML {pmlArea}\n ratio {pmlArea * 1.0f / domainArea} Saved {domainArea-pmlArea} cells");
+
+
 
             var decayBuffer = new ComputeBuffer(decayAll.Length, sizeof(float) * 4);
             decayBuffer.SetData(decayAll);
