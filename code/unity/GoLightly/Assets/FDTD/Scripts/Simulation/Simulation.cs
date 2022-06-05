@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Events;
 
 
 /// <summary>
@@ -36,6 +37,8 @@ namespace GoLightly
         public Vector2Int domainSize = new Vector2Int(2048, 1024);
 
         public SimulationParameters parameters = SimulationParameters.Create(1.0f);
+
+        public UnityAction<ComputeBuffer> onGenerateModels;
 
         [Range(1, 200)]
         public float contrast = 80;
@@ -134,6 +137,7 @@ namespace GoLightly
             {
                 var cb = new ComputeBuffer(fieldBufferSize, sizeof(float));
                 Helpers.ClearBuffer(cb, parameters.cb);
+                onGenerateModels?.Invoke(cb);
                 _buffers["cb"] = cb;
             }
 
