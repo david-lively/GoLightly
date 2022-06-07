@@ -41,6 +41,7 @@ namespace GoLightly
         public SimulationParameters parameters = SimulationParameters.Create(1.0f);
 
         public UnityAction<float[]> onGenerateModels;
+        public UnityAction<List<Source>> onGenerateSources;
 
         [Range(1, 200)]
         public float contrast = 80;
@@ -154,6 +155,7 @@ namespace GoLightly
             }
 
             {
+                onGenerateSources?.Invoke(sources);
                 var sourcesBuffer = new ComputeBuffer(sources.Count, Source.GetSize());
                 sourcesBuffer.SetData(sources);
                 computeShader.SetInt("numSources", sources.Count);
@@ -183,11 +185,8 @@ namespace GoLightly
             {
                 var cbData = new float[fieldBufferSize];
                 Helpers.ClearArray(ref cbData, parameters.cb);
-                SetMaterials(cbData);
                 var cb = new ComputeBuffer(fieldBufferSize, sizeof(float));
-                //Helpers.ClearBuffer(cb, parameters.cb);
                 onGenerateModels?.Invoke(cbData);
-                //Helpers.ClearBuffer(cb, parameters.cb);
 
                 cb.SetData(cbData);
                 _buffers["cb"] = cb;
@@ -269,8 +268,8 @@ namespace GoLightly
             {
                 //computeShader.SetFloat("time", Time.fixedTime);
                 computeShader.SetInt("TimeStep", timeStep);
-
-                RunKernel(_kernels["CSUpdateSources"], 1, 1);
+                var sourceThreads = (int)Mathf.CeilToInt(sources.Count / 64.0f);
+                RunKernel(_kernels["CSUpdateSources"], sourceThreads, 1);
 
                 for (var i = 0; i < kernelNames.Length; ++i)
                 {
