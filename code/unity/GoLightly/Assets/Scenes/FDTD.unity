@@ -223,14 +223,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   computeShader: {fileID: 7200000, guid: abafb8f15e2fb4be1b5bf13f3950fb0d, type: 3}
   domainSize: {x: 2048, y: 1024}
-  contrast: 200
+  contrast: 101.7
   timeStep: 0
-  psiContrast: 0.3
+  psiContrast: 0.7
   simulationTimeStepsPerFrame: 1
   sources:
   - position: {x: 1024, y: 512, z: 0}
     amplitude: 1
-    wavelength: 10
+    wavelength: 3.23
     maxLife: 0
     _enabled: 1
 --- !u!114 &1148322542
@@ -245,7 +245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a160d838ff8b4b4693ac20007e008c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AssetsPPU: 100
+  m_AssetsPPU: 1
   m_RefResolutionX: 2048
   m_RefResolutionY: 1024
   m_UpscaleRT: 0
@@ -265,4 +265,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5abb8a35a69794b019208f3aab030bb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tile: {fileID: 2800000, guid: c23edc1113f044b1a8f43b175f919a20, type: 3}
+  tileTexture: {fileID: 2800000, guid: a728eb0d8ffd64c9b9f5dbff2d26bb54, type: 3}

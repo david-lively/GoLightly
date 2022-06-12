@@ -14,13 +14,13 @@ namespace GoLightly
         private SimulationParameters Parameters => _simulation.parameters;
 
         // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
             _simulation = GetComponent<Simulation>();
             Assert.IsNotNull(_simulation, $"Could not find {nameof(Simulation)} component.");
-            //_simulation.onGenerateModels = generateModels;
-            _simulation.onGenerateModels = generateCrystal;
-            _simulation.onGenerateSources = generateSources;
+            _simulation.onGenerateModels = generateModels;
+            // _simulation.onGenerateModels = generateCrystal;
+            //_simulation.onGenerateSources = generateSources;
 
         }
 
@@ -43,16 +43,6 @@ namespace GoLightly
 
             */
             float cellWidth = 62; // nm
-
-
-
-
-            
-
-
-            
-
-
         }
 
 
@@ -101,13 +91,19 @@ namespace GoLightly
             var cbDefault = _simulation.parameters.cb;
 
             
-            var epsMax = 9;
+            var epsMax = 8.9f;
             /*
              * cb = dt/dx * 1/eps;
              */
+            var maxEpsR = float.MinValue;
+
+            var mn = 17 * 30;
+            var mx = mn + 30;
+
             for (var j = 0; j < size.y; ++j)
             {
                 var tileY = j % tileTexture.height;
+
                 for (var i = 0; i < size.x; ++i)
                 {
                     var tileX = i % tileTexture.width;
@@ -117,21 +113,24 @@ namespace GoLightly
 
                     var g = color.g;
 
-                    if (g > 0)
-                    //if (false)
-                    {
-                        //var c = dt / dx * 1.0f / 9;
-                        var epsR = g * epsMax / 255.0f;
-                        var c = dt / dx * 1.0f / epsR;
-                        data[textureOffset] = c;
-                    }
-                    else
+                    if ((j >= mn && j <= mx) || g <= 0)
                     {
                         var n = dt / dx;
                         data[textureOffset] = n;
                     }
+                    else
+                    {
+                        //var c = dt / dx * 1.0f / 9;
+                        var epsR = g * epsMax / 255.0f;
+                        maxEpsR = Mathf.Max(epsR, maxEpsR);
+                        var c = dt / dx * 1.0f / epsR;
+                        data[textureOffset] = c;
+                    }
                 }
             }
+
+            Debug.Log($"Max epsilon R = {maxEpsR}");
+
 
             //cb.SetData(data);
         }

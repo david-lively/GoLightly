@@ -77,7 +77,6 @@ namespace GoLightly
                     0.999798477f,
                     1
                 };
-
         readonly float[] h_decay = new float[]  {
                     1,
                     0.999987423f,
