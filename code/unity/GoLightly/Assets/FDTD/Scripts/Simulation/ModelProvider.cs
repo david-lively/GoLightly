@@ -45,7 +45,6 @@ namespace GoLightly
             float cellWidth = 62; // nm
         }
 
-
         void generateSources(List<Simulation.Source> sources)
         {
             var size = _simulation.domainSize;
@@ -66,7 +65,6 @@ namespace GoLightly
             }
 
         }
-
 
         void generateModels(float[] data)
         {
@@ -134,7 +132,6 @@ namespace GoLightly
 
             //cb.SetData(data);
         }
-
 
         private static float length(float x, float y)
         {

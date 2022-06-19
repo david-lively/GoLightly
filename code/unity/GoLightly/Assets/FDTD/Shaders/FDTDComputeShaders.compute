@@ -25,14 +25,16 @@
 #pragma kernel CSUpdateEz
 #pragma kernel CSUpdateHFields
 #pragma kernel CSUpdateSources
+#pragma kernel CSUpdateMonitors
 
 #define PI (3.1415926f)
 #define ENABLE_PML
 // #define MOVING_SOURCE
 
-float4 GameViewTextureSize;
-Texture2D<float4> GameViewTexture;
+// float4 GameViewTextureSize;
+// Texture2D<float4> GameViewTexture;
 RWTexture2D<float4> VisualizerTexture;
+
 
 /*
 Sample values: 
@@ -87,6 +89,17 @@ RWStructuredBuffer<float> hx;
 RWStructuredBuffer<float> hy;
 StructuredBuffer<float> cb;
 
+struct Monitor
+{
+    int id;
+    int offset;
+    int len;
+};
+
+int numMonitorAddresses;
+StructuredBuffer<int> monitorAddresses;
+RWStructuredBuffer<float> monitorValues;
+
 /*
 Decay:
     x -> ezx decay
@@ -138,7 +151,6 @@ void CSUpdateVisualizerTexture (uint3 id : SV_DispatchThreadID)
     color.a=1;
 
     float4 d = decay_all[center];
-    
 
     float matRelative = getMaterial(id.xy) / CbDefault;
     if (matRelative != 1)
@@ -151,6 +163,25 @@ void CSUpdateVisualizerTexture (uint3 id : SV_DispatchThreadID)
 
     VisualizerTexture[id.xy] = color;
 
+}
+
+bool clearMonitors;
+
+[numthreads(64,1,1)]
+void CSUpdateMonitors(uint3 id : SV_DispatchThreadID)
+{
+    int index = id.x;
+    
+    if (index >= numMonitorAddresses)
+        return;
+
+    int offset = monitorAddresses[index];
+    if (false) //clearMonitors)
+    {
+        monitorValues[index] = pow(ez[offset],2);
+    }
+    else
+        monitorValues[index] += pow(ez[offset],2);
 }
 
 [numthreads(64,1,1)]
@@ -295,9 +326,7 @@ void CSUpdateEz(uint3 id : SV_DispatchThreadID)
 
     float material = getMaterial(id.xy);
 
-
     float ezNew = Ca * ez[addr(id.xy)] + material * (dH.y - dH.x);
-
 
     float2 decay = getDecay(id.xy).xy;
     float2 amp = decay - 1;

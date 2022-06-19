@@ -137,6 +137,8 @@ GameObject:
   - component: {fileID: 1148322541}
   - component: {fileID: 1148322542}
   - component: {fileID: 1148322543}
+  - component: {fileID: 1148322544}
+  - component: {fileID: 1148322545}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -233,6 +235,9 @@ MonoBehaviour:
     wavelength: 3.23
     maxLife: 0
     _enabled: 1
+  monitorMin: 3.4028235e+38
+  monitorMax: -3.4028235e+38
+  monitorValues: []
 --- !u!114 &1148322542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,3 +271,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileTexture: {fileID: 2800000, guid: a728eb0d8ffd64c9b9f5dbff2d26bb54, type: 3}
+--- !u!114 &1148322544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148322537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d4f7df574e54a498a2e99274e907cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topLeft: {x: 256, y: 256}
+  bottomRight: {x: 256, y: 768}
+  id: 1
+  offset: 0
+  count: 0
+  history: []
+  maxHistoryLength: 128
+  maxValue: -3.4028235e+38
+  minValue: 3.4028235e+38
+  indices: 
+--- !u!114 &1148322545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148322537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d4f7df574e54a498a2e99274e907cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topLeft: {x: 512, y: 868}
+  bottomRight: {x: 1536, y: 868}
+  id: 0
+  offset: 0
+  count: 0
+  history: []
+  maxHistoryLength: 128
+  maxValue: -3.4028235e+38
+  minValue: 3.4028235e+38
+  indices: 

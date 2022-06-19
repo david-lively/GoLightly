@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+// using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
@@ -123,6 +124,10 @@ namespace GoLightly
 
         public List<Source> sources = new List<Source>();
 
+        private bool clearMonitors;
+        private List<Monitor> monitors;
+        private List<int> monitorAddresses;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -135,6 +140,7 @@ namespace GoLightly
                 var textureWasCreated = _renderTexture.Create();
                 Assert.IsTrue(textureWasCreated, "Could not create visualizer texture.");
             }
+
             InitComputeResources();
         }
 
@@ -196,6 +202,7 @@ namespace GoLightly
                 ,"CSUpdateEz"
                 ,"CSUpdateHFields"
                 ,"CSUpdateSources"
+                ,"CSUpdateMonitors"
             };
 
             foreach (var name in kernelNames)
@@ -207,6 +214,8 @@ namespace GoLightly
             }
 
             InitializeBoundaries(parameters.pmlLayers);
+
+            InitializeMonitors();
 
             _isInitialized = true;
         }
@@ -240,6 +249,8 @@ namespace GoLightly
             computeShader.SetBuffer(kernelIndex, "ez", _buffers["ez"]);
             computeShader.SetBuffer(kernelIndex, "hx", _buffers["hx"]);
             computeShader.SetBuffer(kernelIndex, "hy", _buffers["hy"]);
+            computeShader.SetBuffer(kernelIndex, "monitorAddresses", _buffers["monitorAddresses"]);
+            computeShader.SetBuffer(kernelIndex, "monitorValues", _buffers["monitorValues"]);
             computeShader.SetBuffer(kernelIndex, "sources", _buffers["sources"]);
             computeShader.SetBuffer(kernelIndex, "decay_all", _buffers["decay_all"]);
             computeShader.SetBuffer(kernelIndex, "cb", _buffers["cb"]);
@@ -257,6 +268,7 @@ namespace GoLightly
 
             computeShader.SetVector("domainSize", new Vector2(domainSize.x, domainSize.y));
             computeShader.SetInt("numSources", sources.Count);
+            computeShader.SetInt("numMonitorAddresses", monitorAddresses.Count);
 
             var kernelNames = new string[] { "CSUpdateHFields", "CSUpdateEz" };
 
@@ -267,12 +279,21 @@ namespace GoLightly
             {
                 //computeShader.SetFloat("time", Time.fixedTime);
                 computeShader.SetInt("TimeStep", timeStep);
-                var sourceThreads = (int)Mathf.CeilToInt(sources.Count / 64.0f);
-                RunKernel(_kernels["CSUpdateSources"], sourceThreads, 1);
+                {
+                    var sourceThreads = (int)Mathf.CeilToInt(sources.Count / 64.0f);
+                    RunKernel(_kernels["CSUpdateSources"], sourceThreads, 1);
+                }
 
                 for (var i = 0; i < kernelNames.Length; ++i)
                 {
                     RunKernel(_kernels[kernelNames[i]]);
+                }
+
+                {
+                    computeShader.SetBool("clearMonitors", clearMonitors);
+                    var numThreads = (int)Mathf.CeilToInt(monitorAddresses.Count / 64.0f);
+                    RunKernel(_kernels["CSUpdateMonitors"], numThreads, 1);
+                    ReadMonitors();
                 }
 
                 ++timeStep;
@@ -480,8 +501,6 @@ namespace GoLightly
             }
         }
 
-
-
         void lineGuide(float[] cbData, int centerY)
         {
             var scalar = parameters.dt / parameters.dx;
@@ -599,7 +618,7 @@ namespace GoLightly
                 pmlArea += area;
             }
 
-            //     CreateSink(decayAll, new int2(30, 300), new int2(700, 1000));
+            // CreateSink(decayAll, new int2(30, 300), new int2(700, 1000));
             // CreateSink(decayAll, new int2(2048 - 700, 300), new int2(2048 - 30, 1000));
             // CreateSink(decayAll, new int2(12, 12), new int2(2048 - 12, 150));
 
@@ -617,6 +636,61 @@ namespace GoLightly
             var decayBuffer = new ComputeBuffer(decayAll.Length, sizeof(float) * 4);
             decayBuffer.SetData(decayAll);
             _buffers["decay_all"] = decayBuffer;
+        }
+
+        private void InitializeMonitors()
+        {
+            monitors = new List<Monitor>(FindObjectsOfType<Monitor>());
+
+            Debug.Log($"Found {monitors.Count} monitors.");
+
+            var numMonitorAddresses = 0;
+            monitorAddresses = new List<int>(domainSize.x * domainSize.y);
+
+            var offset = 0;
+            for (var i = 0; i < monitors.Count; ++i)
+            {
+                var monitor = monitors[i];
+                monitor.offset = offset;
+
+                monitorAddresses.AddRange(monitor.indices);
+
+                Assert.IsTrue(monitor.isInitialized, $"Monitor {monitor.id} is not yet initialized!");
+
+                numMonitorAddresses += monitor.indices.Count;
+                /// add monitor to collection
+            }
+
+            computeShader.SetInt("numMonitorAddresses", monitorAddresses.Count);
+
+            var buffer = new ComputeBuffer(monitorAddresses.Count, sizeof(int));
+            buffer.SetData(monitorAddresses);
+            _buffers["monitorAddresses"] = buffer;
+
+            var monitorValues = new ComputeBuffer(monitorAddresses.Count, sizeof(float));
+            Helpers.ClearBuffer(monitorValues);
+            _buffers["monitorValues"] = monitorValues;
+        }
+
+        public float monitorMin = float.MaxValue;
+        public float monitorMax = float.MinValue;
+        public float[] monitorValues;
+
+
+        /// <summary>
+        /// Read the monitorValues array back from the GPU and save the data, then clear the array
+        /// </summary>
+        private void ReadMonitors()
+        {
+            if (monitorValues.Length != monitorAddresses.Count)
+                monitorValues = new float[monitorAddresses.Count];
+
+            var buffer = _buffers["monitorValues"];
+            buffer.GetData(monitorValues);
+
+            foreach(var monitor in monitors)
+                monitor.UpdateFromBuffer(monitorValues);
+
         }
 
     }
