@@ -24,7 +24,7 @@ namespace GoLightly
 
         public float maxValue = float.MinValue;
         public float minValue = float.MaxValue;
-        public float currentAverage = 0f;
+        public float currentRMS = 0f;
         List<float> magnitudeHistory = new List<float>();
 
         float rmsMinValue = float.MaxValue;
@@ -41,6 +41,14 @@ namespace GoLightly
 
         public void Start()
         {
+            Initialize();
+        }
+     
+        public void Initialize()
+        {
+            if (isInitialized)
+                return;
+
             var simulation = FindObjectOfType<Simulation>();
 
             var domainSize = simulation.domainSize;
@@ -82,19 +90,19 @@ namespace GoLightly
                 sum += buffer[i];
             }
 
-            currentAverage = sum / indices.Count;
+            currentRMS = Mathf.Sqrt(sum / indices.Count);
 
             /// history is a ring buffer. 
             if (history.Count < maxHistoryLength)
-                history.Add(currentAverage);
+                history.Add(currentRMS);
             else
             {
                 _historyIndex %= history.Count;
-                history[_historyIndex] = currentAverage;
+                history[_historyIndex] = currentRMS;
             }
 
-            minValue = Mathf.Min(minValue, currentAverage);
-            maxValue = Mathf.Max(maxValue, currentAverage);
+            minValue = Mathf.Min(minValue, currentRMS);
+            maxValue = Mathf.Max(maxValue, currentRMS);
             ++_historyIndex;
         }
 
@@ -123,16 +131,6 @@ namespace GoLightly
             Gizmos.DrawLine(ne, se);
             Gizmos.DrawLine(se, sw);
             Gizmos.DrawLine(sw, nw);
-
-            var center = (va + vb) / 2;
-            var size = vb - va;
-
-            var cv3 = new Vector3(center.x, center.y, 0);
-            var sv3 = new Vector3(size.x, size.y, 1);
-
-            Gizmos.DrawCube(cv3, sv3);
-
-            // Gizmos.color = saveColor;
         }
 
 

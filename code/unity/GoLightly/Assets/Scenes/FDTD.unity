@@ -225,9 +225,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   computeShader: {fileID: 7200000, guid: abafb8f15e2fb4be1b5bf13f3950fb0d, type: 3}
   domainSize: {x: 2048, y: 1024}
-  contrast: 101.7
+  contrast: 62
   timeStep: 0
-  psiContrast: 0.7
+  psiContrast: 0.2
   simulationTimeStepsPerFrame: 1
   sources:
   - position: {x: 1024, y: 512, z: 0}
@@ -235,6 +235,7 @@ MonoBehaviour:
     wavelength: 3.23
     maxLife: 0
     _enabled: 1
+  clearMonitorsEachFrame: 1
   monitorMin: 3.4028235e+38
   monitorMax: -3.4028235e+38
   monitorValues: []
@@ -284,7 +285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   topLeft: {x: 256, y: 256}
-  bottomRight: {x: 256, y: 768}
+  bottomRight: {x: 246, y: 768}
   id: 1
   offset: 0
   count: 0
@@ -292,6 +293,7 @@ MonoBehaviour:
   maxHistoryLength: 128
   maxValue: -3.4028235e+38
   minValue: 3.4028235e+38
+  currentAverage: 0
   indices: 
 --- !u!114 &1148322545
 MonoBehaviour:
@@ -305,7 +307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83d4f7df574e54a498a2e99274e907cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topLeft: {x: 512, y: 868}
+  topLeft: {x: 512, y: 858}
   bottomRight: {x: 1536, y: 868}
   id: 0
   offset: 0
@@ -314,4 +316,5 @@ MonoBehaviour:
   maxHistoryLength: 128
   maxValue: -3.4028235e+38
   minValue: 3.4028235e+38
+  currentAverage: 0
   indices: 

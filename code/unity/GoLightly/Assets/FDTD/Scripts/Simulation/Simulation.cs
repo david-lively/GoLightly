@@ -642,7 +642,7 @@ namespace GoLightly
         {
             monitors = new List<Monitor>(FindObjectsOfType<Monitor>());
 
-            Debug.Log($"Found {monitors.Count} monitors.");
+            Debug.Log($"Found {monitors.Count} monitors. Domain size is {domainSize}");
 
             var numMonitorAddresses = 0;
             monitorAddresses = new List<int>(domainSize.x * domainSize.y);
@@ -653,13 +653,16 @@ namespace GoLightly
                 var monitor = monitors[i];
                 monitor.offset = offset;
 
+                if(!monitor.isInitialized)
+                    monitor.Initialize();
                 monitorAddresses.AddRange(monitor.indices);
-
                 Assert.IsTrue(monitor.isInitialized, $"Monitor {monitor.id} is not yet initialized!");
 
                 numMonitorAddresses += monitor.indices.Count;
                 /// add monitor to collection
             }
+
+            Debug.Log($"{nameof(monitorAddresses)}.{nameof(monitorAddresses.Count)} = {monitorAddresses.Count}");
 
             computeShader.SetInt("numMonitorAddresses", monitorAddresses.Count);
 
