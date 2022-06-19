@@ -24,6 +24,7 @@ namespace GoLightly
 
         public float maxValue = float.MinValue;
         public float minValue = float.MaxValue;
+        public float currentAverage = 0f;
         List<float> magnitudeHistory = new List<float>();
 
         float rmsMinValue = float.MaxValue;
@@ -81,19 +82,19 @@ namespace GoLightly
                 sum += buffer[i];
             }
 
-            var average = sum / indices.Count;
+            currentAverage = sum / indices.Count;
 
             /// history is a ring buffer. 
             if (history.Count < maxHistoryLength)
-                history.Add(average);
+                history.Add(currentAverage);
             else
             {
                 _historyIndex %= history.Count;
-                history[_historyIndex] = average;
+                history[_historyIndex] = currentAverage;
             }
 
-            minValue = Mathf.Min(minValue, average);
-            maxValue = Mathf.Max(maxValue, average);
+            minValue = Mathf.Min(minValue, currentAverage);
+            maxValue = Mathf.Max(maxValue, currentAverage);
             ++_historyIndex;
         }
 
@@ -123,14 +124,25 @@ namespace GoLightly
             Gizmos.DrawLine(se, sw);
             Gizmos.DrawLine(sw, nw);
 
+            var center = (va + vb) / 2;
+            var size = vb - va;
+
+            var cv3 = new Vector3(center.x, center.y, 0);
+            var sv3 = new Vector3(size.x, size.y, 1);
+
+            Gizmos.DrawCube(cv3, sv3);
+
             // Gizmos.color = saveColor;
         }
+
+
 
         public void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
             GizmoRect(topLeft, bottomRight);
             // var cam = Camera.main;
+
 
             // var tl = pixelToWorld(10, 10);
             // var br = pixelToWorld(2048 - 10, 1024 - 10);

@@ -124,7 +124,7 @@ namespace GoLightly
 
         public List<Source> sources = new List<Source>();
 
-        private bool clearMonitors;
+        public bool clearMonitorsEachFrame;
         private List<Monitor> monitors;
         private List<int> monitorAddresses;
 
@@ -290,7 +290,7 @@ namespace GoLightly
                 }
 
                 {
-                    computeShader.SetBool("clearMonitors", clearMonitors);
+                    computeShader.SetBool("clearMonitors", clearMonitorsEachFrame);
                     var numThreads = (int)Mathf.CeilToInt(monitorAddresses.Count / 64.0f);
                     RunKernel(_kernels["CSUpdateMonitors"], numThreads, 1);
                     ReadMonitors();

@@ -176,7 +176,7 @@ void CSUpdateMonitors(uint3 id : SV_DispatchThreadID)
         return;
 
     int offset = monitorAddresses[index];
-    if (false) //clearMonitors)
+    if (clearMonitors)
     {
         monitorValues[index] = pow(ez[offset],2);
     }
