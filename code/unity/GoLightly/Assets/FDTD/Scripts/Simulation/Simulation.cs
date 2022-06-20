@@ -35,7 +35,7 @@ namespace GoLightly
 {
     public partial class Simulation : MonoBehaviour
     {
-        private RenderTexture _renderTexture;
+        internal RenderTexture outputTexture;
         public ComputeShader computeShader;
         public Vector2Int domainSize = new Vector2Int(2048, 1024);
 
@@ -125,19 +125,19 @@ namespace GoLightly
         public List<Source> sources = new List<Source>();
 
         public bool clearMonitorsEachFrame;
-        private List<Monitor> monitors;
-        private List<int> monitorAddresses;
+        private List<Monitor> monitors = new List<Monitor>();
+        private List<int> monitorAddresses = new List<int>();
 
         // Start is called before the first frame update
         void Start()
         {
-            if (null == _renderTexture)
+            if (null == outputTexture)
             {
                 Debug.Log("Creating render texture");
-                _renderTexture = new RenderTexture(domainSize.x, domainSize.y, 24);
-                _renderTexture.enableRandomWrite = true;
+                outputTexture = new RenderTexture(domainSize.x, domainSize.y, 24);
+                outputTexture.enableRandomWrite = true;
 
-                var textureWasCreated = _renderTexture.Create();
+                var textureWasCreated = outputTexture.Create();
                 Assert.IsTrue(textureWasCreated, "Could not create visualizer texture.");
             }
 
@@ -151,12 +151,12 @@ namespace GoLightly
             if (_isInitialized)
                 return;
 
-            if (null == _renderTexture)
+            if (null == outputTexture)
             {
                 Debug.Log("Creating render texture");
-                _renderTexture = new RenderTexture(domainSize.x, domainSize.y, 24);
-                _renderTexture.enableRandomWrite = true;
-                _renderTexture.Create();
+                outputTexture = new RenderTexture(domainSize.x, domainSize.y, 24);
+                outputTexture.enableRandomWrite = true;
+                outputTexture.Create();
             }
 
             {
@@ -230,16 +230,16 @@ namespace GoLightly
             }
             _buffers.Clear();
 
-            _renderTexture.Release();
-            _renderTexture = null;
+            outputTexture.Release();
+            outputTexture = null;
 
             _isInitialized = false;
         }
 
         private void RunKernel(int kernelIndex)
         {
-            var threadGroupsX = _renderTexture.width / 32;
-            var threadGroupsY = _renderTexture.height / 32;
+            var threadGroupsX = outputTexture.width / 32;
+            var threadGroupsY = outputTexture.height / 32;
 
             RunKernel(kernelIndex, threadGroupsX, threadGroupsY);
         }
@@ -249,8 +249,11 @@ namespace GoLightly
             computeShader.SetBuffer(kernelIndex, "ez", _buffers["ez"]);
             computeShader.SetBuffer(kernelIndex, "hx", _buffers["hx"]);
             computeShader.SetBuffer(kernelIndex, "hy", _buffers["hy"]);
-            computeShader.SetBuffer(kernelIndex, "monitorAddresses", _buffers["monitorAddresses"]);
-            computeShader.SetBuffer(kernelIndex, "monitorValues", _buffers["monitorValues"]);
+            if (monitorAddresses.Count > 0)
+            {
+                computeShader.SetBuffer(kernelIndex, "monitorAddresses", _buffers["monitorAddresses"]);
+                computeShader.SetBuffer(kernelIndex, "monitorValues", _buffers["monitorValues"]);
+            }
             computeShader.SetBuffer(kernelIndex, "sources", _buffers["sources"]);
             computeShader.SetBuffer(kernelIndex, "decay_all", _buffers["decay_all"]);
             computeShader.SetBuffer(kernelIndex, "cb", _buffers["cb"]);
@@ -264,7 +267,7 @@ namespace GoLightly
         {
             computeShader.SetFloat("time", Time.fixedTime);
             computeShader.SetVector("domainSize", new Vector4(domainSize.x, domainSize.y, 0, 0));
-            computeShader.SetTexture(0, "VisualizerTexture", _renderTexture);
+            computeShader.SetTexture(0, "VisualizerTexture", outputTexture);
 
             computeShader.SetVector("domainSize", new Vector2(domainSize.x, domainSize.y));
             computeShader.SetInt("numSources", sources.Count);
@@ -298,15 +301,17 @@ namespace GoLightly
 
                 ++timeStep;
             }
+
+            UpdateVisualizerTexture(outputTexture);
         }
 
-        private void UpdateVisualizerTexture(RenderTexture gameView)
+        public void UpdateVisualizerTexture(RenderTexture gameView)
         {
             var kernelName = "CSUpdateVisualizerTexture";
             if (_kernels.TryGetValue(kernelName, out var kernelIndex))
             {
                 computeShader.SetTexture(kernelIndex, "GameViewTexture", gameView);
-                computeShader.SetTexture(kernelIndex, "VisualizerTexture", _renderTexture);
+                computeShader.SetTexture(kernelIndex, "VisualizerTexture", outputTexture);
                 computeShader.SetFloat("contrast", contrast);
                 computeShader.SetFloat("psiContrast", psiContrast);
                 computeShader.SetVector("GameViewTextureSize", new Vector4(gameView.width, gameView.height, 0, 0));
@@ -322,11 +327,7 @@ namespace GoLightly
             RunSimulationStep(simulationTimeStepsPerFrame);
         }
 
-        public void OnRenderImage(RenderTexture source, RenderTexture destination)
-        {
-            UpdateVisualizerTexture(source);
-            Graphics.Blit(_renderTexture, destination);
-        }
+
 
         private void CreateBoundaryOutside(float4[] decayAll, int2 minCoord, int2 maxCoord)
         {
@@ -643,6 +644,12 @@ namespace GoLightly
             monitors = new List<Monitor>(FindObjectsOfType<Monitor>());
 
             Debug.Log($"Found {monitors.Count} monitors. Domain size is {domainSize}");
+
+            if (0 == monitors.Count)
+            {
+                Debug.LogWarning($"No monitors found. No results will be saved.");
+                return;
+            }
 
             var numMonitorAddresses = 0;
             monitorAddresses = new List<int>(domainSize.x * domainSize.y);

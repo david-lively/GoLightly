@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEditor;
 
 namespace GoLightly
 {
@@ -39,6 +40,8 @@ namespace GoLightly
         [HideInInspector]
         public List<int> indices;
 
+        private Simulation _simulation;
+
         public void Start()
         {
             Initialize();
@@ -49,9 +52,11 @@ namespace GoLightly
             if (isInitialized)
                 return;
 
-            var simulation = FindObjectOfType<Simulation>();
+            _simulation = FindObjectOfType<Simulation>();
+            
+            Assert.IsNotNull(_simulation, "No Simulation component found.");
 
-            var domainSize = simulation.domainSize;
+            var domainSize = _simulation.domainSize;
             var domainMax = domainSize - Vector2Int.one;
 
             var min = Vector2Int.Max(Vector2Int.Min(topLeft, bottomRight), Vector2Int.zero);
@@ -84,6 +89,8 @@ namespace GoLightly
                 return;
 
             var sum = 0f;
+
+            // integrate all of the ez^2 values for this monitor
 
             for (var i = offset; i < offset + indices.Count; ++i)
             {
@@ -133,19 +140,14 @@ namespace GoLightly
             Gizmos.DrawLine(sw, nw);
         }
 
-
-
         public void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
             GizmoRect(topLeft, bottomRight);
-            // var cam = Camera.main;
 
-
-            // var tl = pixelToWorld(10, 10);
-            // var br = pixelToWorld(2048 - 10, 1024 - 10);
-            // Gizmos.color = Color.red;
-            // Gizmos.DrawLine(tl, br);
+            var center = (topLeft + bottomRight) / 2;
+            var cv3 = pixelToWorld(center.x, center.y);
+            Handles.Label(cv3, $"Monitor {id}");
         }
     }
 }

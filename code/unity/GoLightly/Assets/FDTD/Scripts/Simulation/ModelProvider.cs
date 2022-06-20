@@ -13,10 +13,11 @@ namespace GoLightly
         private Simulation _simulation;
         private SimulationParameters Parameters => _simulation.parameters;
 
+
         // Start is called before the first frame update
         void Awake()
         {
-            _simulation = GetComponent<Simulation>();
+            _simulation = FindObjectOfType<Simulation>();
             Assert.IsNotNull(_simulation, $"Could not find {nameof(Simulation)} component.");
             _simulation.onGenerateModels = generateModels;
             // _simulation.onGenerateModels = generateCrystal;
