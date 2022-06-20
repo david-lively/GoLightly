@@ -349,8 +349,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   removeExistingMonitors: 1
   simulation: {fileID: 1825343613}
-  padding: 128
+  padding: 16
   boxWidth: 512
+  thickness: 16
 --- !u!4 &1996864572
 Transform:
   m_ObjectHideFlags: 0
@@ -379,8 +380,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 3
   name: Dynamic Monitor 3
-  topLeft: {x: 384, y: 256}
-  bottomRight: {x: 640, y: 256}
+  topLeft: {x: 272, y: 240}
+  bottomRight: {x: 752, y: 256}
   offset: 0
   count: 0
   history: []
@@ -403,8 +404,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   name: Dynamic Monitor 2
-  topLeft: {x: 384, y: 768}
-  bottomRight: {x: 640, y: 768}
+  topLeft: {x: 272, y: 784}
+  bottomRight: {x: 752, y: 768}
   offset: 0
   count: 0
   history: []
@@ -427,8 +428,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   name: Dynamic Monitor 1
-  topLeft: {x: 768, y: 640}
-  bottomRight: {x: 768, y: 384}
+  topLeft: {x: 768, y: 752}
+  bottomRight: {x: 784, y: 272}
   offset: 0
   count: 0
   history: []
@@ -451,8 +452,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   name: Dynamic Monitor 0
-  topLeft: {x: 256, y: 640}
-  bottomRight: {x: 256, y: 384}
+  topLeft: {x: 240, y: 752}
+  bottomRight: {x: 256, y: 272}
   offset: 0
   count: 0
   history: []

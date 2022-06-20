@@ -14,6 +14,7 @@ namespace GoLightly
         public readonly string msg = "Hello world";
         public int padding = 16;
         public int boxWidth = 512;
+        public int thickness = 8;
 
         // Start is called before the first frame update
         void Start()
@@ -64,13 +65,13 @@ namespace GoLightly
 
             var rects = new int[] {
                 // left
-                west,north-padding, west, south+padding, 
+                west-thickness,north-padding, west, south+padding, 
                 // right
-                east,north-padding,east,south+padding,
+                east,north-padding,east+thickness,south+padding,
                 //top
-                west+padding,north,east-padding,north,
+                west+padding,north+thickness,east-padding,north,
                 // bottom
-                west+padding, south, east-padding, south,
+                west+padding, south-thickness, east-padding, south,
             };
 
             for (var i = 0; i < rects.Length; i += 4)
