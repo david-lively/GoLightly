@@ -31,21 +31,6 @@ namespace GoLightly
 
         }
 
-        void generateCrystal(float[] data)
-        {
-            /* assume a source value of 600nm
-             a = 1.2um
-             r = 0.2 * a
-             epsR = 8.9
-
-             dx = lambda / 10 = 62nm
-             
-             assume dx = 
-
-            */
-            float cellWidth = 62; // nm
-        }
-
         void generateSources(List<Simulation.Source> sources)
         {
             var size = _simulation.domainSize;
@@ -69,7 +54,7 @@ namespace GoLightly
 
         void generateModels(float[] data)
         {
-
+            Debug.Log($"ModelProvider.GenerateModels");
             if (null == tileTexture)
             {
                 Debug.Log($"No Tile is set. Cb array will be empty.");

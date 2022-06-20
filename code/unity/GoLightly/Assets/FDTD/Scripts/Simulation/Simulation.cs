@@ -686,8 +686,12 @@ namespace GoLightly
             _buffers["monitorValues"] = monitorValues;
         }
 
+        
+        [HideInInspector]
         public float monitorMin = float.MaxValue;
+        [HideInInspector]
         public float monitorMax = float.MinValue;
+        [HideInInspector]
         public float[] monitorValues;
 
 

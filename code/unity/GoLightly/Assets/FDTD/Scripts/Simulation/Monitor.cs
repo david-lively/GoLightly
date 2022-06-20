@@ -11,8 +11,8 @@ namespace GoLightly
         [HideInInspector]
         public static int nextId = 0;
         public int id = nextId++;
-        
-        public string name;
+
+        public string friendlyName;
 
         public Vector2Int topLeft = new Vector2Int(16, 16);
         public Vector2Int bottomRight = new Vector2Int(256, 256);
@@ -30,6 +30,7 @@ namespace GoLightly
 
         public float maxValue = float.MinValue;
         public float minValue = float.MaxValue;
+        public float currentValue = 0f;
         public float currentRMS = 0f;
         List<float> magnitudeHistory = new List<float>();
 
@@ -101,8 +102,8 @@ namespace GoLightly
             {
                 sum += buffer[i];
             }
-
-            currentRMS = Mathf.Sqrt(sum / indices.Count);
+            currentValue = Mathf.Sqrt(sum);
+            currentRMS = Mathf.Sqrt(currentValue / indices.Count);
 
             /// history is a ring buffer. 
             if (history.Count < maxHistoryLength)

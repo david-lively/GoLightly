@@ -80,7 +80,7 @@ namespace GoLightly
                 var monitor = this.gameObject.AddComponent<Monitor>();
                 monitor.topLeft = center + new Vector2Int(rects[i], rects[i + 1]);
                 monitor.bottomRight = center + new Vector2Int(rects[i + 2], rects[i + 3]);
-                monitor.name = $"Dynamic Monitor {monitor.id}";
+                monitor.friendlyName = $"Dynamic Monitor {monitor.id}";
             }
 
         }
