@@ -36,6 +36,7 @@ namespace GoLightly
     [DisallowMultipleComponent]
     public partial class Simulation : MonoBehaviour
     {
+        public Vector2Int outputTextureSize = new Vector2Int(2048, 1024);
         public RenderTexture outputTexture;
         public ComputeShader computeShader;
         public Vector2Int domainSize = new Vector2Int(2048, 1024);
@@ -137,7 +138,8 @@ namespace GoLightly
             if (null == outputTexture)
             {
                 Debug.Log("Creating render texture");
-                outputTexture = new RenderTexture(domainSize.x, domainSize.y, 24);
+                // outputTexture = new RenderTexture(domainSize.x, domainSize.y, 24);
+                outputTexture = new RenderTexture(outputTextureSize.x, outputTextureSize.y, 24);
                 outputTexture.enableRandomWrite = true;
 
                 var textureWasCreated = outputTexture.Create();
@@ -241,8 +243,8 @@ namespace GoLightly
 
         private void RunKernel(int kernelIndex)
         {
-            var threadGroupsX = outputTexture.width / 32;
-            var threadGroupsY = outputTexture.height / 32;
+            var threadGroupsX = domainSize.x / 32;
+            var threadGroupsY = domainSize.y / 32;
 
             RunKernel(kernelIndex, threadGroupsX, threadGroupsY);
         }

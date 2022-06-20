@@ -434,7 +434,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AssetsPPU: 1
-  m_RefResolutionX: 2048
+  m_RefResolutionX: 1024
   m_RefResolutionY: 1024
   m_UpscaleRT: 0
   m_PixelSnapping: 1
@@ -575,7 +575,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1825343612}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5abb8a35a69794b019208f3aab030bb7, type: 3}
   m_Name: 
@@ -591,6 +591,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1996864572}
   - component: {fileID: 1996864571}
+  - component: {fileID: 1996864576}
+  - component: {fileID: 1996864575}
+  - component: {fileID: 1996864574}
+  - component: {fileID: 1996864573}
   m_Layer: 0
   m_Name: Monitors
   m_TagString: Untagged
@@ -629,3 +633,103 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1996864573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996864570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d4f7df574e54a498a2e99274e907cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 3
+  friendlyName: Dynamic Monitor 3
+  topLeft: {x: 272, y: 240}
+  bottomRight: {x: 752, y: 256}
+  offset: 0
+  count: 0
+  history: []
+  maxHistoryLength: 128
+  maxValue: -3.4028235e+38
+  minValue: 3.4028235e+38
+  currentValue: 0
+  currentRMS: 0
+  indices: 
+--- !u!114 &1996864574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996864570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d4f7df574e54a498a2e99274e907cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 2
+  friendlyName: Dynamic Monitor 2
+  topLeft: {x: 272, y: 784}
+  bottomRight: {x: 752, y: 768}
+  offset: 0
+  count: 0
+  history: []
+  maxHistoryLength: 128
+  maxValue: -3.4028235e+38
+  minValue: 3.4028235e+38
+  currentValue: 0
+  currentRMS: 0
+  indices: 
+--- !u!114 &1996864575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996864570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d4f7df574e54a498a2e99274e907cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 1
+  friendlyName: Dynamic Monitor 1
+  topLeft: {x: 768, y: 752}
+  bottomRight: {x: 784, y: 272}
+  offset: 0
+  count: 0
+  history: []
+  maxHistoryLength: 128
+  maxValue: -3.4028235e+38
+  minValue: 3.4028235e+38
+  currentValue: 0
+  currentRMS: 0
+  indices: 
+--- !u!114 &1996864576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996864570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d4f7df574e54a498a2e99274e907cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+  friendlyName: Dynamic Monitor 0
+  topLeft: {x: 240, y: 752}
+  bottomRight: {x: 256, y: 272}
+  offset: 0
+  count: 0
+  history: []
+  maxHistoryLength: 128
+  maxValue: -3.4028235e+38
+  minValue: 3.4028235e+38
+  currentValue: 0
+  currentRMS: 0
+  indices: 
