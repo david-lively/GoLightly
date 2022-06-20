@@ -8,9 +8,14 @@ namespace GoLightly
 {
     public class Monitor : MonoBehaviour
     {
-        public Vector2Int topLeft;
-        public Vector2Int bottomRight;
-        public int id;
+        [HideInInspector]
+        public static int nextId = 0;
+        public int id = nextId++;
+        
+        public string name;
+
+        public Vector2Int topLeft = new Vector2Int(16, 16);
+        public Vector2Int bottomRight = new Vector2Int(256, 256);
         public int offset;
         public int count;
 

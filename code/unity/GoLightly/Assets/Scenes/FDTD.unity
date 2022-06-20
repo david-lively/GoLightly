@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 1148322539}
   - component: {fileID: 1148322538}
   - component: {fileID: 1148322542}
+  - component: {fileID: 1148322541}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -207,6 +208,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1148322541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148322537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d042d38c8ce9a4de99a167900f862a9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  simulation: {fileID: 1825343613}
 --- !u!114 &1148322542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,7 +252,6 @@ GameObject:
   - component: {fileID: 1825343614}
   - component: {fileID: 1825343613}
   - component: {fileID: 1825343615}
-  - component: {fileID: 1825343616}
   m_Layer: 0
   m_Name: Simulation
   m_TagString: Untagged
@@ -301,29 +314,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileTexture: {fileID: 2800000, guid: a728eb0d8ffd64c9b9f5dbff2d26bb54, type: 3}
---- !u!114 &1825343616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1825343612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83d4f7df574e54a498a2e99274e907cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  topLeft: {x: 256, y: 256}
-  bottomRight: {x: 768, y: 768}
-  id: 0
-  offset: 0
-  count: 0
-  history: []
-  maxHistoryLength: 128
-  maxValue: -3.4028235e+38
-  minValue: 3.4028235e+38
-  currentRMS: 0
-  indices: 
 --- !u!1 &1996864570
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,8 +324,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1996864572}
   - component: {fileID: 1996864571}
+  - component: {fileID: 1996864576}
+  - component: {fileID: 1996864575}
+  - component: {fileID: 1996864574}
+  - component: {fileID: 1996864573}
   m_Layer: 0
-  m_Name: Controls
+  m_Name: Monitors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -353,6 +347,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae71c434261c04a7a82cde1b8baba537, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  removeExistingMonitors: 1
+  simulation: {fileID: 1825343613}
+  padding: 128
+  boxWidth: 512
 --- !u!4 &1996864572
 Transform:
   m_ObjectHideFlags: 0
@@ -367,3 +365,99 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1996864573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996864570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d4f7df574e54a498a2e99274e907cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 3
+  name: Dynamic Monitor 3
+  topLeft: {x: 384, y: 256}
+  bottomRight: {x: 640, y: 256}
+  offset: 0
+  count: 0
+  history: []
+  maxHistoryLength: 128
+  maxValue: -3.4028235e+38
+  minValue: 3.4028235e+38
+  currentRMS: 0
+  indices: 
+--- !u!114 &1996864574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996864570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d4f7df574e54a498a2e99274e907cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 2
+  name: Dynamic Monitor 2
+  topLeft: {x: 384, y: 768}
+  bottomRight: {x: 640, y: 768}
+  offset: 0
+  count: 0
+  history: []
+  maxHistoryLength: 128
+  maxValue: -3.4028235e+38
+  minValue: 3.4028235e+38
+  currentRMS: 0
+  indices: 
+--- !u!114 &1996864575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996864570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d4f7df574e54a498a2e99274e907cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 1
+  name: Dynamic Monitor 1
+  topLeft: {x: 768, y: 640}
+  bottomRight: {x: 768, y: 384}
+  offset: 0
+  count: 0
+  history: []
+  maxHistoryLength: 128
+  maxValue: -3.4028235e+38
+  minValue: 3.4028235e+38
+  currentRMS: 0
+  indices: 
+--- !u!114 &1996864576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996864570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d4f7df574e54a498a2e99274e907cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+  name: Dynamic Monitor 0
+  topLeft: {x: 256, y: 640}
+  bottomRight: {x: 256, y: 384}
+  offset: 0
+  count: 0
+  history: []
+  maxHistoryLength: 128
+  maxValue: -3.4028235e+38
+  minValue: 3.4028235e+38
+  currentRMS: 0
+  indices: 

@@ -33,6 +33,7 @@ using Unity.Mathematics;
 */
 namespace GoLightly
 {
+    [DisallowMultipleComponent]
     public partial class Simulation : MonoBehaviour
     {
         internal RenderTexture outputTexture;
@@ -292,6 +293,7 @@ namespace GoLightly
                     RunKernel(_kernels[kernelNames[i]]);
                 }
 
+                if (monitorAddresses.Count > 0)
                 {
                     computeShader.SetBool("clearMonitors", clearMonitorsEachFrame);
                     var numThreads = (int)Mathf.CeilToInt(monitorAddresses.Count / 64.0f);
@@ -641,7 +643,7 @@ namespace GoLightly
 
         private void InitializeMonitors()
         {
-            monitors = new List<Monitor>(FindObjectsOfType<Monitor>());
+            monitors = new List<Monitor>(GameObject.FindObjectsOfType<Monitor>());
 
             Debug.Log($"Found {monitors.Count} monitors. Domain size is {domainSize}");
 
