@@ -44,6 +44,7 @@ namespace GoLightly
 
         public UnityAction<float[]> onGenerateModels;
         public UnityAction<List<Source>> onGenerateSources;
+        public UnityAction<List<Monitor>> onUpdateInstruments;
 
         [Range(1, 200)]
         public float contrast = 80;
@@ -52,6 +53,7 @@ namespace GoLightly
         [Range(0, 100)]
         public float psiContrast = 0;
 
+        [Range(1,20)]
         public uint simulationTimeStepsPerFrame = 1;
 
         readonly float[] e_decay = new float[] {
@@ -264,7 +266,7 @@ namespace GoLightly
             computeShader.Dispatch(kernelIndex, threadGroupsX, threadGroupsY, 1);
         }
 
-        private void RunSimulationStep(uint steps = 1)
+        private void RunSimulationSteps(uint steps = 1)
         {
             computeShader.SetFloat("time", Time.fixedTime);
             computeShader.SetVector("domainSize", new Vector4(domainSize.x, domainSize.y, 0, 0));
@@ -326,7 +328,7 @@ namespace GoLightly
         // Update is called once per frame
         public void Update()
         {
-            RunSimulationStep(simulationTimeStepsPerFrame);
+            RunSimulationSteps(simulationTimeStepsPerFrame);
         }
 
 
@@ -702,6 +704,8 @@ namespace GoLightly
 
             foreach(var monitor in monitors)
                 monitor.UpdateFromBuffer(monitorValues);
+
+            onUpdateInstruments?.Invoke(monitors);
 
         }
 

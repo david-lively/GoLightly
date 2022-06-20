@@ -9,9 +9,10 @@ namespace GoLightly
     /// This blits the simulation visualization texture to the camera on this
     /// GameObject. 
     /// </summary>
-    public class ShowSimulationOutput : MonoBehaviour
+    public class InstrumentUI : MonoBehaviour
     {
         public Simulation simulation;
+        public DD_DataDiagram dataDiagram;
         // Start is called before the first frame update
         void Start()
         {
