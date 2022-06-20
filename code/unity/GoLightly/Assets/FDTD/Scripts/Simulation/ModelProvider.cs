@@ -54,6 +54,8 @@ namespace GoLightly
 
         void generateModels(float[] data)
         {
+            if(!isActiveAndEnabled)
+                return;
             Debug.Log($"ModelProvider.GenerateModels");
             if (null == tileTexture)
             {

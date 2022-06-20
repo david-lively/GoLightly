@@ -21,7 +21,8 @@ public class Graph : MonoBehaviour
     public List<float> values;
 
     // The list the drawing function uses...
-    private List<float> drawValues = new List<float>();
+    // private List<float> drawValues = new List<float>();
+    public List<GoLightly.Monitor> monitors;
 
     // List of Windows
     private bool showWindow = true;
@@ -57,9 +58,32 @@ public class Graph : MonoBehaviour
         if (showWindow)
         {
             // Set out drawValue list equal to the values list 
-            drawValues = values;
+            // drawValues = values;
             windowRect = GUI.Window(0, windowRect, DrawGraph, "");
         }
+    }
+
+
+    void drawSeries(List<float> values)
+    {
+            GL.Begin(GL.LINES);
+            GL.Color(Color.green);
+
+            int valueIndex = values.Count - 1;
+            for (int i = (int)windowRect.width - 4; i > 3; i--)
+            {
+                float y1 = 0;
+                float y2 = 0;
+                if (valueIndex > 0)
+                {
+                    y2 = values[valueIndex] * yScale + offset;
+                    y1 = values[valueIndex - 1] * yScale + offset;
+                }
+                GL.Vertex3(i, windowRect.height - 4 - y2, 0);
+                GL.Vertex3((i - 1), windowRect.height - 4 - y1, 0);
+                valueIndex -= 1;
+            }
+            GL.End();
     }
 
     void DrawGraph(int windowID)
@@ -85,24 +109,8 @@ public class Graph : MonoBehaviour
             GL.End();
 
             // Draw the lines of the graph
-            GL.Begin(GL.LINES);
-            GL.Color(Color.green);
 
-            int valueIndex = drawValues.Count - 1;
-            for (int i = (int)windowRect.width - 4; i > 3; i--)
-            {
-                float y1 = 0;
-                float y2 = 0;
-                if (valueIndex > 0)
-                {
-                    y2 = drawValues[valueIndex] * yScale + offset;
-                    y1 = drawValues[valueIndex - 1] * yScale + offset;
-                }
-                GL.Vertex3(i, windowRect.height - 4 - y2, 0);
-                GL.Vertex3((i - 1), windowRect.height - 4 - y1, 0);
-                valueIndex -= 1;
-            }
-            GL.End();
+            drawSeries(values);
 
             GL.PopMatrix();
         }

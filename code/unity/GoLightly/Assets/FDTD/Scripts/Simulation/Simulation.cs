@@ -36,7 +36,7 @@ namespace GoLightly
     [DisallowMultipleComponent]
     public partial class Simulation : MonoBehaviour
     {
-        internal RenderTexture outputTexture;
+        public RenderTexture outputTexture;
         public ComputeShader computeShader;
         public Vector2Int domainSize = new Vector2Int(2048, 1024);
 
