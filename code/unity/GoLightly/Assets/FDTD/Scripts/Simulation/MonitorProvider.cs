@@ -14,7 +14,7 @@ namespace GoLightly
         public readonly string msg = "Hello world";
         public int padding = 16;
         public int boxWidth = 512;
-        public int thickness = 8;
+        public int thickness = 8;       
 
         // Start is called before the first frame update
         void Start()
@@ -74,15 +74,32 @@ namespace GoLightly
                 west+padding, south-thickness, east-padding, south,
             };
 
+            var monitors = new List<Monitor>();
             for (var i = 0; i < rects.Length; i += 4)
             {
                 // var monitor = simulation.gameObject.AddComponent<Monitor>();
                 var monitor = this.gameObject.AddComponent<Monitor>();
                 monitor.topLeft = center + new Vector2Int(rects[i], rects[i + 1]);
                 monitor.bottomRight = center + new Vector2Int(rects[i + 2], rects[i + 3]);
-                monitor.friendlyName = $"Dynamic Monitor {monitor.id}";
+                monitor.friendlyName = $"monitor_{monitor.id}";
+                monitors.Add(monitor);
             }
 
+#if false
+            {
+                /// test code - shifts the eastern monitor 100 cells to the right.
+                var offset = 100;
+                var m = monitors[1];
+                
+                var v = m.topLeft;
+                v.x += offset;
+                m.topLeft = v;
+                
+                v = m.bottomRight;
+                v.x += offset;
+                m.bottomRight = v;
+            }
+#endif
         }
 
 

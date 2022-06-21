@@ -54,7 +54,7 @@ namespace GoLightly
         [Range(0, 100)]
         public float psiContrast = 0;
 
-        [Range(1,20)]
+        [Range(1, 20)]
         public uint simulationTimeStepsPerFrame = 1;
 
         readonly float[] e_decay = new float[] {
@@ -660,19 +660,18 @@ namespace GoLightly
             var numMonitorAddresses = 0;
             monitorAddresses = new List<int>(domainSize.x * domainSize.y);
 
-            var offset = 0;
+            // var offset = 0;
             for (var i = 0; i < monitors.Count; ++i)
             {
                 var monitor = monitors[i];
-                monitor.offset = offset;
+                monitor.offset = numMonitorAddresses;
 
-                if(!monitor.isInitialized)
+                if (!monitor.isInitialized)
                     monitor.Initialize();
                 monitorAddresses.AddRange(monitor.indices);
                 Assert.IsTrue(monitor.isInitialized, $"Monitor {monitor.id} is not yet initialized!");
 
                 numMonitorAddresses += monitor.indices.Count;
-                /// add monitor to collection
             }
 
             Debug.Log($"{nameof(monitorAddresses)}.{nameof(monitorAddresses.Count)} = {monitorAddresses.Count}");
@@ -688,7 +687,7 @@ namespace GoLightly
             _buffers["monitorValues"] = monitorValues;
         }
 
-        
+
         [HideInInspector]
         public float monitorMin = float.MaxValue;
         [HideInInspector]
@@ -708,10 +707,21 @@ namespace GoLightly
             var buffer = _buffers["monitorValues"];
             buffer.GetData(monitorValues);
 
-            foreach(var monitor in monitors)
+            foreach (var monitor in monitors)
                 monitor.UpdateFromBuffer(monitorValues);
 
             onUpdateInstruments?.Invoke(monitors);
+        }
+
+
+        void OnDrawGizmos()
+        {
+            foreach(var source in sources)
+            {
+                var px = UI.Helpers.pixelToWorld((int)source.position.x, (int)source.position.y);
+                Gizmos.color = Color.white;
+                Gizmos.DrawSphere(px, 0.2f);
+            }
 
         }
 

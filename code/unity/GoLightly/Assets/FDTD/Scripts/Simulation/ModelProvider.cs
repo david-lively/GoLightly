@@ -99,7 +99,8 @@ namespace GoLightly
 
                     var g = color.g;
 
-                    if ((j >= mn && j <= mx) || g <= 0)
+                    // if ((j >= mn && j <= mx) || g <= 0)
+                    if (g <= 0)
                     {
                         var n = dt / dx;
                         data[textureOffset] = n;

@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Events;
 using UnityEditor;
+using GoLightly;
 
 namespace GoLightly
 {
@@ -21,6 +23,8 @@ namespace GoLightly
 
         public List<float> history = new List<float>();
         public int maxHistoryLength = 128;
+
+        public UnityEvent<Monitor> onUpdateData;
 
         /// <summary>
         /// Cell offset for each monitor "pixel" location. These correspond to y * width + x values in the domain.
@@ -48,18 +52,19 @@ namespace GoLightly
 
         private Simulation _simulation;
 
+
         public void Start()
         {
             Initialize();
         }
-     
+
         public void Initialize()
         {
             if (isInitialized)
                 return;
 
             _simulation = FindObjectOfType<Simulation>();
-            
+
             Assert.IsNotNull(_simulation, "No Simulation component found.");
 
             var domainSize = _simulation.domainSize;
@@ -117,43 +122,18 @@ namespace GoLightly
             minValue = Mathf.Min(minValue, currentRMS);
             maxValue = Mathf.Max(maxValue, currentRMS);
             ++_historyIndex;
+            onUpdateData?.Invoke(this);
         }
 
-
-        public static Vector3 pixelToWorld(int x, int y)
-        {
-            var v = new Vector3(x, y, 0);
-            var s = Camera.main.ScreenToWorldPoint(v);
-            s.z = 0;
-            return s;
-        }
-
-        public static void GizmoRect(Vector2Int min, Vector2Int max)
-        {
-            var va = Vector2Int.Min(min, max);
-            var vb = Vector2Int.Max(min, max);
-
-            var nw = pixelToWorld(va.x, va.y);
-            var se = pixelToWorld(vb.x, vb.y);
-            var ne = pixelToWorld(vb.x, va.y);
-            var sw = pixelToWorld(va.x, vb.y);
-
-            // var saveColor = Gizmos.color;
-
-            Gizmos.DrawLine(nw, ne);
-            Gizmos.DrawLine(ne, se);
-            Gizmos.DrawLine(se, sw);
-            Gizmos.DrawLine(sw, nw);
-        }
 
         public void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
-            GizmoRect(topLeft, bottomRight);
+            UI.Helpers.GizmoRect(topLeft, bottomRight);
 
             var center = (topLeft + bottomRight) / 2;
-            var cv3 = pixelToWorld(center.x, center.y);
-            Handles.Label(cv3, $"Monitor {id}");
+            var cv3 = UI.Helpers.pixelToWorld(center.x, center.y);
+            Handles.Label(cv3, $"{friendlyName}({id}))");
         }
     }
 }
