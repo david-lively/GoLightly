@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 383829437}
   - component: {fileID: 383829436}
   - component: {fileID: 383829435}
+  - component: {fileID: 383829440}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -157,12 +158,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   windowRect:
     serializedVersion: 2
-    x: 20
-    y: 20
-    width: 512
+    x: 1023
+    y: 0
+    width: 1024
     height: 256
-  yScale: 200
-  offset: 0
+  yScale: 300
+  offset: 20
   values: []
   monitors: []
 --- !u!114 &383829436
@@ -246,6 +247,28 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &383829440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 383829434}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 767826d86ee904ba585d98710b71487a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  windowRect:
+    serializedVersion: 2
+    x: 20
+    y: 20
+    width: 1000
+    height: 256
+  yScale: 300
+  offset: 20
+  values: []
+  monitors: []
 --- !u!1 &506920903
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,7 +457,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AssetsPPU: 1
-  m_RefResolutionX: 1024
+  m_RefResolutionX: 2048
   m_RefResolutionY: 1024
   m_UpscaleRT: 0
   m_PixelSnapping: 1
@@ -537,6 +560,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13043e2ed91a54537a584861ec667021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  outputTextureSize: {x: 2048, y: 1024}
   outputTexture: {fileID: 0}
   computeShader: {fileID: 7200000, guid: abafb8f15e2fb4be1b5bf13f3950fb0d, type: 3}
   domainSize: {x: 1024, y: 1024}
@@ -618,7 +642,7 @@ MonoBehaviour:
   simulation: {fileID: 1825343613}
   padding: 16
   boxWidth: 512
-  thickness: 16
+  thickness: 10
 --- !u!4 &1996864572
 Transform:
   m_ObjectHideFlags: 0
@@ -647,7 +671,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 3
   friendlyName: Dynamic Monitor 3
-  topLeft: {x: 272, y: 240}
+  topLeft: {x: 272, y: 246}
   bottomRight: {x: 752, y: 256}
   offset: 0
   count: 0
@@ -672,7 +696,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   friendlyName: Dynamic Monitor 2
-  topLeft: {x: 272, y: 784}
+  topLeft: {x: 272, y: 778}
   bottomRight: {x: 752, y: 768}
   offset: 0
   count: 0
@@ -698,7 +722,7 @@ MonoBehaviour:
   id: 1
   friendlyName: Dynamic Monitor 1
   topLeft: {x: 768, y: 752}
-  bottomRight: {x: 784, y: 272}
+  bottomRight: {x: 778, y: 272}
   offset: 0
   count: 0
   history: []
@@ -722,7 +746,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   friendlyName: Dynamic Monitor 0
-  topLeft: {x: 240, y: 752}
+  topLeft: {x: 246, y: 752}
   bottomRight: {x: 256, y: 272}
   offset: 0
   count: 0
