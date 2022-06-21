@@ -64,14 +64,14 @@ namespace GoLightly
             var south = -halfWidth;
 
             var rects = new int[] {
-                // left
-                west-thickness,north-padding, west, south+padding, 
-                // right
-                east,north-padding,east+thickness,south+padding,
                 //top
                 west+padding,north+thickness,east-padding,north,
+                // right
+                east,north-padding,east+thickness,south+padding,
                 // bottom
                 west+padding, south-thickness, east-padding, south,
+                // left
+                west-thickness,north-padding, west, south+padding, 
             };
 
             var monitors = new List<Monitor>();

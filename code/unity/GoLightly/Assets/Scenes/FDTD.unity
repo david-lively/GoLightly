@@ -615,6 +615,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1674205190
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1674205192}
+  m_Layer: 0
+  m_Name: Notes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1674205192
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1674205190}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.07247891, y: -0.15351303, z: -317.5065}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1825343612
 GameObject:
   m_ObjectHideFlags: 0
@@ -626,6 +656,7 @@ GameObject:
   - component: {fileID: 1825343614}
   - component: {fileID: 1825343613}
   - component: {fileID: 1825343615}
+  - component: {fileID: 1825343616}
   m_Layer: 0
   m_Name: Simulation
   m_TagString: Untagged
@@ -657,7 +688,7 @@ MonoBehaviour:
   - position: {x: 511, y: 511, z: 0}
     amplitude: 1
     wavelength: 3.23
-    maxLife: 100
+    maxLife: 0
     _enabled: 1
   clearMonitorsEachFrame: 1
   monitorMin: 3.4028235e+38
@@ -690,6 +721,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileTexture: {fileID: 2800000, guid: a728eb0d8ffd64c9b9f5dbff2d26bb54, type: 3}
+--- !u!114 &1825343616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1825343612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ad511adf517f4699b8572b600c71cbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  summary: Wavelengths etc.
+  text: "For lambda = 1.5um, source wavelength = 3.23. \n\n\n\n"
 --- !u!1 &1996864570
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,8 +801,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 3
   friendlyName: monitor_3
-  topLeft: {x: 288, y: 246}
-  bottomRight: {x: 736, y: 256}
+  topLeft: {x: 246, y: 736}
+  bottomRight: {x: 256, y: 288}
   offset: 0
   count: 0
   history: []
@@ -784,8 +829,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   friendlyName: monitor_2
-  topLeft: {x: 288, y: 778}
-  bottomRight: {x: 736, y: 768}
+  topLeft: {x: 288, y: 246}
+  bottomRight: {x: 736, y: 256}
   offset: 0
   count: 0
   history: []
@@ -840,8 +885,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   friendlyName: monitor_0
-  topLeft: {x: 246, y: 736}
-  bottomRight: {x: 256, y: 288}
+  topLeft: {x: 288, y: 778}
+  bottomRight: {x: 736, y: 768}
   offset: 0
   count: 0
   history: []
