@@ -172,9 +172,9 @@ MonoBehaviour:
   monitorName: monitor_3
   windowRect:
     serializedVersion: 2
-    x: 1023
+    x: 1200
     y: 768
-    width: 1024
+    width: 800
     height: 200
   windowId: 9
   title: Monitor 3
@@ -196,9 +196,9 @@ MonoBehaviour:
   monitorName: monitor_2
   windowRect:
     serializedVersion: 2
-    x: 1023
+    x: 1200
     y: 512
-    width: 1024
+    width: 800
     height: 200
   windowId: 8
   title: Monitor 2
@@ -220,9 +220,9 @@ MonoBehaviour:
   monitorName: monitor_1
   windowRect:
     serializedVersion: 2
-    x: 1023
+    x: 1200
     y: 256
-    width: 1024
+    width: 800
     height: 200
   windowId: 1
   title: Monitor 1
@@ -245,9 +245,9 @@ MonoBehaviour:
   monitorName: monitor_0
   windowRect:
     serializedVersion: 2
-    x: 1023
+    x: 1200
     y: 0
-    width: 1024
+    width: 800
     height: 200
   windowId: 0
   title: Monitor 0
@@ -772,7 +772,7 @@ MonoBehaviour:
   simulation: {fileID: 1825343613}
   padding: 32
   boxWidth: 512
-  thickness: 10
+  thickness: 1
 --- !u!4 &1996864572
 Transform:
   m_ObjectHideFlags: 0
@@ -801,7 +801,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 3
   friendlyName: monitor_3
-  topLeft: {x: 246, y: 736}
+  topLeft: {x: 255, y: 736}
   bottomRight: {x: 256, y: 288}
   offset: 0
   count: 0
@@ -829,7 +829,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   friendlyName: monitor_2
-  topLeft: {x: 288, y: 246}
+  topLeft: {x: 288, y: 255}
   bottomRight: {x: 736, y: 256}
   offset: 0
   count: 0
@@ -858,7 +858,7 @@ MonoBehaviour:
   id: 1
   friendlyName: monitor_1
   topLeft: {x: 768, y: 736}
-  bottomRight: {x: 778, y: 288}
+  bottomRight: {x: 769, y: 288}
   offset: 0
   count: 0
   history: []
@@ -885,7 +885,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   friendlyName: monitor_0
-  topLeft: {x: 288, y: 778}
+  topLeft: {x: 288, y: 769}
   bottomRight: {x: 736, y: 768}
   offset: 0
   count: 0
