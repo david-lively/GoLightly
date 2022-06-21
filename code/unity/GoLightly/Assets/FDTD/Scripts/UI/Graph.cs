@@ -15,8 +15,8 @@ public class Graph : MonoBehaviour
     Material mat;
     public Rect windowRect = new Rect(20, 20, 1000, 256);
 
-    public float yScale = 2000;
-    public float offset = -1000;
+    public float yScale = 300;
+    public float offset = 20;
     // A list of random values to draw  
     public List<float> values;
 
@@ -55,35 +55,47 @@ public class Graph : MonoBehaviour
         // Create a GUI.toggle to show graph window
         showWindow = GUI.Toggle(new Rect(10, 10, 100, 20), showWindow, "Show Graph");
 
-        if (showWindow)
+        // if (showWindow)
         {
             // Set out drawValue list equal to the values list 
             // drawValues = values;
-            windowRect = GUI.Window(0, windowRect, DrawGraph, "");
+            windowRect = GUI.Window(0, windowRect, DrawGraph, "Monitor 0");
         }
     }
 
 
     void drawSeries(List<float> values)
     {
-            GL.Begin(GL.LINES);
-            GL.Color(Color.green);
+        GL.Begin(GL.LINES);
+        GL.Color(Color.green);
 
-            int valueIndex = values.Count - 1;
-            for (int i = (int)windowRect.width - 4; i > 3; i--)
+        int valueIndex = values.Count - 1;
+        for (int i = (int)windowRect.width - 4; i > 3; i--)
+        {
+            float y1 = 0;
+            float y2 = 0;
+            if (valueIndex > 0)
             {
-                float y1 = 0;
-                float y2 = 0;
-                if (valueIndex > 0)
-                {
-                    y2 = values[valueIndex] * yScale + offset;
-                    y1 = values[valueIndex - 1] * yScale + offset;
-                }
-                GL.Vertex3(i, windowRect.height - 4 - y2, 0);
-                GL.Vertex3((i - 1), windowRect.height - 4 - y1, 0);
-                valueIndex -= 1;
+                y2 = values[valueIndex] * yScale + offset;
+                y1 = values[valueIndex - 1] * yScale + offset;
             }
-            GL.End();
+            GL.Vertex3(i, windowRect.height - 4 - y2, 0);
+            GL.Vertex3((i - 1), windowRect.height - 4 - y1, 0);
+            valueIndex -= 1;
+        }
+        GL.End();
+    }
+
+    void drawAxis()
+    {
+        var y = windowRect.height - offset;
+        /// draw X axis
+        GL.Begin(GL.LINES);
+        GL.Color(Color.red);
+
+        GL.Vertex3(0, y, 0);
+        GL.Vertex3(windowRect.width, y, 0);
+        GL.End();
     }
 
     void DrawGraph(int windowID)
@@ -114,6 +126,12 @@ public class Graph : MonoBehaviour
 
             GL.PopMatrix();
         }
+
+        drawAxis();
+
+        GUI.contentColor = Color.white;
+        GUI.TextArea(new Rect(0, 0, 128, 64), "Hello World");
+
     }
 }
 
