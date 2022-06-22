@@ -718,7 +718,7 @@ namespace GoLightly
         {
             foreach(var source in sources)
             {
-                var px = UI.Helpers.pixelToWorld((int)source.position.x, (int)source.position.y);
+                var px = UI.Helpers.pixelToWorld((int)source.position.x, domainSize.y-(int)source.position.y);
                 Gizmos.color = Color.white;
                 Gizmos.DrawSphere(px, 0.2f);
             }

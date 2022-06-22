@@ -178,7 +178,7 @@ MonoBehaviour:
     height: 200
   windowId: 9
   title: Monitor 3
-  yScale: 100
+  yScale: 200
   offset: 20
   values: []
 --- !u!114 &105657530
@@ -202,7 +202,7 @@ MonoBehaviour:
     height: 200
   windowId: 8
   title: Monitor 2
-  yScale: 100
+  yScale: 200
   offset: 20
   values: []
 --- !u!114 &105657531
@@ -226,7 +226,7 @@ MonoBehaviour:
     height: 200
   windowId: 1
   title: Monitor 1
-  yScale: 100
+  yScale: 200
   offset: 20
   values:
   - 0
@@ -251,7 +251,7 @@ MonoBehaviour:
     height: 200
   windowId: 0
   title: Monitor 0
-  yScale: 50
+  yScale: 200
   offset: 20
   values:
   - 0
@@ -679,16 +679,16 @@ MonoBehaviour:
   outputTextureSize: {x: 2048, y: 1024}
   outputTexture: {fileID: 0}
   computeShader: {fileID: 7200000, guid: abafb8f15e2fb4be1b5bf13f3950fb0d, type: 3}
-  domainSize: {x: 1024, y: 1024}
+  domainSize: {x: 1200, y: 1024}
   contrast: 62
   timeStep: 0
   psiContrast: 0.2
   simulationTimeStepsPerFrame: 4
   sources:
-  - position: {x: 526, y: 528, z: 0}
+  - position: {x: 512, y: 512, z: 0}
     amplitude: 1
-    wavelength: 4
-    maxLife: 0
+    wavelength: 3.23
+    maxLife: 100
     _enabled: 1
   clearMonitorsEachFrame: 1
   monitorMin: 3.4028235e+38
