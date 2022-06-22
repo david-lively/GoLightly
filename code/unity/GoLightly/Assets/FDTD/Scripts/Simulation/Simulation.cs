@@ -601,7 +601,7 @@ namespace GoLightly
             var decayAll = new float4[domainWidth * domainHeight];
 
             Helpers.SetArray(ref decayAll, 1);
-            CreateBoundaryOutside(decayAll, 0, new int2(domainSize.x - 1, domainSize.y - 1));
+            CreateBoundaryOutside(decayAll, 0, new int2(domainSize.x - 2, domainSize.y - 2));
 
 
 #if false

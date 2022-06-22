@@ -16,7 +16,7 @@ namespace GoLightly.UI
     /// I'm going to keep experimenting wih the GL calls...eg GL.LINES etc 
     /// </summary>
     // [ExecuteInEditMode]
-    public class Graph : MonoBehaviour
+    public class Chart : MonoBehaviour
     {
         public string monitorName;
         public Rect windowRect = new Rect(1024, 0, 1000, 256);
@@ -136,21 +136,22 @@ namespace GoLightly.UI
         }
     }
 
-    [CustomEditor(typeof(Graph))]
-    public class GraphEditor : Editor
+    [CustomEditor(typeof(Chart))]
+    public class ChartEditor : Editor
     {
 
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
 
-            var graph = target as Graph;
+
+            var chart = target as Chart;
             var monitorNames = GameObject.FindObjectsOfType<Monitor>().Select(m => m.friendlyName).ToList();
-            var selectedIndex = monitorNames.IndexOf(graph.monitorName);
+            var selectedIndex = monitorNames.IndexOf(chart.monitorName);
             selectedIndex = EditorGUILayout.Popup(selectedIndex, monitorNames.ToArray());
 
             // graph._monitor = monitorNames[selectedIndex];
-            graph.monitorName = monitorNames[selectedIndex];
+            chart.monitorName = monitorNames[selectedIndex];
 
             if (GUILayout.Button("testing"))
             {

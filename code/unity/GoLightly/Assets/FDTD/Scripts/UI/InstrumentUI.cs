@@ -20,7 +20,7 @@ namespace GoLightly.UI
                 simulation = FindObjectOfType<Simulation>();
             Assert.IsNotNull(simulation, $"No {nameof(Simulation)} found. Output visualization will be disabled.");
 
-            simulation.onUpdateInstruments = updateGraphData;
+            simulation.onUpdateInstruments = updateChartData;
         }
 
         // Update is called once per frame
@@ -30,7 +30,7 @@ namespace GoLightly.UI
 
         }
 
-        void updateGraphData(List<Monitor> monitors)
+        void updateChartData(List<Monitor> monitors)
         {
             if (0 >= monitors.Count)
                 return;
