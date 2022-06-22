@@ -575,9 +575,9 @@ namespace GoLightly
 
         void wgm(float[] cbData, float radius, float width)
         {
-            var center = new uint2((uint)(domainSize.x / 2), (uint)domainSize.y / 2);
+            var center = new int2(domainSize.x / 2, domainSize.y / 2);
             var m = (parameters.dt / parameters.dx * 1 / 9.0f);
-            ModelProvider.Cylinder(center, radius, width, domainSize.x, m, cbData);
+            ModelProvider.Cylinder(center, radius, width, domainSize.x, domainSize.y, m, cbData);
         }
 
         void SetMaterials(float[] cbData)

@@ -624,6 +624,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1674205192}
+  - component: {fileID: 1674205191}
   m_Layer: 0
   m_Name: Notes
   m_TagString: Untagged
@@ -631,6 +632,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1674205191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1674205190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ad511adf517f4699b8572b600c71cbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  summary: Assignment Notes
+  text: "Still working on #1. :/ \nChart explodesout of the graph. \nWTf. \nSave
+    me, Jeebus. \n\n\n\n\n\n"
 --- !u!4 &1674205192
 Transform:
   m_ObjectHideFlags: 0
@@ -679,7 +695,7 @@ MonoBehaviour:
   outputTextureSize: {x: 2048, y: 1024}
   outputTexture: {fileID: 0}
   computeShader: {fileID: 7200000, guid: abafb8f15e2fb4be1b5bf13f3950fb0d, type: 3}
-  domainSize: {x: 1200, y: 1024}
+  domainSize: {x: 1024, y: 1024}
   contrast: 62
   timeStep: 0
   psiContrast: 0.2
@@ -688,7 +704,7 @@ MonoBehaviour:
   - position: {x: 512, y: 512, z: 0}
     amplitude: 1
     wavelength: 3.23
-    maxLife: 100
+    maxLife: 0
     _enabled: 1
   clearMonitorsEachFrame: 1
   monitorMin: 3.4028235e+38
@@ -720,7 +736,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5abb8a35a69794b019208f3aab030bb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileTexture: {fileID: 2800000, guid: a728eb0d8ffd64c9b9f5dbff2d26bb54, type: 3}
+  tileTexture: {fileID: 2800000, guid: a959453e3e1d24b609fbecd1b700b347, type: 3}
 --- !u!114 &1825343616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -733,8 +749,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad511adf517f4699b8572b600c71cbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  summary: Wavelengths etc.
-  text: "For lambda = 1.5um, source wavelength = 3.23. \n\n\n\n\n"
+  summary: Problem 1
+  text: "1.\tA square lattice of rods, where a = 1.2\xB5m, r=0.2a, and epsr = 8.9 
+    (similar to the example on pages 66-68 in the book).\n\nOk, thinking about it,
+    and looking more into my notes, I do think you should make the Yee lattice size
+    around 1/10 of the rod diameter.  That will give you enough resolution for the
+    features that matter.  That's close to lambda / 50, so I would start there\n\nwavelength
+    = 3.23\n\n----\n\na : rod spacing = 1.2um (center to center)\nradius = 0.2 *
+    a = 0.24um\n\nrod diameter = a * 0.2 * 2 = 1.2um * 0.4 = 0.48 um\ndx = 0.48 /
+    10 = 0.048um\n\nlambda/50 = dx\n\n\n\n\n"
 --- !u!1 &1996864570
 GameObject:
   m_ObjectHideFlags: 0

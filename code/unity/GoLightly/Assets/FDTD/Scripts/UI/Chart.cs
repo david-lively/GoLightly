@@ -127,12 +127,14 @@ namespace GoLightly.UI
 
         public void OnDrawGizmos()
         {
-            Gizmos.color = Color.white;
-            Helpers.GizmoRect(windowRect);
-            var pos = new Vector3(windowRect.center.x, windowRect.center.y, 0);
-            var worldPos = Helpers.pixelToWorld(windowRect.center);
-            var label = $"Id {windowId} title `{title}`";
-            Handles.Label(worldPos, label);
+            if (!EditorApplication.isPlaying)
+            {
+                Gizmos.color = Color.white;
+                Helpers.GizmoRect(windowRect);
+                var worldPos = Helpers.pixelToWorld(windowRect.center);
+                var label = $"Id {windowId} title `{title}`";
+                Handles.Label(worldPos, label);
+            }
         }
     }
 
@@ -153,10 +155,6 @@ namespace GoLightly.UI
             // graph._monitor = monitorNames[selectedIndex];
             chart.monitorName = monitorNames[selectedIndex];
 
-            if (GUILayout.Button("testing"))
-            {
-                Debug.Log("Clicked");
-            }
 
         }
     }
