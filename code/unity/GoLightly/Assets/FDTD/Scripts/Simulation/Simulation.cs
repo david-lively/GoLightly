@@ -37,6 +37,7 @@ namespace GoLightly
     [DisallowMultipleComponent]
     public partial class Simulation : MonoBehaviour
     {
+        [Header("Simulation parameters")]
         public Vector2Int outputTextureSize = new Vector2Int(2048, 1024);
         public RenderTexture outputTexture;
         public ComputeShader computeShader;
@@ -51,7 +52,9 @@ namespace GoLightly
         /// <summary>
         /// Select to clear all field buffers to zero on the next update.
         /// </summary>
-        public bool resetRequested;
+        internal bool resetRequested;
+        internal bool isPaused;
+        public float sweepWavelengthDelta = 0.1f;
 
         [Range(1, 200)]
         public float contrast = 80;
@@ -137,6 +140,8 @@ namespace GoLightly
         }
 
 
+
+
         public List<Source> sources = new List<Source>();
 
         public bool clearMonitorsEachFrame;
@@ -162,6 +167,26 @@ namespace GoLightly
 
         private bool _isInitialized = false;
 
+        internal void runNextWavelength()
+        {
+            // isPaused = true;
+            resetRequested = true;
+            var source = sources[0];
+            source.wavelength += sweepWavelengthDelta;
+            sources[0] = source;
+
+            uploadSources();
+        }
+
+        void uploadSources()
+        {
+            var sourcesBuffer = new ComputeBuffer(sources.Count, Source.GetSize());
+            sourcesBuffer.SetData(sources);
+            computeShader.SetInt("numSources", sources.Count);
+            _buffers["sources"] = sourcesBuffer;
+        }
+
+
         private void InitComputeResources()
         {
             if (_isInitialized)
@@ -177,18 +202,18 @@ namespace GoLightly
 
             {
                 onGenerateSources?.Invoke(sources);
-                foreach(var source in sources)
+                foreach (var source in sources)
                 {
                     // if (source.wavelength != modelRequestedLambda)
                     // {
                     //     Debug.LogWarning($"Source wavelength {source.wavelength} != requested wavelength of {modelRequestedLambda}");
                     // }
                 }
-
-                var sourcesBuffer = new ComputeBuffer(sources.Count, Source.GetSize());
-                sourcesBuffer.SetData(sources);
-                computeShader.SetInt("numSources", sources.Count);
-                _buffers["sources"] = sourcesBuffer;
+                uploadSources();
+                // var sourcesBuffer = new ComputeBuffer(sources.Count, Source.GetSize());
+                // sourcesBuffer.SetData(sources);
+                // computeShader.SetInt("numSources", sources.Count);
+                // _buffers["sources"] = sourcesBuffer;
             }
 
             {
@@ -361,7 +386,8 @@ namespace GoLightly
         // Update is called once per frame
         public void Update()
         {
-            RunSimulationSteps(simulationTimeStepsPerFrame);
+            if (!isPaused)
+                RunSimulationSteps(simulationTimeStepsPerFrame);
         }
 
 
@@ -754,9 +780,9 @@ namespace GoLightly
 
         void OnDrawGizmos()
         {
-            foreach(var source in sources)
+            foreach (var source in sources)
             {
-                var px = UI.Helpers.pixelToWorld((int)source.position.x, domainSize.y-(int)source.position.y);
+                var px = UI.Helpers.pixelToWorld((int)source.position.x, domainSize.y - (int)source.position.y);
                 Gizmos.color = Color.white;
                 Gizmos.DrawSphere(px, 0.2f);
             }
@@ -768,15 +794,29 @@ namespace GoLightly
     [CustomEditor(typeof(Simulation))]
     public class SimulationInspector : Editor
     {
+        private Simulation sim => target as Simulation;
         public override void OnInspectorGUI()
         {
-            var sim = target as Simulation;
-
             if (GUILayout.Button("Reset simulation"))
             {
                 sim.resetRequested = true;
+                Debug.Log("Requesting simulation reset.");
             }
-            
+
+            if (sim.isPaused && GUILayout.Button("Resume"))
+            {
+                sim.isPaused = false;
+            }
+            else if (!sim.isPaused && GUILayout.Button("Pause"))
+            {
+                sim.isPaused = true;
+            }
+
+            if (GUILayout.Button("Next wavelength"))
+            {
+                sim.runNextWavelength();
+            }
+
             base.OnInspectorGUI();
         }
 

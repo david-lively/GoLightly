@@ -132,6 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 105657528}
+  - component: {fileID: 105657533}
   - component: {fileID: 105657532}
   - component: {fileID: 105657531}
   - component: {fileID: 105657530}
@@ -178,7 +179,7 @@ MonoBehaviour:
     height: 200
   windowId: 9
   title: Monitor 3
-  yScale: 200
+  yScale: 400
   offset: 20
   values: []
 --- !u!114 &105657530
@@ -202,7 +203,7 @@ MonoBehaviour:
     height: 200
   windowId: 8
   title: Monitor 2
-  yScale: 200
+  yScale: 400
   offset: 20
   values: []
 --- !u!114 &105657531
@@ -226,7 +227,7 @@ MonoBehaviour:
     height: 200
   windowId: 1
   title: Monitor 1
-  yScale: 200
+  yScale: 400
   offset: 20
   values:
   - 0
@@ -251,10 +252,24 @@ MonoBehaviour:
     height: 200
   windowId: 0
   title: Monitor 0
-  yScale: 200
+  yScale: 400
   offset: 20
   values:
   - 0
+--- !u!114 &105657533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 105657527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bc3978d15fe84b3f8e6d5158b88e6e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chartScale: 300
+  chartOffset: 20
 --- !u!1 &383829434
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,6 +689,7 @@ GameObject:
   - component: {fileID: 1825343615}
   - component: {fileID: 1825343616}
   - component: {fileID: 1825343617}
+  - component: {fileID: 1825343618}
   m_Layer: 0
   m_Name: Simulation
   m_TagString: Untagged
@@ -697,6 +713,7 @@ MonoBehaviour:
   outputTexture: {fileID: 0}
   computeShader: {fileID: 7200000, guid: abafb8f15e2fb4be1b5bf13f3950fb0d, type: 3}
   domainSize: {x: 1024, y: 1024}
+  sweepWavelengthDelta: 0.1
   contrast: 84.7
   timeStep: 0
   psiContrast: 0.2
@@ -705,7 +722,7 @@ MonoBehaviour:
   sources:
   - position: {x: 512, y: 512, z: 0}
     amplitude: 1
-    wavelength: 3.125
+    wavelength: 6.25
     maxLife: 0
     _enabled: 1
   clearMonitorsEachFrame: 1
@@ -784,6 +801,18 @@ MonoBehaviour:
     to lambda nm / dx\n            For lambda = 1500nm, wavelength = 31.25\n\n           
     if dx = 1200 * 0.4 / 10 = 48um,\n            and default lambda = 10 * dx = 480um,
     \n            then lambda_rel = 1500 / 480nm = 3.125"
+--- !u!114 &1825343618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1825343612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bebdadb7d1f9b4e82a44388f98a3efac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1996864570
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,7 +848,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   removeExistingMonitors: 1
   simulation: {fileID: 1825343613}
-  padding: 32
+  padding: 0
   boxWidth: 512
   thickness: 1
 --- !u!4 &1996864572
@@ -850,8 +879,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 3
   friendlyName: monitor_3
-  topLeft: {x: 255, y: 736}
-  bottomRight: {x: 256, y: 288}
+  topLeft: {x: 255, y: 768}
+  bottomRight: {x: 256, y: 256}
   offset: 0
   count: 0
   history: []
@@ -878,8 +907,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   friendlyName: monitor_2
-  topLeft: {x: 288, y: 255}
-  bottomRight: {x: 736, y: 256}
+  topLeft: {x: 256, y: 255}
+  bottomRight: {x: 768, y: 256}
   offset: 0
   count: 0
   history: []
@@ -906,8 +935,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   friendlyName: monitor_1
-  topLeft: {x: 768, y: 736}
-  bottomRight: {x: 769, y: 288}
+  topLeft: {x: 768, y: 768}
+  bottomRight: {x: 769, y: 256}
   offset: 0
   count: 0
   history: []
@@ -934,8 +963,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   friendlyName: monitor_0
-  topLeft: {x: 288, y: 769}
-  bottomRight: {x: 736, y: 768}
+  topLeft: {x: 256, y: 769}
+  bottomRight: {x: 768, y: 768}
   offset: 0
   count: 0
   history: []
