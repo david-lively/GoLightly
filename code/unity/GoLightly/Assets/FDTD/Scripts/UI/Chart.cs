@@ -33,6 +33,9 @@ namespace GoLightly.UI
         private Monitor _monitor;
         private Material _material;
 
+        public float maxValue;
+        public float minValue;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -54,6 +57,15 @@ namespace GoLightly.UI
                 Debug.LogError($"Graph {title} could not find monitor with friendlyName `{monitorName}");
         }
 
+        public void Reset()
+        {
+            maxValue = float.MinValue;
+            minValue = float.MaxValue;
+            values.Clear();
+            values.Add(0);
+            _monitor.Reset();
+        }
+
 
         // Update is called once per frame
         void Update()
@@ -73,6 +85,8 @@ namespace GoLightly.UI
             var valueIndex = values.Count - 1;
             for (var i = (int)windowRect.width - 4; i >= 3 && valueIndex >= 0; --i)
             {
+                maxValue = Mathf.Max(maxValue, values[valueIndex]);
+                minValue = Mathf.Min(minValue, values[valueIndex]);
                 var y = values[valueIndex] * yScale + offset;
                 GL.Vertex3(i, windowRect.height - 4 - y, 0);
                 --valueIndex;

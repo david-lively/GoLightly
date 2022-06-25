@@ -178,9 +178,28 @@ namespace GoLightly
             uploadSources();
         }
 
+        private void resetMonitors()
+        {
+            var chartManager = GameObject.FindObjectOfType<ChartManager>();
+            chartManager?.ResetCharts();
+        }
+
+        internal void setSingleSourceWavelengthAndReset(float lambda)
+        {
+            resetRequested = true;
+            var source = sources[0];
+            source.wavelength = lambda;
+            sources[0] = source;
+
+            resetMonitors();
+
+            uploadSources();
+        }
+
         void uploadSources()
         {
-            var sourcesBuffer = new ComputeBuffer(sources.Count, Source.GetSize());
+            if(!_buffers.TryGetValue("sources", out var sourcesBuffer))
+                sourcesBuffer = new ComputeBuffer(sources.Count, Source.GetSize());
             sourcesBuffer.SetData(sources);
             computeShader.SetInt("numSources", sources.Count);
             _buffers["sources"] = sourcesBuffer;

@@ -718,7 +718,7 @@ MonoBehaviour:
   timeStep: 0
   psiContrast: 0.2
   simulationTimeStepsPerFrame: 4
-  modelRequestedLambda: 1
+  modelRequestedLambda: 6.25
   sources:
   - position: {x: 512, y: 512, z: 0}
     amplitude: 1
@@ -758,7 +758,7 @@ MonoBehaviour:
   tileTexture: {fileID: 2800000, guid: a959453e3e1d24b609fbecd1b700b347, type: 3}
   rodSpacingNm: 1200
   rodDiameterNm: 480
-  cellDivisor: 20
+  cellDivisor: 40
 --- !u!114 &1825343616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -813,6 +813,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bebdadb7d1f9b4e82a44388f98a3efac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lambda: 3.125
+  lastLambda: 7.25
+  lambdaSteps: 10
+  lambdaDelta: 0.1
+  timeStepsPerRun: 2000
+  simulation: {fileID: 1825343613}
 --- !u!1 &1996864570
 GameObject:
   m_ObjectHideFlags: 0

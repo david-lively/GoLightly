@@ -38,8 +38,8 @@ namespace GoLightly
         public float currentRMS = 0f;
         List<float> magnitudeHistory = new List<float>();
 
-        float rmsMinValue = float.MaxValue;
-        float rmsMaxValue = float.MinValue;
+        public float rmsMinValue = float.MaxValue;
+        public float rmsMaxValue = float.MinValue;
         List<float> rmsHistory = new List<float>();
 
         public bool isInitialized { get; private set; }
@@ -51,6 +51,18 @@ namespace GoLightly
         public List<int> indices;
 
         private Simulation _simulation;
+
+        public void Reset()
+        {
+            rmsMinValue = float.MaxValue;
+            rmsMaxValue = float.MinValue;
+            maxValue = float.MinValue;
+            minValue = float.MaxValue;
+            currentValue = 0;
+            currentRMS = 0;
+            magnitudeHistory.Clear();
+            rmsHistory.Clear();
+        }
 
 
         public void Start()

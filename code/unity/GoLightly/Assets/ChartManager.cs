@@ -12,9 +12,11 @@ namespace GoLightly
     {
         public float chartScale = 200;
         public float chartOffset = 50;
+        private Chart[] _charts;
         // Start is called before the first frame update
         void Start()
         {
+            _charts = GameObject.FindObjectsOfType<Chart>();
 
         }
 
@@ -22,6 +24,12 @@ namespace GoLightly
         void Update()
         {
 
+        }
+
+        public void ResetCharts()
+        {
+            foreach(var chart in _charts)
+                chart.Reset();
         }
     }
 
