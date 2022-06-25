@@ -19,7 +19,7 @@ namespace GoLightly
         {
             _simulation = FindObjectOfType<Simulation>();
             Assert.IsNotNull(_simulation, $"Could not find {nameof(Simulation)} component.");
-            _simulation.onGenerateModels = generateRodArray;
+            _simulation.onGenerateModels = generateRodArray2;
 
         }
 
@@ -86,6 +86,7 @@ namespace GoLightly
 
             var a = 150;
             var r = 30;
+
 
             var tileOffset = Vector2Int.zero; //new Vector2Int(tileTexture.width / 2, tileTexture.height / 2);
             // tileOffset.x = 62+15+30;
@@ -160,7 +161,6 @@ namespace GoLightly
 
         public void generateRodArray(float[] cb)
         {
-
             var dt = _simulation.parameters.dt;
             var dx = _simulation.parameters.dx;
             var cbDefault = _simulation.parameters.cb;
@@ -193,8 +193,112 @@ namespace GoLightly
                 }
             }
 
+        }
 
+        /* rod lattice parameters */
+        public int rodSpacingNm = 1200;
+        // public int rodDiameterNm => (int)(2 * rodSpacingNm * 0.2f);
+        public float rodDiameterNm = 1200 * 0.2f * 2;
+        public int cellDivisor = 10;
 
+        public void generateRodArray2(float[] cb)
+        {
+            /*
+            rod spacing  A= 1200nm
+            rod diameter D= 480nm
+
+            dx = D/10 = 48nm
+
+            So, in array coordinates:
+            diameter = 10
+            Spacing = 1200/48nm = 25
+
+            Set source wavelength to lambda nm / dx
+            For lambda = 1500nm, wavelength = 31.25
+
+            if dx = 1200 * 0.4 / 10 = 48um,
+            and default lambda = 10 * dx = 480um, 
+            then lambda_rel = 1500 / 480nm = 3.125
+
+            */
+            float nmPerCell = rodDiameterNm / cellDivisor;
+            // float dx_nm = rodDiameterNm / 10;
+            int rodSpacingCells = Mathf.CeilToInt(rodSpacingNm / nmPerCell);
+            int rodDiameterCells = Mathf.CeilToInt(rodDiameterNm / nmPerCell);
+            float lambdaNm = 1500;
+
+            /// FDTD condition: dx = lambda / 10. But, we're defining dx
+            /// in terms of rod diameter. 
+            float lambdaNorm = 10 * nmPerCell;
+            float lambdaRel = lambdaNm / (10.0f * nmPerCell);
+
+            _simulation.modelRequestedLambda = lambdaRel;
+
+            {
+                var text =
+                $"Rod Spacing nm {rodSpacingNm}\n"
+                + $"rod diameter nm {rodDiameterNm}\n"
+                + $"nmPerCell {nmPerCell}\n"
+                + $"cellDivisor {cellDivisor}\n"
+                + $"rod spacing cells {rodSpacingCells}\n"
+                + $"rod diameter cells {rodDiameterCells}\n"
+                + $"lambda nm {lambdaNm}\n"
+                + $"lambda_relative = {lambdaRel}\n";
+                ;
+
+                Debug.Log($"Model parameters: {text}");
+            }
+
+            var dt = _simulation.parameters.dt;
+            var dx = _simulation.parameters.dx;
+            var cbDefault = _simulation.parameters.cb;
+
+            var epsR = 8.9f;
+            var air = dt / dx;
+            var dielectric = dt / dx * 1.0f / epsR;
+
+            var sourcePosition = new int2(512, 512);
+            Debug.Log($"Using source position {sourcePosition}");
+
+            // offset to center this around the source
+            var offset = 512 % rodSpacingCells - rodSpacingCells / 2;
+
+            var domainWidth = _simulation.domainSize.x;
+            var domainHeight = _simulation.domainSize.y;
+
+            var radius = rodDiameterCells / 2;
+
+            Simulation.Helpers.ClearArray(ref cb, air);
+
+            var cellCount = new int2(domainWidth / rodSpacingCells+1, domainHeight / rodSpacingCells+1);
+            var excludeCell = new bool[cellCount.x, cellCount.y];
+
+            // excludeCell[cellCount.x / 2, cellCount.y / 2] = true;
+
+            for (var j = 0; j < cellCount.y; ++j)
+            {
+                for (var i = 0; i < cellCount.x; ++i)
+                {
+                    if(excludeCell[i,j])
+                        continue;
+
+                    var x = offset + i * rodSpacingCells;
+                    var y = offset + j * rodSpacingCells;
+                    var center = new int2(x, y);
+                    Cylinder(center, radius, radius, domainWidth, domainHeight, dielectric, cb);
+                }
+            }
+
+            /*
+                        for (var i = offset; i <= domainWidth; i += rodSpacingCells)
+                        {
+                            for (var j = offset; j <= domainHeight; j += rodSpacingCells)
+                            {
+                                var center = new int2(i, j);
+                                Cylinder(center, radius, radius, domainWidth, domainHeight, dielectric, cb);
+                            }
+                        }
+            */
         }
 
     }

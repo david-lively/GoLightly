@@ -57,6 +57,8 @@ namespace GoLightly
         [Range(1, 20)]
         public uint simulationTimeStepsPerFrame = 1;
 
+        public float modelRequestedLambda = 1.0f;
+
         readonly float[] e_decay = new float[] {
                     1,
                     0.999798477f,
@@ -115,6 +117,9 @@ namespace GoLightly
         {
             public Vector3 position;
             public float amplitude;
+            /// <summary>
+            /// Normalized wavelength = dx / 10. So this should be lambdaRelative = lambda / (10 * dx).
+            /// </summary>
             public float wavelength;
             public float maxLife;
             public uint _enabled;
@@ -166,6 +171,14 @@ namespace GoLightly
 
             {
                 onGenerateSources?.Invoke(sources);
+                foreach(var source in sources)
+                {
+                    // if (source.wavelength != modelRequestedLambda)
+                    // {
+                    //     Debug.LogWarning($"Source wavelength {source.wavelength} != requested wavelength of {modelRequestedLambda}");
+                    // }
+                }
+
                 var sourcesBuffer = new ComputeBuffer(sources.Count, Source.GetSize());
                 sourcesBuffer.SetData(sources);
                 computeShader.SetInt("numSources", sources.Count);

@@ -11,6 +11,10 @@ namespace GoLightly
     public class Source : MonoBehaviour
     {
         public float amplitude = 1.0f;
+        /// <summary>
+        /// FDTD normalized wavelength = dx / 10
+        /// Relative wavelength is then lambda / (10 * dx)
+        /// </summary>
         public float wavelength = 1.0f;
 
         // Start is called before the first frame update

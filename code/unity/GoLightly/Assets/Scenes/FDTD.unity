@@ -673,6 +673,7 @@ GameObject:
   - component: {fileID: 1825343613}
   - component: {fileID: 1825343615}
   - component: {fileID: 1825343616}
+  - component: {fileID: 1825343617}
   m_Layer: 0
   m_Name: Simulation
   m_TagString: Untagged
@@ -696,14 +697,15 @@ MonoBehaviour:
   outputTexture: {fileID: 0}
   computeShader: {fileID: 7200000, guid: abafb8f15e2fb4be1b5bf13f3950fb0d, type: 3}
   domainSize: {x: 1024, y: 1024}
-  contrast: 62
+  contrast: 84.7
   timeStep: 0
   psiContrast: 0.2
   simulationTimeStepsPerFrame: 4
+  modelRequestedLambda: 1
   sources:
   - position: {x: 512, y: 512, z: 0}
     amplitude: 1
-    wavelength: 3.23
+    wavelength: 3.125
     maxLife: 0
     _enabled: 1
   clearMonitorsEachFrame: 1
@@ -737,6 +739,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileTexture: {fileID: 2800000, guid: a959453e3e1d24b609fbecd1b700b347, type: 3}
+  rodSpacingNm: 1200
+  rodDiameterNm: 480
+  cellDivisor: 20
 --- !u!114 &1825343616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -754,10 +759,31 @@ MonoBehaviour:
     (similar to the example on pages 66-68 in the book).\n\nOk, thinking about it,
     and looking more into my notes, I do think you should make the Yee lattice size
     around 1/10 of the rod diameter.  That will give you enough resolution for the
-    features that matter.  That's close to lambda / 50, so I would start there\n\nwavelength
+    features that matter.  That's close to lambda / 50, so I would start there\n------\nwavelength
     = 3.23\n\n----\n\na : rod spacing = 1.2um (center to center)\nradius = 0.2 *
     a = 0.24um\n\nrod diameter = a * 0.2 * 2 = 1.2um * 0.4 = 0.48 um\ndx = 0.48 /
     10 = 0.048um\n\nlambda/50 = dx\n\n\n\n\n"
+--- !u!114 &1825343617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1825343612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ad511adf517f4699b8572b600c71cbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  summary: Geometry calculation worksheet
+  text: "Model parameters: Rod Spacing nm 1200\nrod diameter nm 480\nnmPerCell 24\ncellDivisor
+    20\nrod spacing cells 50\nrod diameter cells 20\nlambda nm 1500\nlambda_relative
+    = 6.25\n\n            rod spacing  A= 1200nm\n            rod diameter D= 480nm\n\n           
+    dx = D/10 = 48nm\n\n            So, in array coordinates:\n            diameter
+    = 10\n            Spacing = 1200/48nm = 25\n\n            Set source wavelength
+    to lambda nm / dx\n            For lambda = 1500nm, wavelength = 31.25\n\n           
+    if dx = 1200 * 0.4 / 10 = 48um,\n            and default lambda = 10 * dx = 480um,
+    \n            then lambda_rel = 1500 / 480nm = 3.125"
 --- !u!1 &1996864570
 GameObject:
   m_ObjectHideFlags: 0
