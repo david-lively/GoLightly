@@ -19,7 +19,8 @@ namespace GoLightly
         {
             _simulation = FindObjectOfType<Simulation>();
             Assert.IsNotNull(_simulation, $"Could not find {nameof(Simulation)} component.");
-            _simulation.onGenerateModels = generateRodArray2;
+            if (isActiveAndEnabled)
+                _simulation.onGenerateModels = generateRodArray2;
 
         }
 

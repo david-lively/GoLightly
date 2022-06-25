@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
 using Unity.Mathematics;
+using UnityEditor;
 
 /*
 /// <summary>
@@ -46,6 +47,11 @@ namespace GoLightly
         public UnityAction<float[]> onGenerateModels;
         public UnityAction<List<Source>> onGenerateSources;
         public UnityAction<List<Monitor>> onUpdateInstruments;
+
+        /// <summary>
+        /// Select to clear all field buffers to zero on the next update.
+        /// </summary>
+        public bool resetRequested;
 
         [Range(1, 200)]
         public float contrast = 80;
@@ -221,6 +227,7 @@ namespace GoLightly
                 ,"CSUpdateHFields"
                 ,"CSUpdateSources"
                 ,"CSUpdateMonitors"
+                ,"CSResetEverything"
             };
 
             foreach (var name in kernelNames)
@@ -290,16 +297,25 @@ namespace GoLightly
             computeShader.SetVector("domainSize", new Vector2(domainSize.x, domainSize.y));
             computeShader.SetInt("numSources", sources.Count);
             computeShader.SetInt("numMonitorAddresses", monitorAddresses.Count);
+            computeShader.SetBool("resetRequested", resetRequested);
 
             var kernelNames = new string[] { "CSUpdateHFields", "CSUpdateEz" };
 
             if (steps < 1)
                 steps = 1;
 
+            if (resetRequested)
+            {
+                timeStep = 0;
+                steps = 1;
+            }
+
+
             for (var j = 0; j < steps; ++j)
             {
                 //computeShader.SetFloat("time", Time.fixedTime);
                 computeShader.SetInt("TimeStep", timeStep);
+
                 {
                     var sourceThreads = (int)Mathf.CeilToInt(sources.Count / 64.0f);
                     RunKernel(_kernels["CSUpdateSources"], sourceThreads, 1);
@@ -320,6 +336,8 @@ namespace GoLightly
 
                 ++timeStep;
             }
+
+            resetRequested = false;
 
             UpdateVisualizerTexture(outputTexture);
         }
@@ -347,6 +365,13 @@ namespace GoLightly
         }
 
 
+        /// <summary>
+        /// Clear the E and H fields and reset the source state.        /// 
+        /// </summary>
+        public void Reset()
+        {
+
+        }
 
         private void CreateBoundaryOutside(float4[] decayAll, int2 minCoord, int2 maxCoord)
         {
@@ -736,6 +761,23 @@ namespace GoLightly
                 Gizmos.DrawSphere(px, 0.2f);
             }
 
+        }
+
+    }
+
+    [CustomEditor(typeof(Simulation))]
+    public class SimulationInspector : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            var sim = target as Simulation;
+
+            if (GUILayout.Button("Reset simulation"))
+            {
+                sim.resetRequested = true;
+            }
+            
+            base.OnInspectorGUI();
         }
 
     }

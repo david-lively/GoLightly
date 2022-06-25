@@ -26,6 +26,7 @@
 #pragma kernel CSUpdateHFields
 #pragma kernel CSUpdateSources
 #pragma kernel CSUpdateMonitors
+#pragma kernel CSResetEverything
 
 #define PI (3.1415926f)
 #define ENABLE_PML
@@ -99,6 +100,8 @@ struct Monitor
 int numMonitorAddresses;
 StructuredBuffer<int> monitorAddresses;
 RWStructuredBuffer<float> monitorValues;
+
+bool resetRequested;
 
 /*
 Decay:
@@ -301,6 +304,11 @@ float4 getPsi(uint2 position)
     return psi_all[position.y * domainSize.x + position.x];
 }
 
+[numthreads(32,32,1)]
+void CSResetEverything(uint3 id : SV_DispatchThreadID)
+{
+
+}
 
 [numthreads(32,32,1)]
 void CSUpdateEz(uint3 id : SV_DispatchThreadID)
@@ -343,6 +351,12 @@ void CSUpdateEz(uint3 id : SV_DispatchThreadID)
     ezNew += material * psi.x;
 
     ez[addr(id.xy)] = ezNew;
+
+    if (resetRequested)
+    {
+        ez[addr(id.xy)] = 0;
+        psi_all[center] = 0;
+    }
 }
 
 [numthreads(32,32,1)]
@@ -380,6 +394,13 @@ void CSUpdateHFields(uint3 id : SV_DispatchThreadID)
 
     hx[center] = newHx;
     hy[center] = newHy;
+
+    if (resetRequested)
+    {
+        hx[center] = 0;
+        hy[center] = 0;
+        psi_all[center] = 0;
+    }
 }
 
 
