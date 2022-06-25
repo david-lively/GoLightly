@@ -131,8 +131,10 @@ namespace GoLightly
                 history[_historyIndex] = currentRMS;
             }
 
-            minValue = Mathf.Min(minValue, currentRMS);
-            maxValue = Mathf.Max(maxValue, currentRMS);
+            minValue = Mathf.Min(minValue, currentValue);
+            maxValue = Mathf.Max(maxValue, currentValue);
+            rmsMinValue = Mathf.Min(currentRMS, rmsMinValue);
+            rmsMaxValue = Mathf.Max(currentRMS, rmsMaxValue);
             ++_historyIndex;
             onUpdateData?.Invoke(this);
         }

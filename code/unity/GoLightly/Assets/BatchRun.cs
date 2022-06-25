@@ -1,26 +1,64 @@
+using System;
+using System.IO;
+using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEditor;
 
 namespace GoLightly
 {
     struct BatchRunMonitorResult
     {
+        public string monitorName;
         public float minValue;
         public float maxValue;
         public float minRMS;
         public float maxRMS;
+
+        public static string CSVHeader()
+        {
+            return "monitorName,minValue,maxValue, minRMS, maxRMS";
+        }
+
+        public string ToCSV()
+        {
+            return $"{monitorName},{minValue},{maxValue},{minRMS},{maxRMS}";
+        }
     }
-    
+
     class BatchRunResult
     {
         public Dictionary<string, BatchRunMonitorResult> monitorResults = new Dictionary<string, BatchRunMonitorResult>();
         public float lambda;
         public int numTimeSteps;
+
+        public static string CSVHeader()
+        {
+            var header = "lambda, numTimeSteps," + BatchRunMonitorResult.CSVHeader();
+
+            return header;
+
+        }
+
+        public string ToCSV()
+        {
+            var sb = new StringBuilder();
+
+            var prefix = $"{lambda},{numTimeSteps},";
+
+            foreach (var kvp in monitorResults)
+            {
+                sb.AppendLine(prefix + kvp.Value.ToCSV());
+            }
+
+            return sb.ToString();
+        }
+
     }
 
-    public class BatchRun : MonoBehaviour    
+    public class BatchRun : MonoBehaviour
     {
         private float _startLambda = 3.125f * 2;
         public float lambda = 3.125f * 2;
@@ -32,6 +70,8 @@ namespace GoLightly
         public Simulation simulation;
 
         private Monitor[] _monitors;
+
+        private List<BatchRunResult> _results = new List<BatchRunResult>();
 
         // Start is called before the first frame update
         void Start()
@@ -59,30 +99,32 @@ namespace GoLightly
         {
             if (simulation.timeStep >= timeStepsPerRun && !simulation.isPaused)
             {
-                saveCurrentResults();
+                captureResult();
                 lambda += lambdaDelta;
                 if (lambda <= lastLambda)
                 {
                     simulation.setSingleSourceWavelengthAndReset(lambda);
-                    Debug.Log($"Starting run with lambda {lambda}");
+                    Debug.Log($"Starting run with lambda {lambda}");                    
                 }
                 else
                 {
                     Debug.Log($"Batch run complete.");
                     simulation.isPaused = true;
+                    saveResultsToFile();
                 }
             }
 
         }
 
-        private void saveCurrentResults()
+        private void captureResult()
         {
             var result = new BatchRunResult();
             result.lambda = this.lambda;
             result.numTimeSteps = timeStepsPerRun;
-            foreach(var monitor in _monitors)
+            foreach (var monitor in _monitors)
             {
                 var monitorResult = new BatchRunMonitorResult();
+                monitorResult.monitorName = monitor.friendlyName;
                 monitorResult.maxRMS = monitor.rmsMaxValue;
                 monitorResult.minRMS = monitor.rmsMinValue;
                 monitorResult.maxValue = monitor.maxValue;
@@ -90,6 +132,45 @@ namespace GoLightly
                 result.monitorResults[monitor.friendlyName] = monitorResult;
             }
 
+            _results.Add(result);
         }
+
+        void saveResultsToFile()
+        {
+            var sb = new StringBuilder();
+
+            var header = BatchRunResult.CSVHeader();
+            sb.AppendLine(header);
+
+            foreach(var result in _results)
+                sb.AppendLine(result.ToCSV());
+
+            var content = sb.ToString();
+
+            // The target file path e.g.
+            var folder = Application.streamingAssetsPath;
+
+            if (!Directory.Exists(folder))
+                Directory.CreateDirectory(folder);
+
+            var filePath = Path.Combine(folder, "export.csv");
+
+            // using (var writer = new StreamWriter(filePath, false))
+            // {
+            //     writer.Write(content);
+            // }
+
+            File.WriteAllText(filePath, content);
+
+            // Or just
+            //File.WriteAllText(content);
+
+            Debug.Log($"CSV file written to \"{filePath}\"");
+
+            AssetDatabase.Refresh();
+        }
+
+
+
     }
 }
