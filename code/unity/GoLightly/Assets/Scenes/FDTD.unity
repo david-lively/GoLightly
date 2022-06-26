@@ -170,6 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767826d86ee904ba585d98710b71487a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ignoreReset: 0
   monitorName: monitor_3
   windowRect:
     serializedVersion: 2
@@ -182,6 +183,8 @@ MonoBehaviour:
   yScale: 400
   offset: 20
   values: []
+  maxValue: 0
+  minValue: 0
 --- !u!114 &105657530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,6 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767826d86ee904ba585d98710b71487a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ignoreReset: 0
   monitorName: monitor_2
   windowRect:
     serializedVersion: 2
@@ -206,6 +210,8 @@ MonoBehaviour:
   yScale: 400
   offset: 20
   values: []
+  maxValue: 0
+  minValue: 0
 --- !u!114 &105657531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -218,6 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767826d86ee904ba585d98710b71487a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ignoreReset: 0
   monitorName: monitor_1
   windowRect:
     serializedVersion: 2
@@ -231,6 +238,8 @@ MonoBehaviour:
   offset: 20
   values:
   - 0
+  maxValue: 0
+  minValue: 0
 --- !u!114 &105657532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,6 +252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767826d86ee904ba585d98710b71487a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ignoreReset: 0
   monitorName: monitor_0
   windowRect:
     serializedVersion: 2
@@ -256,6 +266,8 @@ MonoBehaviour:
   offset: 20
   values:
   - 0
+  maxValue: 0
+  minValue: 0
 --- !u!114 &105657533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -685,11 +697,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1825343614}
+  - component: {fileID: 1825343618}
   - component: {fileID: 1825343613}
   - component: {fileID: 1825343615}
   - component: {fileID: 1825343616}
   - component: {fileID: 1825343617}
-  - component: {fileID: 1825343618}
   m_Layer: 0
   m_Name: Simulation
   m_TagString: Untagged
@@ -717,12 +729,12 @@ MonoBehaviour:
   contrast: 84.7
   timeStep: 0
   psiContrast: 0.2
-  simulationTimeStepsPerFrame: 4
+  simulationTimeStepsPerFrame: 10
   modelRequestedLambda: 6.25
   sources:
   - position: {x: 512, y: 512, z: 0}
     amplitude: 1
-    wavelength: 6.25
+    wavelength: 4.25
     maxLife: 0
     _enabled: 1
   clearMonitorsEachFrame: 1
@@ -758,7 +770,7 @@ MonoBehaviour:
   tileTexture: {fileID: 2800000, guid: a959453e3e1d24b609fbecd1b700b347, type: 3}
   rodSpacingNm: 1200
   rodDiameterNm: 480
-  cellDivisor: 40
+  cellDivisor: 20
 --- !u!114 &1825343616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -813,11 +825,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bebdadb7d1f9b4e82a44388f98a3efac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lambda: 3.125
-  lastLambda: 7.25
-  lambdaSteps: 10
-  lambdaDelta: 0.1
-  timeStepsPerRun: 2000
+  lambda: 4.25
+  lastLambda: 8.25
+  lambdaSteps: 20
+  lambdaDelta: 0.2
+  timeStepsPerRun: 4000
   simulation: {fileID: 1825343613}
 --- !u!1 &1996864570
 GameObject:
@@ -898,6 +910,8 @@ MonoBehaviour:
   minValue: 3.4028235e+38
   currentValue: 0
   currentRMS: 0
+  rmsMinValue: 3.4028235e+38
+  rmsMaxValue: -3.4028235e+38
   indices: 
 --- !u!114 &1996864574
 MonoBehaviour:
@@ -926,6 +940,8 @@ MonoBehaviour:
   minValue: 3.4028235e+38
   currentValue: 0
   currentRMS: 0
+  rmsMinValue: 3.4028235e+38
+  rmsMaxValue: -3.4028235e+38
   indices: 
 --- !u!114 &1996864575
 MonoBehaviour:
@@ -954,6 +970,8 @@ MonoBehaviour:
   minValue: 3.4028235e+38
   currentValue: 0
   currentRMS: 0
+  rmsMinValue: 3.4028235e+38
+  rmsMaxValue: -3.4028235e+38
   indices: 
 --- !u!114 &1996864576
 MonoBehaviour:
@@ -982,4 +1000,6 @@ MonoBehaviour:
   minValue: 3.4028235e+38
   currentValue: 0
   currentRMS: 0
+  rmsMinValue: 3.4028235e+38
+  rmsMaxValue: -3.4028235e+38
   indices: 

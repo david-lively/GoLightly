@@ -18,6 +18,7 @@ namespace GoLightly.UI
     // [ExecuteInEditMode]
     public class Chart : MonoBehaviour
     {
+        public bool ignoreReset = false;
         public string monitorName;
         public Rect windowRect = new Rect(1024, 0, 1000, 256);
 
@@ -166,10 +167,8 @@ namespace GoLightly.UI
             var selectedIndex = monitorNames.IndexOf(chart.monitorName);
             selectedIndex = EditorGUILayout.Popup(selectedIndex, monitorNames.ToArray());
 
-            // graph._monitor = monitorNames[selectedIndex];
-            chart.monitorName = monitorNames[selectedIndex];
-
-
+            if (selectedIndex < monitorNames.Count)
+                chart.monitorName = monitorNames[selectedIndex];
         }
     }
 
