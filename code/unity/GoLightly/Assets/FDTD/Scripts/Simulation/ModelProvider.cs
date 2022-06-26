@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Unity.Mathematics;
+using UnityEditor;
 
 namespace GoLightly
 {
+    [DisallowMultipleComponent]
     public class ModelProvider : MonoBehaviour
     {
 
         public Texture2D tileTexture;
         private Simulation _simulation;
         private SimulationParameters Parameters => _simulation.parameters;
+        public bool enableDielectric = true;
 
 
         // Start is called before the first frame update
@@ -51,6 +54,7 @@ namespace GoLightly
 
         }
 
+#if false
         void generateModels(float[] data)
         {
             if (!isActiveAndEnabled)
@@ -107,7 +111,7 @@ namespace GoLightly
                     var g = color.g;
 
                     // if ((j >= mn && j <= mx) || g <= 0)
-                    if (g <= 0)
+                    if (g <= 0 || !enableDielectric)
                     {
                         var n = dt / dx;
                         data[materialAddress] = n;
@@ -128,7 +132,7 @@ namespace GoLightly
 
             //cb.SetData(data);
         }
-
+#endif
         private static float length(float x, float y)
         {
             return Mathf.Sqrt(x * x + y * y);
@@ -201,9 +205,47 @@ namespace GoLightly
         // public int rodDiameterNm => (int)(2 * rodSpacingNm * 0.2f);
         public float rodDiameterNm = 1200 * 0.2f * 2;
         public int cellDivisor = 10;
+        public float lambdaNm = 1500;
+
+
+        #region calculated values
+
+        public float nmPerYeeCell;
+        public float lambdaNorm;
+        public int rodSpacingCells;
+        public int rodDiameterCells;
+        public float dx;
+        public float dt;
+        /// <summary>
+        /// nm = norm * (10 * nmPerYeeCell)
+        /// </summary>
+        public float lambdaScalar;
+
+        #endregion
+
+
+        public void calculateParameters()
+        {
+            nmPerYeeCell = rodDiameterNm / cellDivisor;
+
+            rodSpacingCells = Mathf.CeilToInt(rodSpacingNm / nmPerYeeCell);
+            rodDiameterCells = Mathf.CeilToInt(rodDiameterNm / nmPerYeeCell);
+
+            lambdaScalar = 10 * nmPerYeeCell;
+            lambdaNorm = lambdaNm / lambdaScalar;
+
+            var batchRun = GameObject.FindObjectOfType<BatchRun>();
+            if (null != batchRun)
+                batchRun.lambdaScalar = lambdaScalar;
+
+            // dx = _simulation.parameters.dx;
+            // dt = _simulation.parameters.dt;
+        }
 
         public void generateRodArray2(float[] cb)
         {
+            calculateParameters();
+
             /*
             rod spacing  A= 1200nm
             rod diameter D= 480nm
@@ -221,33 +263,24 @@ namespace GoLightly
             and default lambda = 10 * dx = 480um, 
             then lambda_rel = 1500 / 480nm = 3.125
 
-            */
-            float nmPerCell = rodDiameterNm / cellDivisor;
-            // float dx_nm = rodDiameterNm / 10;
-            int rodSpacingCells = Mathf.CeilToInt(rodSpacingNm / nmPerCell);
-            int rodDiameterCells = Mathf.CeilToInt(rodDiameterNm / nmPerCell);
-            float lambdaNm = 1500;
+            // */
+            // float nmPerCell = rodDiameterNm / cellDivisor;
+            // // float dx_nm = rodDiameterNm / 10;
+            // int rodSpacingCells = Mathf.CeilToInt(rodSpacingNm / nmPerCell);
+            // int rodDiameterCells = Mathf.CeilToInt(rodDiameterNm / nmPerCell);
+            // float lambdaNm = 1500;
 
-            /// FDTD condition: dx = lambda / 10. But, we're defining dx
-            /// in terms of rod diameter. 
-            float lambdaNorm = 10 * nmPerCell;
-            float lambdaRel = lambdaNm / (10.0f * nmPerCell);
+            // /// FDTD condition: dx = lambda / 10. But, we're defining dx
+            // /// in terms of rod diameter. 
+            // float lambdaNorm = cellDivisor * nmPerCell;
+            // float lambdaRel = lambdaNm / (cellDivisor * nmPerCell);
 
-            _simulation.modelRequestedLambda = lambdaRel;
 
+            _simulation.modelRequestedLambda = lambdaNorm;
+
+            if (!enableDielectric)
             {
-                var text =
-                $"Rod Spacing nm {rodSpacingNm}\n"
-                + $"rod diameter nm {rodDiameterNm}\n"
-                + $"nmPerCell {nmPerCell}\n"
-                + $"cellDivisor {cellDivisor}\n"
-                + $"rod spacing cells {rodSpacingCells}\n"
-                + $"rod diameter cells {rodDiameterCells}\n"
-                + $"lambda nm {lambdaNm}\n"
-                + $"lambda_relative = {lambdaRel}\n";
-                ;
-
-                Debug.Log($"Model parameters: {text}");
+                return;
             }
 
             var dt = _simulation.parameters.dt;
@@ -271,8 +304,9 @@ namespace GoLightly
 
             Simulation.Helpers.ClearArray(ref cb, air);
 
-            var cellCount = new int2(domainWidth / rodSpacingCells+1, domainHeight / rodSpacingCells+1);
+            var cellCount = new int2(domainWidth / rodSpacingCells + 1, domainHeight / rodSpacingCells + 1);
             var excludeCell = new bool[cellCount.x, cellCount.y];
+
 
             // excludeCell[cellCount.x / 2, cellCount.y / 2] = true;
 
@@ -280,8 +314,11 @@ namespace GoLightly
             {
                 for (var i = 0; i < cellCount.x; ++i)
                 {
-                    if(excludeCell[i,j])
+                    if (excludeCell[i, j])
                         continue;
+
+                    // if (i >= 6 && i < 17 && j >= 6 && j < 17)
+                    //     continue;
 
                     var x = offset + i * rodSpacingCells;
                     var y = offset + j * rodSpacingCells;
@@ -290,16 +327,22 @@ namespace GoLightly
                 }
             }
 
-            /*
-                        for (var i = offset; i <= domainWidth; i += rodSpacingCells)
-                        {
-                            for (var j = offset; j <= domainHeight; j += rodSpacingCells)
-                            {
-                                var center = new int2(i, j);
-                                Cylinder(center, radius, radius, domainWidth, domainHeight, dielectric, cb);
-                            }
-                        }
-            */
+        }
+
+    }
+
+    [CustomEditor(typeof(ModelProvider))]
+    public class ModelProviderInspector : Editor
+    {
+        ModelProvider provider => target as ModelProvider;
+
+        public override void OnInspectorGUI()
+        {
+            if (GUILayout.Button("Recalculate grid parameters"))
+            {
+                provider.calculateParameters();
+            }
+            base.OnInspectorGUI();
         }
 
     }

@@ -26,7 +26,6 @@
 #pragma kernel CSUpdateHFields
 #pragma kernel CSUpdateSources
 #pragma kernel CSUpdateMonitors
-#pragma kernel CSResetEverything
 
 #define PI (3.1415926f)
 #define ENABLE_PML
@@ -168,8 +167,6 @@ void CSUpdateVisualizerTexture (uint3 id : SV_DispatchThreadID)
 
 }
 
-bool clearMonitors;
-
 [numthreads(64,1,1)]
 void CSUpdateMonitors(uint3 id : SV_DispatchThreadID)
 {
@@ -179,12 +176,8 @@ void CSUpdateMonitors(uint3 id : SV_DispatchThreadID)
         return;
 
     int offset = monitorAddresses[index];
-    if (clearMonitors)
-    {
-        monitorValues[index] = pow(ez[offset],2);
-    }
-    else
-        monitorValues[index] += pow(ez[offset],2);
+    // monitorValues[index] = pow(ez[offset],2);
+    monitorValues[index] = ez[offset];
 }
 
 [numthreads(64,1,1)]
@@ -210,7 +203,9 @@ void CSUpdateSources(uint3 id : SV_DispatchThreadID)
     
      */
     // float s = source.amplitude * sin(t / source.wavelength);
-    float s = source.amplitude * sin(TimeStep * (2 * PI) / (1 / Dt) / source.wavelength);
+    // float s = source.amplitude * sin(TimeStep * (2 * PI) / (1 / Dt) / source.wavelength);
+    float frequency = 1.f / source.wavelength;
+    float s = source.amplitude * sin(t * frequency * 2 * PI);
 
 #ifdef MOVING_SOURCE
     float range = 1000;
@@ -304,11 +299,6 @@ float4 getPsi(uint2 position)
     return psi_all[position.y * domainSize.x + position.x];
 }
 
-[numthreads(32,32,1)]
-void CSResetEverything(uint3 id : SV_DispatchThreadID)
-{
-
-}
 
 [numthreads(32,32,1)]
 void CSUpdateEz(uint3 id : SV_DispatchThreadID)

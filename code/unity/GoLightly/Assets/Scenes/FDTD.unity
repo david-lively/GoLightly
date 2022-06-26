@@ -726,18 +726,17 @@ MonoBehaviour:
   computeShader: {fileID: 7200000, guid: abafb8f15e2fb4be1b5bf13f3950fb0d, type: 3}
   domainSize: {x: 1024, y: 1024}
   sweepWavelengthDelta: 0.1
-  contrast: 84.7
+  contrast: 58.8
   timeStep: 0
   psiContrast: 0.2
-  simulationTimeStepsPerFrame: 10
+  simulationTimeStepsPerFrame: 200
   modelRequestedLambda: 6.25
   sources:
   - position: {x: 512, y: 512, z: 0}
     amplitude: 1
-    wavelength: 4.25
+    wavelength: 3.125
     maxLife: 0
     _enabled: 1
-  clearMonitorsEachFrame: 1
   monitorMin: 3.4028235e+38
   monitorMax: -3.4028235e+38
   monitorValues: []
@@ -768,9 +767,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileTexture: {fileID: 2800000, guid: a959453e3e1d24b609fbecd1b700b347, type: 3}
+  enableDielectric: 1
   rodSpacingNm: 1200
   rodDiameterNm: 480
-  cellDivisor: 20
+  cellDivisor: 10
+  lambdaNm: 1500
+  nmPerYeeCell: 48
+  lambdaNorm: 3.125
+  rodSpacingCells: 25
+  rodDiameterCells: 10
+  dx: 0
+  dt: 0
+  lambdaScalar: 480
 --- !u!114 &1825343616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -825,11 +833,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bebdadb7d1f9b4e82a44388f98a3efac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lambda: 4.25
-  lastLambda: 8.25
-  lambdaSteps: 20
-  lambdaDelta: 0.2
-  timeStepsPerRun: 4000
+  startLambda: 1
+  endLambda: 6
+  lambdaSteps: 80
+  timeStepsPerRun: 2000
+  lambdaScalar: 480
   simulation: {fileID: 1825343613}
 --- !u!1 &1996864570
 GameObject:
@@ -867,8 +875,8 @@ MonoBehaviour:
   removeExistingMonitors: 1
   simulation: {fileID: 1825343613}
   padding: 0
-  boxWidth: 512
-  thickness: 1
+  boxWidth: 600
+  thickness: 20
 --- !u!4 &1996864572
 Transform:
   m_ObjectHideFlags: 0
@@ -897,8 +905,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 3
   friendlyName: monitor_3
-  topLeft: {x: 255, y: 768}
-  bottomRight: {x: 256, y: 256}
+  topLeft: {x: 192, y: 812}
+  bottomRight: {x: 212, y: 212}
   offset: 0
   count: 0
   history: []
@@ -927,8 +935,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   friendlyName: monitor_2
-  topLeft: {x: 256, y: 255}
-  bottomRight: {x: 768, y: 256}
+  topLeft: {x: 212, y: 192}
+  bottomRight: {x: 812, y: 212}
   offset: 0
   count: 0
   history: []
@@ -957,8 +965,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   friendlyName: monitor_1
-  topLeft: {x: 768, y: 768}
-  bottomRight: {x: 769, y: 256}
+  topLeft: {x: 812, y: 812}
+  bottomRight: {x: 832, y: 212}
   offset: 0
   count: 0
   history: []
@@ -987,8 +995,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   friendlyName: monitor_0
-  topLeft: {x: 256, y: 769}
-  bottomRight: {x: 768, y: 768}
+  topLeft: {x: 212, y: 832}
+  bottomRight: {x: 812, y: 812}
   offset: 0
   count: 0
   history: []

@@ -63,7 +63,7 @@ namespace GoLightly
         [Range(0, 100)]
         public float psiContrast = 0;
 
-        [Range(1, 20)]
+        [Range(1, 200)]
         public uint simulationTimeStepsPerFrame = 1;
 
         public float modelRequestedLambda = 1.0f;
@@ -144,7 +144,6 @@ namespace GoLightly
 
         public List<Source> sources = new List<Source>();
 
-        public bool clearMonitorsEachFrame;
         private List<Monitor> monitors = new List<Monitor>();
         private List<int> monitorAddresses = new List<int>();
 
@@ -184,7 +183,7 @@ namespace GoLightly
             chartManager?.ResetCharts();
         }
 
-        internal void setSingleSourceWavelengthAndReset(float lambda)
+        internal void SetSingleSourceWavelengthAndReset(float lambda)
         {
             resetRequested = true;
             var source = sources[0];
@@ -271,7 +270,6 @@ namespace GoLightly
                 ,"CSUpdateHFields"
                 ,"CSUpdateSources"
                 ,"CSUpdateMonitors"
-                ,"CSResetEverything"
             };
 
             foreach (var name in kernelNames)
@@ -372,7 +370,6 @@ namespace GoLightly
 
                 if (monitorAddresses.Count > 0)
                 {
-                    computeShader.SetBool("clearMonitors", clearMonitorsEachFrame);
                     var numThreads = (int)Mathf.CeilToInt(monitorAddresses.Count / 64.0f);
                     RunKernel(_kernels["CSUpdateMonitors"], numThreads, 1);
                     ReadMonitors();

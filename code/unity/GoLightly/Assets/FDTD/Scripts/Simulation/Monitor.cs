@@ -99,7 +99,6 @@ namespace GoLightly
                 }
             }
 
-            Debug.Log($"Monitor {id} has {indices.Count} elements");
             isInitialized = true;
 
             history = new List<float>(maxHistoryLength);
@@ -114,10 +113,9 @@ namespace GoLightly
             var sum = 0f;
 
             // integrate all of the ez^2 values for this monitor
-
             for (var i = offset; i < offset + indices.Count; ++i)
             {
-                sum += buffer[i];
+                sum += Mathf.Pow(buffer[i],2);
             }
             currentValue = Mathf.Sqrt(sum);
             currentRMS = Mathf.Sqrt(currentValue / indices.Count);
