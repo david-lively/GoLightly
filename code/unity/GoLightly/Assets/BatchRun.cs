@@ -46,6 +46,7 @@ namespace GoLightly
         {
             var sb = new StringBuilder();
 
+            var lambdaNM = lambda 
             var prefix = $"{lambda},{numTimeSteps},";
 
             foreach (var kvp in monitorResults)

@@ -125,8 +125,6 @@ namespace GoLightly
             {
                 comp.DestroyMonitors();
             }
-
-
         }
 
     }
