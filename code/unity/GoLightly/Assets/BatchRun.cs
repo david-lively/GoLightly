@@ -86,7 +86,7 @@ namespace GoLightly
                 rmsSum += monitor.rmsMaxValue;
                 valSum += monitor.maxValue;
             }
-            var line = $"{_currentLambda},{_currentLambda * 240},{timeStepsPerRun},{rmsSum},{valSum}";
+            var line = $"{_currentLambda},{_currentLambda * lambdaScalar},{timeStepsPerRun},{rmsSum},{valSum}";
 
             _results.AppendLine(line);
         }

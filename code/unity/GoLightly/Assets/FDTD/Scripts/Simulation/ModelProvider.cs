@@ -294,8 +294,6 @@ namespace GoLightly
             var sourcePosition = new int2(512, 512);
             Debug.Log($"Using source position {sourcePosition}");
 
-            // offset to center this around the source
-            var offset = 512 % rodSpacingCells - rodSpacingCells / 2;
 
             var domainWidth = _simulation.domainSize.x;
             var domainHeight = _simulation.domainSize.y;
@@ -303,12 +301,21 @@ namespace GoLightly
             var radius = rodDiameterCells / 2;
 
             Simulation.Helpers.ClearArray(ref cb, air);
-
+            var offset = 0;
+            var includeDefect = false;
             var cellCount = new int2(domainWidth / rodSpacingCells + 1, domainHeight / rodSpacingCells + 1);
             var excludeCell = new bool[cellCount.x, cellCount.y];
 
-
-            // excludeCell[cellCount.x / 2, cellCount.y / 2] = true;
+            if (includeDefect)
+            {
+                // offset to center this around the source
+                offset = radius * 5 / 2;// -radius;//0;//radius * 3 / 2;//0;//512 % rodSpacingCells - rodSpacingCells / 2;
+                                        // var offset = 512 % rodSpacingCells - rodSpacingCells / 2;
+                excludeCell[cellCount.x / 2, cellCount.y / 2] = true;
+            } else
+            {
+                offset= 512 % rodSpacingCells - rodSpacingCells / 2;
+            }
 
             for (var j = 0; j < cellCount.y; ++j)
             {
