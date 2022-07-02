@@ -729,7 +729,7 @@ MonoBehaviour:
   contrast: 94
   timeStep: 0
   psiContrast: 0.2
-  simulationTimeStepsPerFrame: 40
+  simulationTimeStepsPerFrame: 4
   modelRequestedLambda: 6.25
   sources:
   - position: {x: 512, y: 512, z: 0}
