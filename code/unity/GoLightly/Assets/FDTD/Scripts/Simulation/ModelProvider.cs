@@ -17,6 +17,35 @@ namespace GoLightly
         public bool enableDielectric = true;
 
 
+        #region rod lattice parameters
+
+        /* rod lattice parameters */
+        public int rodSpacingNm = 1200;
+        // public int rodDiameterNm => (int)(2 * rodSpacingNm * 0.2f);
+        public float rodDiameterNm = 1200 * 0.2f * 2;
+        public int cellDivisor = 10;
+        public float lambdaNm = 1500;
+        public bool includeDefect = false;
+
+        #endregion
+
+        #region calculated values
+
+        public float nmPerYeeCell;
+        public float lambdaNorm;
+        public int rodSpacingCells;
+        public int rodDiameterCells;
+        public float dx;
+        public float dt;
+
+        /// <summary>
+        /// nm = norm * (10 * nmPerYeeCell)
+        /// </summary>
+        public float lambdaScalar;
+
+        #endregion        
+
+
         // Start is called before the first frame update
         void Awake()
         {
@@ -200,28 +229,6 @@ namespace GoLightly
 
         }
 
-        /* rod lattice parameters */
-        public int rodSpacingNm = 1200;
-        // public int rodDiameterNm => (int)(2 * rodSpacingNm * 0.2f);
-        public float rodDiameterNm = 1200 * 0.2f * 2;
-        public int cellDivisor = 10;
-        public float lambdaNm = 1500;
-
-
-        #region calculated values
-
-        public float nmPerYeeCell;
-        public float lambdaNorm;
-        public int rodSpacingCells;
-        public int rodDiameterCells;
-        public float dx;
-        public float dt;
-        /// <summary>
-        /// nm = norm * (10 * nmPerYeeCell)
-        /// </summary>
-        public float lambdaScalar;
-
-        #endregion
 
 
         public void calculateParameters()
@@ -302,20 +309,22 @@ namespace GoLightly
 
             Simulation.Helpers.ClearArray(ref cb, air);
             var offset = 0;
-            var includeDefect = false;
             var cellCount = new int2(domainWidth / rodSpacingCells + 1, domainHeight / rodSpacingCells + 1);
             var excludeCell = new bool[cellCount.x, cellCount.y];
 
             if (includeDefect)
             {
                 // offset to center this around the source
-                offset = radius * 5 / 2;// -radius;//0;//radius * 3 / 2;//0;//512 % rodSpacingCells - rodSpacingCells / 2;
-                                        // var offset = 512 % rodSpacingCells - rodSpacingCells / 2;
+                offset = radius * 5 / 2;                                        
                 excludeCell[cellCount.x / 2, cellCount.y / 2] = true;
-            } else
-            {
-                offset= 512 % rodSpacingCells - rodSpacingCells / 2;
             }
+            else
+            {
+                offset = 512 % rodSpacingCells - rodSpacingCells / 2;
+            }
+
+            offset = 512 % rodSpacingCells - rodSpacingCells / 2;
+
 
             for (var j = 0; j < cellCount.y; ++j)
             {
