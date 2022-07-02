@@ -734,7 +734,7 @@ MonoBehaviour:
   sources:
   - position: {x: 512, y: 512, z: 0}
     amplitude: 1
-    wavelength: 1
+    wavelength: 2.6375
     maxLife: 0
     _enabled: 1
   monitorMin: 3.4028235e+38
@@ -766,12 +766,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5abb8a35a69794b019208f3aab030bb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  latticeType: 1
   tileTexture: {fileID: 2800000, guid: a959453e3e1d24b609fbecd1b700b347, type: 3}
   enableDielectric: 1
   rodSpacingNm: 1200
   rodDiameterNm: 480
   cellDivisor: 10
   lambdaNm: 1266
+  includeDefect: 1
   nmPerYeeCell: 48
   lambdaNorm: 2.6375
   rodSpacingCells: 25
@@ -833,9 +835,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bebdadb7d1f9b4e82a44388f98a3efac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startLambda: 1
-  endLambda: 4
-  lambdaSteps: 20
+  startLambda: 0.1
+  endLambda: 5
+  lambdaSteps: 30
   timeStepsPerRun: 4000
   lambdaScalar: 480
   simulation: {fileID: 1825343613}

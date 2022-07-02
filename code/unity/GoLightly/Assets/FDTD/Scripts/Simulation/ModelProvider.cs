@@ -10,7 +10,13 @@ namespace GoLightly
     [DisallowMultipleComponent]
     public class ModelProvider : MonoBehaviour
     {
+        public enum LatticeType
+        {
+            Rods,
+            Veins,
+        }
 
+        public LatticeType latticeType;
         public Texture2D tileTexture;
         private Simulation _simulation;
         private SimulationParameters Parameters => _simulation.parameters;
@@ -52,7 +58,17 @@ namespace GoLightly
             _simulation = FindObjectOfType<Simulation>();
             Assert.IsNotNull(_simulation, $"Could not find {nameof(Simulation)} component.");
             if (isActiveAndEnabled)
-                _simulation.onGenerateModels = generateRodArray2;
+            {
+                switch (latticeType)
+                {
+                    case LatticeType.Rods:
+                        _simulation.onGenerateModels = generateRodArray2;
+                        break;
+                    case LatticeType.Veins:
+                        _simulation.onGenerateModels = generateVeinArray;
+                        break;
+                }
+            }
 
         }
 
@@ -193,42 +209,6 @@ namespace GoLightly
 
         }
 
-        public void generateRodArray(float[] cb)
-        {
-            var dt = _simulation.parameters.dt;
-            var dx = _simulation.parameters.dx;
-            var cbDefault = _simulation.parameters.cb;
-
-            var epsR = 8.9f;
-            var air = dt / dx;
-            var dielectric = dt / dx * 1.0f / epsR;
-
-            var a = 30;
-            var r = a * 0.2f;
-
-            var sourcePosition = new int2(512, 512);
-            Debug.Log($"Using source position {sourcePosition}");
-
-            var offset = 512 % a - a / 2;
-
-            var domainWidth = _simulation.domainSize.x;
-            var domainHeight = _simulation.domainSize.y;
-
-            Simulation.Helpers.ClearArray(ref cb, air);
-
-            // offset to center this around the source
-
-            for (var i = offset; i <= domainWidth; i += a)
-            {
-                for (var j = offset; j <= domainHeight; j += a)
-                {
-                    var center = new int2(i, j);
-                    Cylinder(center, r, r, domainWidth, domainHeight, dielectric, cb);
-                }
-            }
-
-        }
-
 
 
         public void calculateParameters()
@@ -315,7 +295,7 @@ namespace GoLightly
             if (includeDefect)
             {
                 // offset to center this around the source
-                offset = radius * 5 / 2;                                        
+                offset = radius * 5 / 2;
                 excludeCell[cellCount.x / 2, cellCount.y / 2] = true;
             }
             else
@@ -343,6 +323,57 @@ namespace GoLightly
                 }
             }
 
+        }
+
+        public void generateVeinArray(float[] cb)
+        {
+            calculateParameters();
+
+            _simulation.modelRequestedLambda = lambdaNorm;
+
+            if (!enableDielectric)
+            {
+                return;
+            }
+
+            var dt = _simulation.parameters.dt;
+            var dx = _simulation.parameters.dx;
+            var cbDefault = _simulation.parameters.cb;
+
+            var epsR = 8.9f;
+            var air = dt / dx;
+            var dielectric = dt / dx * 1.0f / epsR;
+
+            var sourcePosition = new int2(512, 512);
+            Debug.Log($"Using source position {sourcePosition}");
+
+
+            var domainWidth = _simulation.domainSize.x;
+            var domainHeight = _simulation.domainSize.y;
+
+            var radius = rodDiameterCells / 2;
+
+            Simulation.Helpers.ClearArray(ref cb, air);
+
+            var cellWidth = rodSpacingCells;
+            var veinWidth = cellWidth * 0.2f;
+
+            Debug.Log($"Cell width {cellWidth} vein width {veinWidth}");
+
+            for (var j = 0; j < domainHeight; ++j)
+            {
+                var inVeinY = (j % cellWidth) <= veinWidth;
+
+                for (var i = 0; i < domainWidth; ++i)
+                {
+                    var inVeinX = (i % cellWidth) <= veinWidth;
+                    if (inVeinX || inVeinY)
+                    {
+                        var offset = j * domainWidth + i;
+                        cb[offset] = dielectric;
+                    }
+                }
+            }
         }
 
     }
