@@ -145,7 +145,8 @@ namespace GoLightly
 
             var center = (topLeft + bottomRight) / 2;
             var cv3 = UI.Helpers.pixelToWorld(center.x, center.y);
-            Handles.Label(cv3, $"{friendlyName}({id}))");
+            // Handles.Label(cv3, $"{friendlyName}({id}))");
+            // Handles.Label(cv3, $"{friendlyName}({id}))");
         }
     }
 }

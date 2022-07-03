@@ -802,6 +802,11 @@ namespace GoLightly
                 Gizmos.color = Color.white;
                 Gizmos.DrawSphere(px, 0.2f);
             }
+            {
+                var lambda = sources[0].wavelength;
+                var p = UI.Helpers.pixelToWorld(512, 0);
+                Handles.Label(p, $"Lambda {lambda}");
+            }
 
         }
 

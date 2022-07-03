@@ -56,6 +56,10 @@ namespace GoLightly
             if (removeExistingMonitors)
                 DestroyMonitors();
 
+
+            var sourcePosition = simulation.sources[0].position;
+            // var center = new Vector2Int((int)sourcePosition.x, (int)sourcePosition.y);
+
             var center = simulation.domainSize / 2;
             var halfWidth = boxWidth / 2;
             var west = -halfWidth;

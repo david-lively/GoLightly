@@ -330,7 +330,7 @@ namespace GoLightly
             calculateParameters();
 
             _simulation.modelRequestedLambda = lambdaNorm;
-
+            
             if (!enableDielectric)
             {
                 return;
@@ -356,21 +356,27 @@ namespace GoLightly
             Simulation.Helpers.ClearArray(ref cb, air);
 
             var cellWidth = rodSpacingCells;
-            var veinWidth = cellWidth * 0.2f;
+            var veinWidth = Mathf.CeilToInt(cellWidth * 0.2f);
 
-            Debug.Log($"Cell width {cellWidth} vein width {veinWidth}");
+            var offset = veinWidth * 5/4;
+
+            Debug.Log($"Cell width {cellWidth} vein width {veinWidth} offset {offset}");
 
             for (var j = 0; j < domainHeight; ++j)
             {
-                var inVeinY = (j % cellWidth) <= veinWidth;
+                var y = (j + offset) % domainHeight;
+                var inVeinY = (y % cellWidth) <= veinWidth;
 
                 for (var i = 0; i < domainWidth; ++i)
                 {
-                    var inVeinX = (i % cellWidth) <= veinWidth;
+                    var x = (i + offset) % domainWidth;
+
+                    var inVeinX = (x % cellWidth) <= veinWidth;
+
                     if (inVeinX || inVeinY)
                     {
-                        var offset = j * domainWidth + i;
-                        cb[offset] = dielectric;
+                        var addr = j * domainWidth + i;
+                        cb[addr] = dielectric;
                     }
                 }
             }
