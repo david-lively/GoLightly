@@ -351,14 +351,12 @@ namespace GoLightly
             var domainWidth = _simulation.domainSize.x;
             var domainHeight = _simulation.domainSize.y;
 
-            var radius = rodDiameterCells / 2;
-
             Simulation.Helpers.ClearArray(ref cb, air);
 
             var cellWidth = rodSpacingCells;
             var veinWidth = Mathf.CeilToInt(cellWidth * 0.2f);
 
-            var offset = veinWidth * 5/4;
+            var offset = rodSpacingCells /2;//veinWidth * 5/4;
 
             Debug.Log($"Cell width {cellWidth} vein width {veinWidth} offset {offset}");
 
