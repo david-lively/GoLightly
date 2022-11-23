@@ -14,8 +14,8 @@
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
-      <option value="$PROJECT_DIR$/Assets/FDTD/Scripts/Simulation/Simulation.cs" />
       <option value="$PROJECT_DIR$/Assets/FDTD/Shaders/FDTDComputeShaders.compute" />
+      <option value="$PROJECT_DIR$/Assets/FDTD/Scripts/Simulation/Simulation.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="28tFolLjSI8plcXoftMhtWeN5Ep" />
@@ -31,6 +31,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
@@ -43,10 +44,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="51182">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="51182" />
+      <option name="pid" />
       <option name="selectedOptions">
         <list />
       </option>
@@ -62,6 +63,7 @@
       <option name="presentableId" value="Default" />
       <updated>1652028155711</updated>
       <workItem from="1652028163670" duration="1944000" />
+      <workItem from="1656694269329" duration="137000" />
     </task>
     <servers />
   </component>

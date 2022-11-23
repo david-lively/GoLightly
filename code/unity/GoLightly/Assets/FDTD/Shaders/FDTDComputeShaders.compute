@@ -25,13 +25,11 @@
 #pragma kernel CSUpdateEz
 #pragma kernel CSUpdateHFields
 #pragma kernel CSUpdateSources
+#pragma kernel CSUpdateMonitors
 
 #define PI (3.1415926f)
-#define ENABLE_PML
-// #define MOVING_SOURCE
+#define MOVING_SOURCE
 
-float4 GameViewTextureSize;
-Texture2D<float4> GameViewTexture;
 RWTexture2D<float4> VisualizerTexture;
 
 /*
@@ -82,13 +80,40 @@ float contrast;
 float psiContrast;
 int TimeStep;
 
+// E field (Z)
 RWStructuredBuffer<float> ez;
+// H field (X)
 RWStructuredBuffer<float> hx;
+// H field (y)
 RWStructuredBuffer<float> hy;
+/* 
+Dielectric array. Contains cb component for the Ez domain. 2D stored as a Linear array,
+material offset = y * domainWidth + x
+*/ 
 StructuredBuffer<float> cb;
 
+struct Monitor
+{
+    int id;
+    int offset;
+    int len;
+};
+
+int numMonitorAddresses;
 /*
-Decay:
+ List of monitor cells. Since a monitor will typically span multiple Yee cells, we use an
+ indirection layer. 
+ monitorAddresses<> is a list of linear "2D" offsets into the E or H field array.
+ monitorValues contains the read monitor value (RMS) for that location. 
+*/
+
+StructuredBuffer<int> monitorAddresses;
+RWStructuredBuffer<float> monitorValues;
+
+bool resetRequested;
+
+/*
+PML Decay:
     x -> ezx decay
     y -> ezy decay
     z -> hyx decay
@@ -96,7 +121,7 @@ Decay:
 */
 StructuredBuffer<float4> decay_all;
 /*
-Psi:
+PML Psi:
     x -> ezx psi
     y -> ezy psi
     z -> hyx psi
@@ -104,27 +129,34 @@ Psi:
 */
 RWStructuredBuffer<float4> psi_all;
 
+/// helper method to convert X,Y to linear array offsets
 int addr(int x, int y)
 {
     return y * domainSize.x + x;
 }
 
+/// helper method to convert X,Y to linear array offsets
 int addr(int2 xy)
 {
     return addr(xy.x, xy.y);
 }
 
+/// helper method to convert X,Y to linear array offsets
 int addr(int3 xy)
 {
     return addr(xy.xy);
 }
 
+/// Retrieve the dielectric constant for the given X,Y Yee cell. 
 float getMaterial(uint2 id)
 {
     return cb[id.y * domainSize.x + id.x];
 }
 
 
+/*
+Update a visualizer texture (color buffer) from the Ez field.
+*/
 [numthreads(32,32,1)]
 void CSUpdateVisualizerTexture (uint3 id : SV_DispatchThreadID)
 {
@@ -138,7 +170,6 @@ void CSUpdateVisualizerTexture (uint3 id : SV_DispatchThreadID)
     color.a=1;
 
     float4 d = decay_all[center];
-    
 
     float matRelative = getMaterial(id.xy) / CbDefault;
     if (matRelative != 1)
@@ -146,13 +177,41 @@ void CSUpdateVisualizerTexture (uint3 id : SV_DispatchThreadID)
 
     //color = (color * 4 + gameViewColor) / 5.0f;        
 
+    // draw the PML layers
     if (any(d < 1))
-        color.rgb += (1-d) * psiContrast;
+        color.rgba += (1-d) * psiContrast;
 
+    /* 
+    Actually write the color to the texture buffer.
+    On the Unity side, this will be blitted to the camera's frame buffer at runtime. 
+    */
     VisualizerTexture[id.xy] = color;
-
 }
 
+/// Update any Ez monitors
+[numthreads(64,1,1)]
+void CSUpdateMonitors(uint3 id : SV_DispatchThreadID)
+{
+    int index = id.x;
+    
+    if (index >= numMonitorAddresses)
+        return;
+
+    /// Get the ID for the monitor for this thread
+    int offset = monitorAddresses[index];
+    /// Get the Ez value for this monitor. 
+    monitorValues[index] = ez[offset];
+    /*
+    Those values will be integrated later to get a real value
+    for the entire area covered by a given monitor.
+    */
+}
+
+/* 
+Update any source values in the simulation. These are "soft sources,"
+so the calculated amplitude is added to the Ez component at the
+current source's position.
+*/
 [numthreads(64,1,1)]
 void CSUpdateSources(uint3 id : SV_DispatchThreadID)
 {
@@ -176,7 +235,9 @@ void CSUpdateSources(uint3 id : SV_DispatchThreadID)
     
      */
     // float s = source.amplitude * sin(t / source.wavelength);
-    float s = source.amplitude * sin(TimeStep * (2 * PI) / (1 / Dt) / source.wavelength);
+    // float s = source.amplitude * sin(TimeStep * (2 * PI) / (1 / Dt) / source.wavelength);
+    float frequency = 1.f / source.wavelength;
+    float s = source.amplitude * sin(t * frequency * 2 * PI);
 
 #ifdef MOVING_SOURCE
     float range = 1000;
@@ -260,17 +321,24 @@ y -> ezy decay
 z -> hyx decay
 w -> hxy decay
 */
+/// Get the PML decay factor at the given position
 float4 getDecay(uint2 position)
 {
     return decay_all[position.y * domainSize.x + position.x];
 }
 
+/// Get the PML amplification factor at the given position
 float4 getPsi(uint2 position)
 {
     return psi_all[position.y * domainSize.x + position.x];
 }
 
-
+/*
+Update the EZ field based on amp, decay and coupling to Hx and Hy components
+at the given Yee cell. 
+Ez (t) is a function of Ez (t-1), Hx (t-0.5), Hy (t-0.5). 
+Since we can't use 0.5 as an array index, we just use integers. 
+*/
 [numthreads(32,32,1)]
 void CSUpdateEz(uint3 id : SV_DispatchThreadID)
 {
@@ -285,22 +353,32 @@ void CSUpdateEz(uint3 id : SV_DispatchThreadID)
 
     const int center = addr(id.xy);
 
+    // get the Hx field values in the Y direction. See Taflove. 
     float hxBottom = hx[center];
     float hxTop= hx[addr(x,y-1)];
 
+    // get the Hy field values in the X direction. See Taflove.
     float hyRight = hy[center];
     float hyLeft = hy[addr(x-1,y)];
 
+    /// Calculate the Hx (in Y) and Hy (in X) derivatives surrounding this Ez value
     float2 dH = float2(hxBottom-hxTop, hyLeft-hyRight);
 
+    /// Grab the dielectric value at this Ez location
     float material = getMaterial(id.xy);
 
-
+    /// Calculate the new Ez value without PML
     float ezNew = Ca * ez[addr(id.xy)] + material * (dH.y - dH.x);
 
-
+    /*
+    PML. Note that the PML fields are stored across the entire domain. This is to support
+    PML "sinks," or arbitrarily-shaped PML regions to reduce the number of E and H field components
+    that need to be calculated. 
+    */
     float2 decay = getDecay(id.xy).xy;
     float2 amp = decay - 1;
+
+    /// Current field value in the PML
     float4 psi = psi_all[center];
 
     psi.y = decay.y * psi.y + amp.y * dH.x;
@@ -314,14 +392,27 @@ void CSUpdateEz(uint3 id : SV_DispatchThreadID)
     ezNew += material * psi.x;
 
     ez[addr(id.xy)] = ezNew;
+
+    /// Hack to allow resetting the field values to zero to restart the simulation
+    if (resetRequested)
+    {
+        ez[addr(id.xy)] = 0;
+        psi_all[center] = 0;
+    }
 }
 
+/* 
+Update Hx and Hy components in a single shader pass.
+A 3D implementation would have to calculate Hz as well, based on Ex and Ey field values. 
+That is left as an excercise for whomever winds up using this code in the future, if any. 
+*/
 [numthreads(32,32,1)]
 void CSUpdateHFields(uint3 id : SV_DispatchThreadID)
 {
     const uint y = id.y;
     const uint x = id.x;
 
+    /// bounds check. We can't update H fields without adjacent E field components
     if (y >= domainSize.y-2)
         return;
 
@@ -344,13 +435,20 @@ void CSUpdateHFields(uint3 id : SV_DispatchThreadID)
 
     psi.z = decay.y * psi.z + amp.y * dEz.y / Dx;
     newHx = newHx - DbDefault * Dx * psi.z;
+    hx[center] = newHx;
+
     psi.w = decay.x * psi.w + amp.x * dEz.x / Dx;
     newHy -= DbDefault * Dx * psi.w;
+    hy[center] = newHy;
 
     psi_all[center] = psi;
 
-    hx[center] = newHx;
-    hy[center] = newHy;
+    if (resetRequested)
+    {
+        hx[center] = 0;
+        hy[center] = 0;
+        psi_all[center] = 0;
+    }
 }
 
 

@@ -1,0 +1,23 @@
+From Nathan: 
+"Ok, thinking about it, and looking more into my notes, I do think you should make the (Yee) lattice 
+size around 1/10 of the rod diameter.  That will give you enough resolution for the features that matter.  
+That's close to lambda / 50, so I would start there."
+
+Problem 1:
+
+Square lattice of cylindrical rods
+
+lattice size a = 1.2um
+radius = 0.2 * a
+eps_r = 8.9
+
+lambda = 1.55um
+
+dx ~= lambda / 50
+
+------
+
+cell size = 50 
+rod radius = 10
+
+
