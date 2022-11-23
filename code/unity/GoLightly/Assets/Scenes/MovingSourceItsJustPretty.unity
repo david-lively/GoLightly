@@ -470,7 +470,6 @@ GameObject:
   - component: {fileID: 1148322538}
   - component: {fileID: 1148322542}
   - component: {fileID: 1148322541}
-  - component: {fileID: 1148322543}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -564,7 +563,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1148322537}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6a160d838ff8b4b4693ac20007e008c7, type: 3}
   m_Name: 
@@ -577,18 +576,6 @@ MonoBehaviour:
   m_CropFrameX: 1
   m_CropFrameY: 1
   m_StretchFill: 0
---- !u!114 &1148322543
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1148322537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42a0ca9c2eb8c4d3181bba82e2e6296a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1502264836
 GameObject:
   m_ObjectHideFlags: 0
@@ -606,7 +593,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1502264837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -737,17 +724,17 @@ MonoBehaviour:
   outputTextureSize: {x: 2048, y: 1024}
   outputTexture: {fileID: 0}
   computeShader: {fileID: 7200000, guid: abafb8f15e2fb4be1b5bf13f3950fb0d, type: 3}
-  domainSize: {x: 1024, y: 1024}
+  domainSize: {x: 2048, y: 1024}
   sweepWavelengthDelta: 0.1
   contrast: 58.8
   timeStep: 0
   psiContrast: 0.2
-  simulationTimeStepsPerFrame: 200
+  simulationTimeStepsPerFrame: 4
   modelRequestedLambda: 6.25
   sources:
-  - position: {x: 512, y: 512, z: 0}
+  - position: {x: 1024, y: 512, z: 0}
     amplitude: 1
-    wavelength: 3.125
+    wavelength: 5
     maxLife: 0
     _enabled: 1
   monitorMin: 3.4028235e+38
@@ -774,7 +761,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1825343612}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5abb8a35a69794b019208f3aab030bb7, type: 3}
   m_Name: 
@@ -887,10 +874,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae71c434261c04a7a82cde1b8baba537, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  removeExistingMonitors: 1
   simulation: {fileID: 1825343613}
-  padding: 0
-  boxWidth: 600
+  padding: 20
+  boxWidth: 900
+  boxHeight: 512
   thickness: 1
 --- !u!4 &1996864572
 Transform:
@@ -920,8 +907,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 3
   friendlyName: monitor_3
-  topLeft: {x: 211, y: 812}
-  bottomRight: {x: 212, y: 212}
+  topLeft: {x: 573, y: 942}
+  bottomRight: {x: 574, y: 82}
   offset: 0
   count: 0
   history: []
@@ -950,8 +937,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   friendlyName: monitor_2
-  topLeft: {x: 212, y: 211}
-  bottomRight: {x: 812, y: 212}
+  topLeft: {x: 594, y: 61}
+  bottomRight: {x: 1454, y: 62}
   offset: 0
   count: 0
   history: []
@@ -980,8 +967,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1
   friendlyName: monitor_1
-  topLeft: {x: 812, y: 812}
-  bottomRight: {x: 813, y: 212}
+  topLeft: {x: 1474, y: 942}
+  bottomRight: {x: 1475, y: 82}
   offset: 0
   count: 0
   history: []
@@ -1010,8 +997,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   friendlyName: monitor_0
-  topLeft: {x: 212, y: 813}
-  bottomRight: {x: 812, y: 812}
+  topLeft: {x: 594, y: 963}
+  bottomRight: {x: 1454, y: 962}
   offset: 0
   count: 0
   history: []

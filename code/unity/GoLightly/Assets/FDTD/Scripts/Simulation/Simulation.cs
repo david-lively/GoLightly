@@ -54,20 +54,44 @@ namespace GoLightly
         /// </summary>
         internal bool resetRequested;
         internal bool isPaused;
+
+        /// <summary>
+        /// When running batch mode (sweeping wavelengths), the delta between
+        /// wavelengths on each subsequent run. 
+        /// </summary>
         public float sweepWavelengthDelta = 0.1f;
 
+        /// <summary>
+        /// Contrast multiplier to use when drawing field values to 
+        /// the visualizer texture.
+        /// </summary>
         [Range(1, 200)]
         public float contrast = 80;
+
+        /// <summary>
+        /// Current simulation time step (t). Don't modify this in code. It's just here
+        /// so we can see the simulation progress in the Unity inspector.
+        /// </summary>
         public int timeStep = 0;
 
+        /// <summary>
+        /// For the visualizer, the contrast multiplier used to render PML values
+        /// </summary>
         [Range(0, 100)]
         public float psiContrast = 0;
 
-        [Range(1, 200)]
+        /// <summary>
+        /// Number of field updates (simulation steps) to calculate between visualizer updates. 
+        /// Updating the visualizer takes non-trivial GPU resources, so we don't want to do it every frame.
+        /// </summary>
+        [Range(1, 200)]    
         public uint simulationTimeStepsPerFrame = 1;
 
         public float modelRequestedLambda = 1.0f;
 
+        /// <summary>
+        /// PML decay values for E
+        /// </summary>
         readonly float[] e_decay = new float[] {
                     1,
                     0.999798477f,
@@ -93,6 +117,10 @@ namespace GoLightly
                     0.999798477f,
                     1
                 };
+
+        /// <summary>
+        /// PML decay values for H
+        /// </summary>
         readonly float[] h_decay = new float[]  {
                     1,
                     0.999987423f,
@@ -118,9 +146,21 @@ namespace GoLightly
                     0.999987423f,
                     1,
                        };
+
+        /// <summary>
+        /// Compute shader buffers, referenced by key = buffer name ("ez", "hx", etc as defined in the compute shader source file). 
+        /// </summary>
         private readonly Dictionary<string, ComputeBuffer> _buffers = new Dictionary<string, ComputeBuffer>(StringComparer.OrdinalIgnoreCase);
+        /// <summary>
+        /// Compute shader kernels referenced by key = kernel name.
+        /// </summary>
         private readonly Dictionary<string, int> _kernels = new Dictionary<string, int>();
 
+        /// <summary>
+        /// Parameters for an FDTD source. These should not be modified at runtime. 
+        /// To see the source in the Unity scene view or game view, be sure to enable
+        /// Gizmos on the Unity toolbar.
+        /// </summary>
         [System.Serializable]
         public struct Source
         {
@@ -138,13 +178,19 @@ namespace GoLightly
                 return (3 * sizeof(float)) + (3 * sizeof(float)) + sizeof(uint);
             }
         }
-
-
-
-
+        /// <summary>
+        /// All of the sources that we have.
+        /// </summary>
         public List<Source> sources = new List<Source>();
 
+        /// <summary>
+        /// FDTD field monitors 
+        /// </summary>
         private List<Monitor> monitors = new List<Monitor>();
+
+        /// <summary>
+        /// linear offsets into the field arrays for each monitor.
+        /// </summary>
         private List<int> monitorAddresses = new List<int>();
 
         // Start is called before the first frame update
@@ -166,6 +212,10 @@ namespace GoLightly
 
         private bool _isInitialized = false;
 
+        /// <summary>
+        /// For batch mode, increment the source wavelength to the next
+        /// value of interest and restart the simulation.
+        /// </summary>
         internal void runNextWavelength()
         {
             // isPaused = true;
@@ -177,6 +227,9 @@ namespace GoLightly
             uploadSources();
         }
 
+        /// <summary>
+        /// For batch mode, clear the monitor values.
+        /// </summary>
         private void resetMonitors()
         {
             var chartManager = GameObject.FindObjectOfType<ChartManager>();
@@ -195,6 +248,9 @@ namespace GoLightly
             uploadSources();
         }
 
+        /// <summary>
+        /// Copy configured source parameters to the GPU
+        /// </summary>
         void uploadSources()
         {
             if(!_buffers.TryGetValue("sources", out var sourcesBuffer))
@@ -220,18 +276,7 @@ namespace GoLightly
 
             {
                 onGenerateSources?.Invoke(sources);
-                foreach (var source in sources)
-                {
-                    // if (source.wavelength != modelRequestedLambda)
-                    // {
-                    //     Debug.LogWarning($"Source wavelength {source.wavelength} != requested wavelength of {modelRequestedLambda}");
-                    // }
-                }
                 uploadSources();
-                // var sourcesBuffer = new ComputeBuffer(sources.Count, Source.GetSize());
-                // sourcesBuffer.SetData(sources);
-                // computeShader.SetInt("numSources", sources.Count);
-                // _buffers["sources"] = sourcesBuffer;
             }
 
             {
@@ -264,6 +309,7 @@ namespace GoLightly
                 _buffers["cb"] = cb;
             }
 
+            /// Kernel names that we're using as defined in the compute shader source file "FDTDComputeShaders.compute"
             var kernelNames = new string[] {
                 "CSUpdateVisualizerTexture"
                 ,"CSUpdateEz"
@@ -272,6 +318,7 @@ namespace GoLightly
                 ,"CSUpdateMonitors"
             };
 
+            /// Get a reference to each compiled kernel in the compute shader
             foreach (var name in kernelNames)
             {
                 var kernelIndex = computeShader.FindKernel(name);
@@ -287,6 +334,9 @@ namespace GoLightly
             _isInitialized = true;
         }
 
+        /// <summary>
+        /// Clean up unmanaged resources
+        /// </summary>
         private void OnDestroy()
         {
             Debug.Log($"Disposing {_buffers.Count} compute buffers");
@@ -305,6 +355,7 @@ namespace GoLightly
 
         private void RunKernel(int kernelIndex)
         {
+            /// Use a grid block size of domainSize / 32, or 32*32 = 1024 threads per block.
             var threadGroupsX = domainSize.x / 32;
             var threadGroupsY = domainSize.y / 32;
 
@@ -330,6 +381,12 @@ namespace GoLightly
             computeShader.Dispatch(kernelIndex, threadGroupsX, threadGroupsY, 1);
         }
 
+        /// <summary>
+        /// Run one or more simulation steps. These are done in a tight loop to avoid
+        /// engine overhead per frame, or to get multiple simulation time step updates
+        /// for each visualizer update.
+        /// </summary>
+        /// <param name="steps">Number of simulation time steps to run</param>
         private void RunSimulationSteps(uint steps = 1)
         {
             computeShader.SetFloat("time", Time.fixedTime);
@@ -383,6 +440,10 @@ namespace GoLightly
             UpdateVisualizerTexture(outputTexture);
         }
 
+        /// <summary>
+        /// Draw a visualization of the field of interest to the associated render texture.
+        /// </summary>
+        /// <param name="gameView"></param>
         public void UpdateVisualizerTexture(RenderTexture gameView)
         {
             var kernelName = "CSUpdateVisualizerTexture";
@@ -415,6 +476,12 @@ namespace GoLightly
 
         }
 
+        /// <summary>
+        /// Generate PML values for the outside of the domain.
+        /// </summary>
+        /// <param name="decayAll"></param>
+        /// <param name="minCoord"></param>
+        /// <param name="maxCoord"></param>
         private void CreateBoundaryOutside(float4[] decayAll, int2 minCoord, int2 maxCoord)
         {
             /*
@@ -452,7 +519,7 @@ namespace GoLightly
 
                 }
 
-                /// draw left and right layers
+                /// draw top and bottom PML layers
                 for (var i = minCoord.x; i < maxCoord.x; ++i)
                 {
                     /// top
@@ -478,11 +545,22 @@ namespace GoLightly
             }
         }
 
+        /// <summary>
+        /// Helper method to convert x,y coordinate to a linear array offset.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
         int offsetOf(int x, int y)
         {
             return y * domainSize.x + x;
         }
 
+        /// <summary>
+        /// Clip the coordinate to a valid field coordinate
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
         int2 clip(int2 v)
         {
             v.x = v.x < 0 ? 0 : (v.x >= domainSize.x) ? domainSize.x - 1 : v.x;
@@ -491,6 +569,13 @@ namespace GoLightly
             return v;
         }
 
+        /// <summary>
+        /// Generate PML coefficients for a circular area with the given CENTER
+        /// and outer RADIUS. RADIUS should be at least > 12. 
+        /// </summary>
+        /// <param name="decay"></param>
+        /// <param name="center"></param>
+        /// <param name="radius"></param>
         private void CreateSink(float4[] decay, int2 center, int radius)
         {
             Assert.IsTrue(radius >= e_decay.Length);
@@ -501,7 +586,7 @@ namespace GoLightly
                     // calculate layer
                     var d = radius - (int)Mathf.Sqrt(i * i + j * j);
                     var o = offsetOf(i + center.x, j + center.y);
-                    var v = decay[o];
+                    // var v = decay[o];
 
                     if (d > 0 && d < e_decay.Length - 1)
                     {
@@ -511,6 +596,7 @@ namespace GoLightly
                         z -> hyx decay
                         w -> hxy decay
                         */
+                        var v = new float4();
                         v.x = e_decay[d];
                         v.y = e_decay[d];
                         v.z = h_decay[d + 1];
@@ -521,11 +607,44 @@ namespace GoLightly
             }
         }
 
+        private bool fixCoordinateOrder(ref int2 mn, ref int2 mx)
+        {
+            var didSomething = false;
 
+            if (mn.x > mx.x)
+            {
+                var t = mn.x;
+                mn.x = mx.x;
+                mx.x = t;
+
+                didSomething = true;
+            }
+
+            if (mn.y > mx.y)
+            {
+                var t = mn.y;
+                mn.y = mx.y;
+                mx.y = mn.y;
+
+                didSomething = true;
+            }
+
+            return didSomething;
+
+        }
+
+
+        /// <summary>
+        /// For PML sinks, create a rectangluar sink with corners at the given location.s
+        /// </summary>
+        /// <param name="decayAll"></param>
+        /// <param name="minCoord"></param>
+        /// <param name="maxCoord"></param>
         private void CreateSink(float4[] decayAll, int2 minCoord, int2 maxCoord)
         {
             minCoord = clip(minCoord);
             maxCoord = clip(maxCoord);
+
             /*
             x -> ezx decay
             y -> ezy decay
@@ -546,12 +665,9 @@ namespace GoLightly
                         v.z = h_decay[k];
 
                         decayAll[o] = v;
-
                     }
-
                     /// right
                     {
-
                         var o = offsetOf(maxCoord.x - k, j);
                         var v = decayAll[o];
                         v.x = e_decay[k];
@@ -559,10 +675,9 @@ namespace GoLightly
 
                         decayAll[o] = v;
                     }
-
                 }
 
-                /// draw top and bottom layers
+                /// Populate top and bottom (relative to the domain Y coordinates) layers
                 for (var i = minCoord.x; i < maxCoord.x; ++i)
                 {
                     /// top
@@ -588,6 +703,12 @@ namespace GoLightly
             }
         }
 
+        /// <summary>
+        /// Draw a linear waveguide at the given location. The guide spans the entire domain and
+        /// assumes a core epsilon_r of 9 and a clas epsilon_r of 3. 
+        /// </summary>
+        /// <param name="cbData"></param>
+        /// <param name="centerY"></param>
         void lineGuide(float[] cbData, int centerY)
         {
             var scalar = parameters.dt / parameters.dx;
@@ -653,6 +774,12 @@ namespace GoLightly
             }
         }
 
+        /// <summary>
+        /// Draw a Whispering Gallery Mode circle waveguide.
+        /// </summary>
+        /// <param name="cbData"></param>
+        /// <param name="radius"></param>
+        /// <param name="width"></param>
         void wgm(float[] cbData, float radius, float width)
         {
             var center = new int2(domainSize.x / 2, domainSize.y / 2);
@@ -666,6 +793,10 @@ namespace GoLightly
             wgm(cbData, 282, 20);
         }
 
+        /// <summary>
+        /// Initialize PML boundaries
+        /// </summary>
+        /// <param name="_"></param>
         private void InitializeBoundaries(int _)
         {
             var layers = e_decay.Length;
@@ -718,7 +849,6 @@ namespace GoLightly
             var domainArea = domainSize.x * domainSize.y;
             Debug.Log($"Total area:\ndomain {domainArea}\nPML {pmlArea}\n ratio {pmlArea * 1.0f / domainArea} Saved {domainArea-pmlArea} cells");
 #endif
-
 
             var decayBuffer = new ComputeBuffer(decayAll.Length, sizeof(float) * 4);
             decayBuffer.SetData(decayAll);
@@ -812,6 +942,10 @@ namespace GoLightly
 
     }
 
+    /// <summary>
+    /// Custom editor to provide some convenience buttons when
+    /// running in the Unity editor.
+    /// </summary>
     [CustomEditor(typeof(Simulation))]
     public class SimulationInspector : Editor
     {

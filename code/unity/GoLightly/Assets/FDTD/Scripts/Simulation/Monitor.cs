@@ -26,6 +26,7 @@ namespace GoLightly
 
         public UnityEvent<Monitor> onUpdateData;
 
+        #region Stuff that's calculated at runtime.
         /// <summary>
         /// Cell offset for each monitor "pixel" location. These correspond to y * width + x values in the domain.
         /// </summary> 
@@ -43,6 +44,8 @@ namespace GoLightly
         List<float> rmsHistory = new List<float>();
 
         public bool isInitialized { get; private set; }
+
+        #endregion
 
         /// <summary>
         /// list of domain coordinates that this monitor occupies
@@ -145,7 +148,7 @@ namespace GoLightly
 
             var center = (topLeft + bottomRight) / 2;
             var cv3 = UI.Helpers.pixelToWorld(center.x, center.y);
-            // Handles.Label(cv3, $"{friendlyName}({id}))");
+            Handles.Label(cv3, $"Monitor ({id}) {friendlyName}");
             // Handles.Label(cv3, $"{friendlyName}({id}))");
         }
     }

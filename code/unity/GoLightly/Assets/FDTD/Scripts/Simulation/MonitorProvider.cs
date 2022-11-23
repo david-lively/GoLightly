@@ -9,11 +9,13 @@ namespace GoLightly
 
     public class MonitorProvider : MonoBehaviour
     {
-        public bool removeExistingMonitors;
+
+        public readonly bool removeExistingMonitors = true;
         public Simulation simulation;
         public readonly string msg = "Hello world";
         public int padding = 16;
         public int boxWidth = 512;
+        public int boxHeight = 512;
         public int thickness = 8;       
 
         // Start is called before the first frame update
@@ -31,6 +33,10 @@ namespace GoLightly
 
         }
 
+        /// <summary>
+        /// Destroy any monitors that have been created. Typically this would
+        /// be run before automagically generating a new set of monitors.
+        /// </summary>
         public void DestroyMonitors()
         {
             var monitors = GameObject.FindObjectsOfType<Monitor>();
@@ -47,7 +53,7 @@ namespace GoLightly
         }
 
         /// <summary>
-        /// Generate a "box" of monitors around the source.
+        /// Generate a "box" of 4 discrete monitors around the source.
         /// </summary>
         internal void GenerateSquareArray()
         {
@@ -57,10 +63,18 @@ namespace GoLightly
                 DestroyMonitors();
 
 
-            var sourcePosition = simulation.sources[0].position;
-            // var center = new Vector2Int((int)sourcePosition.x, (int)sourcePosition.y);
-
             var center = simulation.domainSize / 2;
+
+            if (simulation.sources.Count > 0)
+            {
+                var p = simulation.sources[0].position;
+                center = new Vector2Int((int)p.x, (int)p.y);
+                Debug.Log($"Generating monitors around source position {center}");
+            }
+            else {
+                Debug.Log($"Generating monitors around domain center position {center}");
+            }
+
             var halfWidth = boxWidth / 2;
             var west = -halfWidth;
             var east = halfWidth;
